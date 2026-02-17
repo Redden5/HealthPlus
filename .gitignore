@@ -1,9 +1,12 @@
+#For pycharm users
+.idea/
+
 #Environment variables
 .venv/
 .env
 __pycache__/
 *.pyc
-.idea
+
 
 
 
