@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthPlus - Review & Consent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #adbfa2;
+            --bg-color: #f9f9f9;
+            --border-light: rgba(255, 255, 255, 0.4);
+            --text-main: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 { color: var(--text-main); margin-bottom: 10px; font-weight: 600; }
+
+        /* Stepper Logic */
+        .stepper { display: flex; justify-content: center; gap: 50px; margin-bottom: 40px; }
+        .step { color: #ccc; font-weight: 600; text-align: center; font-size: 0.9rem; }
+        .step.active { color: var(--text-main); }
+        .step-num {
+            width: 35px; height: 35px; border: 2px solid #ccc;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 8px;
+        }
+        .step.active .step-num { background: var(--primary-green); color: white; border-color: var(--primary-green); }
+
+        /* The Green Review Card */
+        .form-card {
+            background-color: var(--primary-green);
+            border-radius: 20px;
+            color: white;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        /* Top Summary Section */
+        .summary-header {
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .summary-col {
+            padding: 25px 30px;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .summary-col:first-child { border-right: 1px solid var(--border-light); }
+
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .edit-link { text-decoration: underline; cursor: pointer; opacity: 0.8; font-size: 0.75rem; }
+
+        /* Bottom Two-Column Section */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .consent-section {
+            padding: 30px;
+        }
+
+        .consent-section:first-child { border-right: 1px solid var(--border-light); }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        /* Lists & Links */
+        .policy-list { list-style: none; padding: 0; }
+        .policy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Footer Controls */
+        .footer {
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.03);
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-complete {
+            background: #f4f7f0; /* Very light green/white */
+            color: var(--text-main);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome! Let's Get Started</h1>
+    <p style="color: #666; margin-bottom: 30px; font-size: 0.95rem;">Set up your profile to personalize your experience.</p>
+
+    <div class="stepper">
+        <div class="step"><div class="step-num">1</div>Profile Info</div>
+        <div class="step"><div class="step-num">2</div>Preferences</div>
+        <div class="step active"><div class="step-num">3</div>Review & Consent</div>
+    </div>
+
+    <div class="form-card">
+        <div class="summary-header">Profile Summary</div>
+
+        <div class="summary-grid">
+            <div class="summary-col">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <strong style="font-size: 1rem;">Demographics</strong>
+                    <span class="edit-link">Edit</span>
+                </div>
+                <div class="summary-item"><span>Height: 5'7"</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Weight: 140 lbs</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Blood Type: O+</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>DOB: 01/01/1990</span> <span class="edit-link">Edit</span></div>
+            </div>
+
+            <div class="summary-col">
+                <div class="summary-item"><span>Allergies: None</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Conditions: Hypertension</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Notifications: Email, Lab results</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Tracking: Weight, Blood Pressure</span> <span class="edit-link">Edit</span></div>
+                <div class="summary-item"><span>Privacy: Share with Primary Provider</span> <span class="edit-link">Edit</span></div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="consent-section">
+                <div class="section-title">Terms & Policies</div>
+                <div class="policy-list">
+                    <div class="policy-item">Privacy Policy <span>›</span></div>
+                    <div class="policy-item">HIPAA Notice <span>›</span></div>
+                    <div class="policy-item">Terms of Use <span>›</span></div>
+                </div>
+            </div>
+
+            <div class="consent-section">
+                <div class="section-title">Consent & Agreement</div>
+                <label class="checkbox-item"><input type="checkbox"> I agree to the Terms of Use</label>
+                <label class="checkbox-item"><input type="checkbox"> I acknowledge the Privacy Policy</label>
+                <label class="checkbox-item"><input type="checkbox"> I consent to electronic communication</label>
+                <label class="checkbox-item"><input type="checkbox"> I agree to participate with Primary Provider</label>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button onclick="location.href='{% url 'preferences_setup' %}'" class="btn-back">‹ Back</button>
+            <button class="btn-complete">Complete Setup ›</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
