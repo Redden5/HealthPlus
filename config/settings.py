@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
+# Load environment variables from .env
 load_dotenv()
 
 
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts' #login page added by alec
+    'accounts', #login page added by alec
+    'patients',  # patients added by alec
 ]
 
 MIDDLEWARE = [
