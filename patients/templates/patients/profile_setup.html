@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthPlus Profile Setup</title>
+    <style>
+        :root {
+            --primary-green: #adbfa2;
+            --bg-color: #f4f7f0;
+            --text-main: #333;
+            --text-secondary: #666;
+            --border-light: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 { color: var(--primary-green); font-size: 2.5rem; margin-bottom: 10px; }
+        p.subtitle { color: var(--text-secondary); margin-bottom: 30px; }
+
+        /* Stepper Navigation */
+        .stepper {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .step { color: #ccc; font-weight: bold; }
+        .step.active { color: var(--primary-green); }
+        .step-num {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+        }
+        .active .step-num { background: var(--primary-green); color: white; border-color: var(--primary-green); }
+
+        /* Form Card */
+        .form-card {
+            background-color: var(--primary-green);
+            padding: 40px;
+            border-radius: 30px;
+            color: white;
+            text-align: left;
+        }
+
+        .form-card h2 { margin-top: 0; font-weight: 500; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 0.85rem; margin-bottom: 8px; opacity: 0.9; }
+
+        input, select {
+            background: transparent;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+        .full-width { grid-column: span 2; }
+
+        .allergy-input {
+            display: flex;
+            gap: 10px;
+        }
+        .allergy-input input { flex-grow: 1; }
+        .add-btn {
+            background: white;
+            color: var(--primary-green);
+            border: none;
+            padding: 0 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Bottom Controls */
+        .footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .consent { display: flex; align-items: center; font-size: 0.8rem; gap: 8px; }
+        .buttons { display: flex; flex-direction: column; gap: 10px; }
+
+        .btn-next {
+            background: white;
+            color: var(--primary-green);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-skip {
+            background: transparent;
+            color: white;
+            border: none;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome! Let's Get Started</h1>
+    <p class="subtitle">Set up your profile to personalize your experience.</p>
+
+    <div class="stepper">
+        <div class="step active">
+            <div class="step-num">1</div>
+            <span>Profile Info</span>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <span>Preferences</span>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <span>Review & Consent</span>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <h2>Tell Us About Yourself</h2>
+
+        <div class="form-grid">
+            <div class="input-group">
+                <label>Height</label>
+                <input type="text" placeholder="5'10&quot;">
+            </div>
+            <div class="input-group">
+                <label>Blood Type</label>
+                <input type="text" placeholder="O+">
+            </div>
+            <div class="input-group">
+                <label>Weight</label>
+                <input type="text" placeholder="180 lbs">
+            </div>
+            <div class="input-group">
+                <label>Date of Birth</label>
+                <input type="text" placeholder="MM/DD/YYYY">
+            </div>
+
+            <div class="input-group full-width">
+                <label>Allergies</label>
+                <div class="allergy-input">
+                    <input type="text" placeholder="e.g. Peanuts, Penicillin">
+                    <button class="add-btn">Add</button>
+                </div>
+            </div>
+
+            <div class="input-group full-width">
+                <label>Medical Conditions</label>
+                <select>
+                    <option>Select your conditions</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="consent">
+                <input type="checkbox" checked>
+                <span>I agree to share my health data for personalized care and tracking.</span>
+            </div>
+            <div class="buttons">
+                <button onclick="location.href='{% url 'preferences_setup' %}'" class="btn-next">
+                    Next: Continue
+                </button>
+                <button class="btn-skip">Skip for Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
