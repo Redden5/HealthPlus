@@ -11,6 +11,8 @@
             --bg-color: #f9f9f9;
             --border-light: rgba(255, 255, 255, 0.4);
             --text-main: #333;
+            --text-secondary: #666;
+
         }
 
         body {
@@ -150,11 +152,15 @@
                     <label class="checkbox-item"><input type="checkbox"> SMS Text Alerts</label>
                     <label class="checkbox-item"><input type="checkbox"> Prescription Refill</label>
                 </div>
-                <select><option>Notification Frequency: Daily Summary</option></select>
+                <select><option>Notification Frequency: Daily Summary</option>
+                <option>Notification Frequency: New Alert</option>
+                <option>Notification Frequency: None</option></select>
+
+
             </div>
 
             <div class="section">
-                <h3>🔒 Data Visibility Settings</h3>
+                <h3> Data Visibility Settings</h3>
                 <div class="checkbox-group">
                     <label class="checkbox-item"><input type="checkbox"> Share with provider</label>
                     <label class="checkbox-item"><input type="checkbox"> Share with specialists</label>
@@ -183,8 +189,10 @@
 
         <div class="footer">
             <button onclick="location.href='{% url 'profile_setup' %}'" class="btn-back">Back</button>
-            <button class="btn-next">Next: Review & Consent ></button>
+            <button onclick="location.href='{% url 'consent_setup' %}'" class="btn-next">Next: Review & Consent ></button>
         </div>
+
+
     </div>
 </div>
 
