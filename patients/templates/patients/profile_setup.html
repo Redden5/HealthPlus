@@ -27,14 +27,21 @@
             background: white;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             max-width: 800px;
             width: 100%;
             text-align: center;
         }
 
-        h1 { color: var(--primary-green); font-size: 2.5rem; margin-bottom: 10px; }
-        p.subtitle { color: var(--text-secondary); margin-bottom: 30px; }
+        h1 {
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
 
         /* Stepper Navigation */
         .stepper {
@@ -44,8 +51,15 @@
             margin-bottom: 40px;
         }
 
-        .step { color: #ccc; font-weight: bold; }
-        .step.active { color: var(--primary-green); }
+        .step {
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        .step.active {
+            color: var(--primary-green);
+        }
+
         .step-num {
             width: 40px;
             height: 40px;
@@ -56,7 +70,12 @@
             justify-content: center;
             margin: 0 auto 5px;
         }
-        .active .step-num { background: var(--primary-green); color: white; border-color: var(--primary-green); }
+
+        .active .step-num {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
 
         /* Form Card */
         .form-card {
@@ -67,7 +86,10 @@
             text-align: left;
         }
 
-        .form-card h2 { margin-top: 0; font-weight: 500; }
+        .form-card h2 {
+            margin-top: 0;
+            font-weight: 500;
+        }
 
         .form-grid {
             display: grid;
@@ -76,8 +98,16 @@
             margin-bottom: 20px;
         }
 
-        .input-group { display: flex; flex-direction: column; }
-        label { font-size: 0.85rem; margin-bottom: 8px; opacity: 0.9; }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
 
         input, select {
             background: transparent;
@@ -88,15 +118,23 @@
             font-size: 1rem;
         }
 
-        input::placeholder { color: rgba(255, 255, 255, 0.7); }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
 
-        .full-width { grid-column: span 2; }
+        .full-width {
+            grid-column: span 2;
+        }
 
         .allergy-input {
             display: flex;
             gap: 10px;
         }
-        .allergy-input input { flex-grow: 1; }
+
+        .allergy-input input {
+            flex-grow: 1;
+        }
+
         .add-btn {
             background: white;
             color: var(--primary-green);
@@ -115,8 +153,18 @@
             align-items: center;
         }
 
-        .consent { display: flex; align-items: center; font-size: 0.8rem; gap: 8px; }
-        .buttons { display: flex; flex-direction: column; gap: 10px; }
+        .consent {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            gap: 8px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
         .btn-next {
             background: white;
@@ -135,6 +183,28 @@
             text-decoration: underline;
             cursor: pointer;
             font-size: 0.85rem;
+        }
+
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .error-box {
+            background: rgba(255, 0, 0, 0.15);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .error-box p {
+            margin: 4px 0;
+            font-size: 0.85rem;
+            color: #fff;
         }
     </style>
 </head>
@@ -158,58 +228,223 @@
             <span>Review & Consent</span>
         </div>
     </div>
-
+    <form method="POST" action="{% url 'profile_setup'%}">
+    {% csrf_token %}
     <div class="form-card">
         <h2>Tell Us About Yourself</h2>
-
+        {% if errors %}
+            <div class="error-box">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="form-grid">
             <div class="input-group">
-                <label>Height</label>
-                <input type="text" placeholder="5'10&quot;">
+                <label>First Name</label>
+                <input type="text" name="first_name" placeholder="Beth" required
+                       oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
+            </div>
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" name="last_name" placeholder="Ledford" required
+                       oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="john@example.com" required>
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" id="phoneInput" placeholder="(555) 000-0000"
+                       oninput="autoFormatPhone(this)">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" id="passwordInput" placeholder="" required
+                       oninput="validatePassword(this)">
+                <div id="passwordFeedback" style="margin-top: 6px; font-size: 0.75rem;"></div>
+            </div>
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirmPasswordInput" placeholder="" required
+                       oninput="checkPasswordMatch()">
+                <div id="confirmFeedback" style="margin-top: 6px; font-size: 0.75rem;"></div>
+            </div>
+
+
+            <div class="input-group">
+                <label>Height (ft'in)</label>
+                <input type="text" name="height" placeholder="5'10" maxlength="4" oninput="autoFormatHeight(this)">
+            </div>
+            <div class="input-group">
+                <label>Weight (lbs)</label>
+                <input type="number" name="weight" id="weightInput" placeholder="180" min="1" max="999"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 3) this.value = this.value.slice(0,3);"
+                       onkeydown="return event.key === 'Backspace' || event.key === 'Tab' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' || (event.key >= '0' && event.key <= '9')">
             </div>
             <div class="input-group">
                 <label>Blood Type</label>
-                <input type="text" placeholder="O+">
-            </div>
-            <div class="input-group">
-                <label>Weight</label>
-                <input type="text" placeholder="180 lbs">
+                <select name="blood_type" style="color: white; background: transparent;">
+                    <option value="" style="color: black;">Select Type</option>
+                    <option value="A+" style="color: black;">A+</option>
+                    <option value="A-" style="color: black;">A-</option>
+                    <option value="B+" style="color: black;">B+</option>
+                    <option value="B-" style="color: black;">B-</option>
+                    <option value="O+" style="color: black;">O+</option>
+                    <option value="O-" style="color: black;">O-</option>
+                    <option value="AB+" style="color: black;">AB+</option>
+                    <option value="AB-" style="color: black;">AB-</option>
+                </select>
             </div>
             <div class="input-group">
                 <label>Date of Birth</label>
-                <input type="text" placeholder="MM/DD/YYYY">
+                <input type="date" name="date_of_birth" id="dob" required>
             </div>
 
             <div class="input-group full-width">
                 <label>Allergies</label>
                 <div class="allergy-input">
-                    <input type="text" placeholder="e.g. Peanuts, Penicillin">
-                    <button class="add-btn">Add</button>
+                    <input type="text" id="allergySearch" list="allergyOptions" placeholder="e.g. Peanuts">
+                    <datalist id="allergyOptions">
+                        {% for allergy in allergies %}
+                            <option value="{{ allergy }}">
+                        {% endfor %}
+                    </datalist>
+                    <button type="button" class="add-btn" onclick="addAllergy()">Add</button>
                 </div>
+                <div id="selectedAllergies" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                <input type="hidden" name="allergies_hidden" id="allergiesHidden">
             </div>
 
             <div class="input-group full-width">
                 <label>Medical Conditions</label>
-                <select>
-                    <option>Select your conditions</option>
+                <select name="medical_conditions">
+                    <option value="" style="color: black;">Select your conditions</option>
+                    {% for condition in conditions %}
+                        <option value="{{ condition }}" style="color: black;">{{ condition }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
-
         <div class="footer">
             <div class="consent">
-                <input type="checkbox" checked>
-                <span>I agree to share my health data for personalized care and tracking.</span>
+                <input type="checkbox" name="terms_agreed" id="id_terms_agreed">
+
+                <label for="id_terms_agreed">
+                    I agree to share my health data for personalized care and tracking.
+                </label>
             </div>
+            {% if form.terms_agreed.errors %}
+                <div class="error" style="color: rgba(245,26,26,0.87); font-size: 0.85rem;">
+                    {{ form.terms_agreed.errors }}
+                </div>
+            {% endif %}
             <div class="buttons">
-                <button onclick="location.href='{% url 'preferences_setup' %}'" class="btn-next">
+                <button type="submit" class="btn-next">
                     Next: Continue
                 </button>
-                <button class="btn-skip">Skip for Now</button>
             </div>
         </div>
     </div>
+    </form>
 </div>
+<script>
+    // ===== PHONE NUMBER FORMATTING =====
+    function autoFormatPhone(input) {
+        let val = input.value.replace(/\D/g, '');
+        if (val.length > 10) val = val.slice(0, 10);
+        let formatted = '';
+        if (val.length > 0) formatted = '(' + val.substring(0, 3);
+        if (val.length >= 3) formatted += ') ' + val.substring(3, 6);
+        if (val.length >= 6) formatted += '-' + val.substring(6, 10);
+        input.value = formatted;
+    }
 
+    // ===== HEIGHT FORMATTING =====
+    function autoFormatHeight(input) {
+        let val = input.value.replace(/\D/g, '');
+        let formated = "";
+        if (val.length > 0) {
+            let feet = parseInt(val.substring(0, 1));
+            if (feet > 7) {
+                input.value = "";
+                return;
+            }
+            formated = feet;
+            if (val.length > 1) {
+                let inchesStr = val.substring(1, 3);
+                let inches = parseInt(inchesStr);
+                if (inches > 11) inches = 11;
+                formated += "'" + inches;
+            }
+        }
+        input.value = formated;
+    }
+
+    // ===== PASSWORD VALIDATION =====
+    function validatePassword(input) {
+        const val = input.value;
+        const feedback = document.getElementById('passwordFeedback');
+
+        const checks = [
+            { test: val.length >= 8, label: '8+ characters' },
+            { test: /[A-Z]/.test(val), label: 'Uppercase' },
+            { test: /[a-z]/.test(val), label: 'Lowercase' },
+            { test: /[0-9]/.test(val), label: 'Number' },
+            { test: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val), label: 'Special char' }
+        ];
+
+        feedback.innerHTML = checks.map(c =>
+            `<span style="color: ${c.test ? '#c8ffc8' : 'rgba(255,180,180,0.9)'};">
+                ${c.test ? '✓' : '✗'} ${c.label}
+            </span>`
+        ).join(' &nbsp; ');
+
+        checkPasswordMatch();
+    }
+
+    function checkPasswordMatch() {
+        const pass = document.getElementById('passwordInput').value;
+        const confirm = document.getElementById('confirmPasswordInput').value;
+        const feedback = document.getElementById('confirmFeedback');
+
+        if (confirm.length === 0) {
+            feedback.innerHTML = '';
+            return;
+        }
+        if (pass === confirm) {
+            feedback.innerHTML = '<span style="color: #c8ffc8;">✓ Passwords match</span>';
+        } else {
+            feedback.innerHTML = '<span style="color: rgba(255,180,180,0.9);">✗ Passwords do not match</span>';
+        }
+    }
+
+    // ===== ALLERGY TAGS =====
+    let allergyList = [];
+
+    function addAllergy() {
+        const input = document.getElementById('allergySearch');
+        const container = document.getElementById('selectedAllergies');
+        const hiddenInput = document.getElementById('allergiesHidden');
+        const val = input.value.trim();
+
+        if (val && !allergyList.includes(val)) {
+            allergyList.push(val);
+            const tag = document.createElement('span');
+            tag.className = "allergy-tag";
+            tag.innerHTML = `${val} <b onclick="removeAllergy(this, '${val}')" style="cursor:pointer; margin-left:5px;">&times;</b>`;
+            container.appendChild(tag);
+            hiddenInput.value = allergyList.join(', ');
+            input.value = "";
+        }
+    }
+
+    function removeAllergy(el, val) {
+        allergyList = allergyList.filter(a => a !== val);
+        document.getElementById('allergiesHidden').value = allergyList.join(', ');
+        el.parentElement.remove();
+    }
+</script>
 </body>
 </html>
