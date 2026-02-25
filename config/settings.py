@@ -91,6 +91,7 @@ DATABASES = {
     }
 }
 
+LOGIN_URL = '/accounts/login/'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -108,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {   'NAME': 'patients.validators.StrongPasswordValidator'},
 ]
 
 
