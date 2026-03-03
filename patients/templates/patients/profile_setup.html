@@ -242,17 +242,17 @@
         <div class="form-grid">
             <div class="input-group">
                 <label>First Name</label>
-                <input type="text" name="first_name" placeholder="Beth" required
+                <input type="text" name="first_name" placeholder="First name" required
                        oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
             </div>
             <div class="input-group">
                 <label>Last Name</label>
-                <input type="text" name="last_name" placeholder="Ledford" required
+                <input type="text" name="last_name" placeholder="Last name" required
                        oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
             </div>
             <div class="input-group">
                 <label>Email Address</label>
-                <input type="email" name="email" placeholder="john@example.com" required>
+                <input type="email" name="email" placeholder="Bethany@example.com" required>
             </div>
             <div class="input-group">
                 <label>Phone Number</label>
@@ -350,7 +350,7 @@
     </form>
 </div>
 <script>
-    // ===== PHONE NUMBER FORMATTING =====
+    // PHONE NUMBER FORMATTING
     function autoFormatPhone(input) {
         let val = input.value.replace(/\D/g, '');
         if (val.length > 10) val = val.slice(0, 10);
@@ -361,7 +361,7 @@
         input.value = formatted;
     }
 
-    // ===== HEIGHT FORMATTING =====
+    // HEIGHT FORMATTING
     function autoFormatHeight(input) {
         let val = input.value.replace(/\D/g, '');
         let formated = "";
@@ -382,7 +382,7 @@
         input.value = formated;
     }
 
-    // ===== PASSWORD VALIDATION =====
+    // PASSWORD VALIDATION
     function validatePassword(input) {
         const val = input.value;
         const feedback = document.getElementById('passwordFeedback');
@@ -420,7 +420,7 @@
         }
     }
 
-    // ===== ALLERGY TAGS =====
+    // ALLERGY TAGS
     let allergyList = [];
 
     function addAllergy() {

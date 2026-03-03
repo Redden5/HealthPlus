@@ -1,5 +1,4 @@
 # patients/constants.py
-from sqlparse.sql import If
 
 BLOOD_TYPE_CHOICES = [
     ('O+', 'O Positive'),
