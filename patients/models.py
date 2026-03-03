@@ -26,6 +26,7 @@ class PatientProfile(models.Model):
     email_notifications = models.BooleanField(default=False)
     sms_alerts = models.BooleanField(default=False)
     lab_result_alerts = models.BooleanField(default=False)
+    prescription_alerts = models.BooleanField(default=False)
     notification_frequency = models.CharField(max_length=50, default='Daily Summary')
 
     # Health Tracking

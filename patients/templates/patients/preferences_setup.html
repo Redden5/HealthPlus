@@ -133,8 +133,8 @@
 <body>
 
 <div class="container">
-    <h1>Welcome! Let's Get Started</h1>
-    <p style="color: #666; margin-bottom: 30px;">Set up your profile to personalize your experience.</p>
+    <h1>Select your experience</h1>
+        <p style="color: #666; margin-bottom: 30px;">You can always change these later, we recommend selecting all to use the features available.</p>
 
     <div class="stepper">
         <div class="step"><div class="step-num">1</div>Profile Info</div>
@@ -147,10 +147,10 @@
             <div class="section">
                 <h3>Communication Preferences</h3>
                 <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox"> Email Notifications</label>
-                    <label class="checkbox-item"><input type="checkbox"> Lab Result Alerts</label>
-                    <label class="checkbox-item"><input type="checkbox"> SMS Text Alerts</label>
-                    <label class="checkbox-item"><input type="checkbox"> Prescription Refill</label>
+                    <label class="checkbox-item"><input type="checkbox" name="email_notifications" id="id_email_notif"> Email Notifications</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lab_alerts" id="id_lab_alerts"> Lab Result Alerts</label>
+                    <label class="checkbox-item"><input type="checkbox" name="sms_alerts" id="id_sms_alerts"> SMS Text Alerts</label>
+                    <label class="checkbox-item"><input type="checkbox" name="prescription_alerts" id="id_refill_alerts"> Prescription Refill</label>
                 </div>
                 <select><option>Notification Frequency: Daily Summary</option>
                 <option>Notification Frequency: New Alert</option>

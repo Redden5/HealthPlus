@@ -63,7 +63,6 @@ def profile_setup(request):
 
     return render(request, 'patients/profile_setup.html', context)
 
-
 @login_required
 def edit_profile(request):
     profile = PatientProfile.objects.get(user=request.user)
@@ -81,6 +80,15 @@ def edit_profile(request):
 
 @login_required
 def preferences_setup(request):
+    if request.method == 'POST':
+        profile = PatientProfile.objects.get(user=request.user)
+        profile.email_notifications = bool(request.POST.get('email_notifications'))
+        profile.phone_notifications = bool(request.POST.get('phone_notifications'))
+        profile.sms_notifications = bool(request.POST.get('sms_alerts'))
+        profile.lab_alert_notifications = bool(request.POST.get('lab_alerts'))
+        profile.prescription_notifications = bool(request.POST.get('prescription_alerts'))
+
+
     return render(request, 'patients/preferences_setup.html')
 
 
