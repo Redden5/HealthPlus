@@ -38,6 +38,11 @@ def profile_setup(request):
             last_name=request.POST['last_name'],
         )
 
+        #Add the patient to the patients group
+        from django.contrib.auth.models import Group
+        patient_group, _ = Group.objects.get_or_create(name='Patient')
+        user.groups.add(patient_group)
+
         # Log the user in automatically
         login(request, user)
 
@@ -83,10 +88,10 @@ def preferences_setup(request):
     if request.method == 'POST':
         profile = PatientProfile.objects.get(user=request.user)
         profile.email_notifications = bool(request.POST.get('email_notifications'))
-        profile.phone_notifications = bool(request.POST.get('phone_notifications'))
         profile.sms_notifications = bool(request.POST.get('sms_alerts'))
         profile.lab_alert_notifications = bool(request.POST.get('lab_alerts'))
-        profile.prescription_notifications = bool(request.POST.get('prescription_alerts'))
+        profile.prescription_alerts = bool(request.POST.get('prescription_alerts'))
+        profile.save()
 
 
     return render(request, 'patients/preferences_setup.html')
@@ -104,3 +109,7 @@ def consent_setup(request):
 
     form = ConsentForm()
     return render(request, 'patients/review_consent.html', {'form': form})
+
+@login_required
+def dashboard_setup(request):
+        return render(request, 'patients/dashboard.html')
