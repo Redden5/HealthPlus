@@ -1,0 +1,474 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | HealthPlus</title>
+    <style>
+        :root {
+            --primary-green: #adbfa2;
+            --bg-color: #f4f7f0;
+            --text-main: #333;
+            --text-secondary: #666;
+            --border-light: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* ── Header row ── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            color: var(--text-main);
+            margin: 0;
+            font-size: 1.6rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border: 2px solid var(--primary-green);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Form Card ── */
+        .form-card {
+            background-color: var(--primary-green);
+            padding: 40px;
+            border-radius: 30px;
+            color: white;
+            text-align: left;
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-card .section-sub {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        input, select {
+            background: transparent;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        /* ── Section dividers ── */
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin: 28px 0 24px;
+        }
+
+        .section-label {
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .section-sub {
+            font-size: 0.82rem;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        /* ── Allergy tags ── */
+        .allergy-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .allergy-input input {
+            flex-grow: 1;
+        }
+
+        .add-btn {
+            background: white;
+            color: var(--primary-green);
+            border: none;
+            padding: 0 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .add-btn:hover { opacity: 0.85; }
+
+        .allergy-tag {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ── Footer buttons ── */
+        .footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-save {
+            background: white;
+            color: var(--primary-green);
+            border: none;
+            padding: 14px 36px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn-save:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            padding: 14px 30px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ── Error box ── */
+        .error-box {
+            background: rgba(255, 0, 0, 0.15);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .error-box p {
+            margin: 4px 0;
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        /* ── Success message ── */
+        .success-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Hide number spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] { -moz-appearance: textfield; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Edit Profile</h1>
+        <form method="POST" style="margin:0;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="cancel">
+            <button type="submit" class="back-link">
+                <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Back to Account
+            </button>
+        </form>
+    </div>
+
+    <form method="POST" id="save-form">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="save">
+    <div class="form-card">
+
+        {# ── Personal Info ── #}
+        <h2>Personal Information</h2>
+        <p class="section-sub">Update your basic details below.</p>
+
+        {% if errors %}
+            <div class="error-box">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="success-box">✓ {{ success }}</div>
+        {% endif %}
+
+        <div class="form-grid">
+            <div class="input-group">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ profile.first_name }}" placeholder="First name" required
+                       oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
+            </div>
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ profile.last_name }}" placeholder="Last name" required
+                       oninput="this.value = this.value.replace(/[^a-zA-Z\s\-']/g, '')">
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" value="{{ profile.email }}" placeholder="you@example.com" required>
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" id="phoneInput" value="{{ profile.phone_number }}" placeholder="(555) 000-0000"
+                       oninput="autoFormatPhone(this)">
+            </div>
+            <div class="input-group">
+                <label>Date of Birth</label>
+                <input type="date" name="date_of_birth" value="{{ profile.date_of_birth|date:'Y-m-d' }}">
+            </div>
+        </div>
+
+        {# ── Health Info ── #}
+        <hr class="section-divider">
+        <div class="section-label">Health Information</div>
+        <p class="section-sub">Keep your medical details up to date for better care.</p>
+
+        <div class="form-grid">
+            <div class="input-group">
+                <label>Height (ft'in)</label>
+                <input type="text" name="height" value="{{ profile.height }}" placeholder="5'10" maxlength="4"
+                       oninput="autoFormatHeight(this)">
+            </div>
+            <div class="input-group">
+                <label>Weight (lbs)</label>
+                <input type="number" name="weight" id="weightInput" value="{{ profile.weight }}" placeholder="180"
+                       min="1" max="999"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 3) this.value = this.value.slice(0,3);"
+                       onkeydown="return event.key === 'Backspace' || event.key === 'Tab' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' || (event.key >= '0' && event.key <= '9')">
+            </div>
+            <div class="input-group">
+                <label>Blood Type</label>
+                <select name="blood_type" style="color: white; background: transparent;">
+                    <option value="" style="color: black;">Select Type</option>
+                    {% for bt in blood_types %}
+                        <option value="{{ bt }}" style="color: black;" {% if profile.blood_type == bt %}selected{% endif %}>{{ bt }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group full-width">
+                <label>Allergies</label>
+                <div class="allergy-input">
+                    <input type="text" id="allergySearch" list="allergyOptions" placeholder="e.g. Peanuts">
+                    <datalist id="allergyOptions">
+                        {% for allergy in all_allergies %}
+                            <option value="{{ allergy }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    <button type="button" class="add-btn" onclick="addAllergy()">Add</button>
+                </div>
+                <div id="selectedAllergies" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                <input type="hidden" name="allergies_hidden" id="allergiesHidden" value="{{ profile.allergies }}">
+            </div>
+
+            <div class="input-group full-width">
+                <label>Medical Conditions</label>
+                <select name="medical_conditions" style="color: white; background: transparent;">
+                    <option value="" style="color: black;">Select your conditions</option>
+                    {% for condition in conditions %}
+                        <option value="{{ condition }}" style="color: black;" {% if profile.medical_conditions == condition %}selected{% endif %}>{{ condition }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        {# ── Footer ── #}
+        <div class="footer">
+            <button type="submit" form="cancel-form" class="btn-cancel">Cancel</button>
+            <button type="submit" class="btn-save">Save Changes</button>
+        </div>
+    </div>
+    </form>
+
+    {# Separate cancel form — hidden, triggered by the button above via form="cancel-form" #}
+    <form method="POST" id="cancel-form" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="cancel">
+    </form>
+</div>
+
+<script>
+    // ── Phone formatting ──
+    function autoFormatPhone(input) {
+        let val = input.value.replace(/\D/g, '');
+        if (val.length > 10) val = val.slice(0, 10);
+        let formatted = '';
+        if (val.length > 0) formatted = '(' + val.substring(0, 3);
+        if (val.length >= 3) formatted += ') ' + val.substring(3, 6);
+        if (val.length >= 6) formatted += '-' + val.substring(6, 10);
+        input.value = formatted;
+    }
+
+    // ── Height formatting ──
+    function autoFormatHeight(input) {
+        let val = input.value.replace(/\D/g, '');
+        let formatted = "";
+        if (val.length > 0) {
+            let feet = parseInt(val.substring(0, 1));
+            if (feet > 7) { input.value = ""; return; }
+            formatted = feet;
+            if (val.length > 1) {
+                let inches = parseInt(val.substring(1, 3));
+                if (inches > 11) inches = 11;
+                formatted += "'" + inches;
+            }
+        }
+        input.value = formatted;
+    }
+
+    // ── Allergy tags ──
+    let allergyList = [];
+
+    // Load existing allergies on page load
+    (function initAllergies() {
+        const hidden = document.getElementById('allergiesHidden');
+        if (hidden.value && hidden.value.trim()) {
+            const existing = hidden.value.split(',').map(a => a.trim()).filter(a => a);
+            existing.forEach(val => {
+                allergyList.push(val);
+                appendAllergyTag(val);
+            });
+        }
+    })();
+
+    function addAllergy() {
+        const input = document.getElementById('allergySearch');
+        const val = input.value.trim();
+        if (val && !allergyList.includes(val)) {
+            allergyList.push(val);
+            appendAllergyTag(val);
+            updateAllergyHidden();
+            input.value = "";
+        }
+    }
+
+    function appendAllergyTag(val) {
+        const container = document.getElementById('selectedAllergies');
+        const tag = document.createElement('span');
+        tag.className = "allergy-tag";
+        tag.innerHTML = `${val} <b onclick="removeAllergy(this, '${val}')" style="cursor:pointer; margin-left:5px;">&times;</b>`;
+        container.appendChild(tag);
+    }
+
+    function removeAllergy(el, val) {
+        allergyList = allergyList.filter(a => a !== val);
+        updateAllergyHidden();
+        el.parentElement.remove();
+    }
+
+    function updateAllergyHidden() {
+        document.getElementById('allergiesHidden').value = allergyList.join(', ');
+    }
+</script>
+
+</body>
+</html>

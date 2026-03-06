@@ -42,6 +42,10 @@ class PatientProfile(models.Model):
     private_policy = models.BooleanField(default=False)
     electronic_policy = models.BooleanField(default=False)
 
+    #Mood Tracking
+    #mood_data = models.TextField(blank=True)
+
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
