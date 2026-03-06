@@ -20,4 +20,4 @@ def doctor_dashboard(request):
         'profile': profile,
     }
 
-    return render(request, 'doctors/dashboard.html', context) #
+    return render(request, 'doctors/dDashboard.html', context) #

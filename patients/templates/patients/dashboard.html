@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard | HealthPlus</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg: #a8c6b8;
+            --sidebar-active-bg: rgba(143,170,145,0.55);
+            --main-bg: #e4e9ef;
+            --card-bg: #ffffff;
+            --text-main: #2d3239;
+            --text-muted: #7a8290;
+            --accent-teal: #6d9ba0;
+            --accent-green: #5a8f6e;
+            --accent-warm: #c4956a;
+            --accent-red: #d46b6b;
+            --accent-blue: #5b8ec4;
+            --border-light: #e8ecf0;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--main-bg);
+            color: var(--text-main);
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ═══════ SIDEBAR ═══════ */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+            padding: 28px 0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            margin-bottom: 44px;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 46px; height: 46px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo-icon svg { width: 28px; height: 28px; }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 1.15rem;
+            line-height: 1.15;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        }
+
+        .logo-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .nav-menu { list-style: none; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 24px;
+            margin: 2px 14px;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 11px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover { background: rgba(255,255,255,0.12); }
+
+        .nav-item.active {
+            background: var(--sidebar-active-bg);
+            color: #1a2e1f;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .nav-icon {
+            width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .nav-icon svg {
+            width: 20px; height: 20px;
+            stroke: currentColor; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        /* ═══════ MAIN ═══════ */
+        .main-wrapper {
+            flex-grow: 1;
+            padding: 28px 40px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .main-wrapper::-webkit-scrollbar { width: 6px; }
+        .main-wrapper::-webkit-scrollbar-track { background: transparent; }
+        .main-wrapper::-webkit-scrollbar-thumb { background: #c5cad1; border-radius: 3px; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-teal);
+            font-size: 1.9rem;
+            font-weight: 500;
+        }
+
+        .user-controls { display: flex; align-items: center; gap: 22px; }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .notification-bell:hover { background: rgba(0,0,0,0.04); }
+
+        .notification-bell svg {
+            width: 22px; height: 22px;
+            stroke: var(--text-muted); fill: none; stroke-width: 1.8;
+        }
+
+        .notif-dot {
+            position: absolute; top: 8px; right: 8px;
+            width: 9px; height: 9px;
+            background: #e05555;
+            border: 2px solid var(--main-bg);
+            border-radius: 50%;
+        }
+
+        .profile-chip {
+            display: flex; align-items: center; gap: 10px;
+            cursor: pointer;
+            padding: 4px 8px 4px 4px;
+            border-radius: 28px;
+            transition: background 0.2s;
+        }
+
+        .profile-chip:hover { background: rgba(0,0,0,0.03); }
+
+        .initial-avatar {
+            width: 42px; height: 42px;
+            background: var(--white);
+            border: 2px solid var(--text-main);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.1rem;
+        }
+
+        .greeting-date {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 22px;
+        }
+
+        .greeting-date span { color: var(--text-muted); font-weight: 400; font-size: 0.95rem; margin-left: 6px; }
+
+        /* ═══════ STAT CARDS ═══════ */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 18px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .stat-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .stat-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .stat-card:nth-child(1)::before { background: var(--accent-teal); }
+        .stat-card:nth-child(2)::before { background: var(--accent-green); }
+        .stat-card:nth-child(3)::before { background: var(--accent-warm); }
+        .stat-card:nth-child(4)::before { background: var(--accent-blue); }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .stat-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ═══════ CARD GRID ═══════ */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .full-width { grid-column: span 2; }
+
+        .pill {
+            background: #eef1f4;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .pill:hover { background: #e2e6eb; }
+
+        .dots-menu {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* ═══════ MOOD ENTRY ═══════ */
+        .mood-entry-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .mood-prompt {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .mood-scale {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+        }
+
+        .mood-btn {
+            width: 38px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'DM Sans', sans-serif;
+            color: white;
+            position: relative;
+        }
+
+        .mood-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        .mood-btn.selected {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            outline: 3px solid var(--text-main);
+            outline-offset: 2px;
+        }
+
+        .mood-selected-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 36px;
+        }
+
+        .mood-selected-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .mood-selected-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .mood-submit-btn {
+            background: var(--accent-teal);
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        .mood-submit-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mood-submit-btn:hover { background: #5b878c; }
+
+        .mood-logged-msg {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .mood-logged-msg .check-circle {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: #e8f4ec;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .mood-logged-msg .check-circle svg {
+            width: 24px; height: 24px;
+            stroke: var(--accent-green);
+            fill: none; stroke-width: 2.5;
+        }
+
+        .mood-logged-msg p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .mood-logged-msg strong {
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        /* ═══════ MOOD CHART ═══════ */
+        .chart-container {
+            flex: 1;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .chart-area {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 180px;
+        }
+
+        .chart-grid-line {
+            stroke: #f0f2f5;
+            stroke-width: 1;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--accent-teal);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart-area-fill {
+            fill: url(#moodGradient);
+            opacity: 0.3;
+        }
+
+        .chart-dot {
+            fill: var(--accent-teal);
+            stroke: white;
+            stroke-width: 2.5;
+            cursor: pointer;
+            transition: r 0.15s;
+        }
+
+        .chart-dot:hover { r: 6; }
+
+        .chart-label {
+            fill: var(--text-muted);
+            font-size: 11px;
+            font-family: 'DM Sans', sans-serif;
+            text-anchor: middle;
+        }
+
+        .chart-y-label {
+            fill: var(--text-muted);
+            font-size: 10px;
+            font-family: 'DM Sans', sans-serif;
+            text-anchor: end;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .legend-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.72rem; color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            background: var(--text-main);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .chart-tooltip.visible { opacity: 1; }
+
+        .period-tabs {
+            display: flex;
+            gap: 4px;
+            background: #f0f2f5;
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .period-tab {
+            padding: 4px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-muted);
+            transition: all 0.15s;
+        }
+
+        .period-tab.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* ═══════ JOURNAL ═══════ */
+        .journal-content { flex: 1; display: flex; flex-direction: column; }
+
+        .journal-tabs {
+            display: flex; gap: 4px;
+            margin-bottom: 14px;
+        }
+
+        .journal-tab {
+            padding: 6px 16px;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-muted);
+            transition: all 0.15s;
+        }
+
+        .journal-tab.active {
+            background: var(--accent-teal);
+            color: white;
+        }
+
+        .journal-tab:hover:not(.active) { background: #e2e6eb; }
+
+        /* Write view */
+        .journal-write { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+        .journal-write.hidden { display: none; }
+
+        .journal-textarea {
+            flex: 1;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            resize: none;
+            outline: none;
+            min-height: 180px;
+            line-height: 1.6;
+            transition: border-color 0.2s;
+        }
+
+        .journal-textarea::placeholder { color: #b8bfc8; }
+        .journal-textarea:focus { border-color: var(--accent-teal); }
+
+        .journal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .journal-char-count {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .journal-prompts {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .journal-prompt-chip {
+            background: #f0f2f5;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.15s;
+        }
+
+        .journal-prompt-chip:hover { background: #e2e6eb; color: var(--text-main); }
+
+        .journal-save-btn {
+            background: var(--accent-teal);
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .journal-save-btn:hover { background: #5b878c; }
+        .journal-save-btn:disabled { opacity: 0.4; cursor: default; }
+
+        /* Past entries view */
+        .journal-entries { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+        .journal-entries.hidden { display: none; }
+
+        .journal-entry-card {
+            padding: 14px 16px;
+            background: #f7f9fb;
+            border-radius: 10px;
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+
+        .journal-entry-card:hover { background: #eff2f6; }
+
+        .entry-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .entry-date {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-teal);
+        }
+
+        .entry-mood-badge {
+            font-size: 0.68rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .entry-text {
+            font-size: 0.82rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ═══════ APPOINTMENTS MINI ═══════ */
+        .appt-list { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+        .appt-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #f7f9fb;
+            transition: background 0.15s;
+        }
+
+        .appt-item:hover { background: #eff2f6; }
+
+        .appt-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.75rem;
+            color: white; flex-shrink: 0;
+        }
+
+        .appt-details { flex: 1; }
+        .appt-name { font-size: 0.85rem; font-weight: 600; }
+        .appt-type { font-size: 0.72rem; color: var(--text-muted); }
+
+        .appt-time {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* ═══════ MESSAGES ═══════ */
+        .msg-list { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+        .msg-item {
+            display: flex; gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #f7f9fb;
+            transition: background 0.15s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .msg-item:hover { background: #eff2f6; }
+
+        .msg-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.7rem;
+            color: white; flex-shrink: 0;
+        }
+
+        .msg-content { flex: 1; min-width: 0; }
+        .msg-sender { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+
+        .msg-preview {
+            font-size: 0.75rem; color: var(--text-muted);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .msg-time {
+            font-size: 0.68rem; color: var(--text-muted);
+            white-space: nowrap; flex-shrink: 0;
+        }
+
+        .msg-unread::after {
+            content: '';
+            position: absolute; top: 50%; right: 8px;
+            transform: translateY(-50%);
+            width: 7px; height: 7px;
+            background: var(--accent-teal);
+            border-radius: 50%;
+        }
+
+        /* ═══════ ANIMATIONS ═══════ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card, .card {
+            animation: fadeUp 0.45s ease both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.04s; }
+        .stat-card:nth-child(2) { animation-delay: 0.08s; }
+        .stat-card:nth-child(3) { animation-delay: 0.12s; }
+        .stat-card:nth-child(4) { animation-delay: 0.16s; }
+
+        .layout-grid .card:nth-child(1) { animation-delay: 0.20s; }
+        .layout-grid .card:nth-child(2) { animation-delay: 0.24s; }
+        .layout-grid .card:nth-child(3) { animation-delay: 0.28s; }
+        .layout-grid .card:nth-child(4) { animation-delay: 0.32s; }
+        .layout-grid .card:nth-child(5) { animation-delay: 0.36s; }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════ SIDEBAR ═══════ -->
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo-icon">
+                <svg viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="10" r="6" stroke="#6d9ba0" stroke-width="1.5"/>
+                    <path d="M10 22c0-4 2-6 4-6s4 2 4 6" stroke="#5a8f6e" stroke-width="1.5" fill="none"/>
+                    <path d="M11 8c1-2 3-2 4 0" stroke="#6d9ba0" stroke-width="1"/>
+                    <circle cx="14" cy="9" r="1" fill="#6d9ba0"/>
+                    <path d="M8 14c-2 1-3 4-2 7M20 14c2 1 3 4 2 7" stroke="#a8c6b8" stroke-width="1" opacity="0.6"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                HealthPlus
+                <div class="logo-sub">Mental Health</div>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+                Mood Tracker
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                Journal
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                Messages
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                Appointments
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+                Health Records
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ═══════ MAIN CONTENT ═══════ -->
+    <main class="main-wrapper">
+        <header>
+            <h1 class="header-title">Patient Dashboard</h1>
+            <div class="user-controls">
+                <div class="notification-bell">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="notif-dot"></span>
+                </div>
+                 <form method="POST" style="margin: 0;" >
+                      {% csrf_token %}
+                    <input type="hidden" name="action" value="account">
+                    <button type="submit" class="profile-chip">
+                        <div class="initial-avatar">{{ profile.first_name|make_list|first }}</div>
+                        <span class="user-name"><strong>{{ profile.first_name }} {{ profile.last_name }}</strong> ∨</span>
+                    </button>
+                </form>
+
+            </div>
+        </header>
+
+        <section class="dashboard-content">
+            <div class="greeting-date">
+                Good morning, {{ profile.first_name }} {{} <span>— Tuesday, March 3, 2026</span>
+            </div>
+
+            <!-- STAT CARDS -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-label">Today's Mood</div>
+                    <div class="stat-value" id="todayMoodStat">—</div>
+                    <div class="stat-sub">out of 10</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">7-Day Average</div>
+                    <div class="stat-value" id="avgMoodStat">7.2</div>
+                    <div class="stat-sub">↑ 0.5 from last week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Journal Streak</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-sub">days in a row</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Next Appointment</div>
+                    <div class="stat-value" style="font-size:1.1rem; margin-top:4px;">Mar 5</div>
+                    <div class="stat-sub">Dr. Thorne — 2:00 PM</div>
+                </div>
+            </div>
+
+            <!-- GRID -->
+            <div class="layout-grid">
+
+                <!-- MOOD ENTRY -->
+                <div class="card">
+                    <div class="card-header">
+                        How are you feeling today?
+                    </div>
+                    <div class="mood-entry-area" id="moodEntryArea">
+                        <div class="mood-prompt">Rate your mood from 1 to 10</div>
+                        <div class="mood-scale" id="moodScale"></div>
+                        <div class="mood-selected-display" id="moodDisplay">
+                            <div class="mood-selected-num" id="moodNum"></div>
+                            <div class="mood-selected-label" id="moodLabel"></div>
+                        </div>
+                        <button class="mood-submit-btn" id="moodSubmitBtn" onclick="submitMood()">Log Mood</button>
+                    </div>
+                </div>
+
+                <!-- MOOD GRAPH -->
+                <div class="card">
+                    <div class="card-header">
+                        Mood History
+                        <div class="period-tabs">
+                            <button class="period-tab active" onclick="setPeriod('7d', this)">7D</button>
+                            <button class="period-tab" onclick="setPeriod('14d', this)">14D</button>
+                            <button class="period-tab" onclick="setPeriod('30d', this)">30D</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-area" id="chartArea">
+                            <svg class="chart-svg" id="moodChart"></svg>
+                            <div class="chart-tooltip" id="chartTooltip"></div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background:var(--accent-teal);"></div>
+                                Daily mood
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background:var(--accent-warm);"></div>
+                                Average
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JOURNAL (FULL WIDTH) -->
+                <div class="card full-width" style="min-height: 320px;">
+                    <div class="card-header">
+                        Journal
+                        <span class="dots-menu">•••</span>
+                    </div>
+                    <div class="journal-content">
+                        <div class="journal-tabs">
+                            <button class="journal-tab active" id="tabWrite" onclick="switchJournalTab('write')">Write</button>
+                            <button class="journal-tab" id="tabEntries" onclick="switchJournalTab('entries')">Past Entries</button>
+                        </div>
+
+                        <div class="journal-write" id="journalWrite">
+                            <textarea class="journal-textarea" id="journalText" placeholder="Write about your day, thoughts, feelings, or anything on your mind..." oninput="updateCharCount()"></textarea>
+                            <div class="journal-prompts">
+                                <button class="journal-prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Gratitude</button>
+                                <button class="journal-prompt-chip" onclick="insertPrompt('What challenged me today and how did I handle it?')">Challenges</button>
+                                <button class="journal-prompt-chip" onclick="insertPrompt('What is one thing I want to improve tomorrow?')">Goals</button>
+                                <button class="journal-prompt-chip" onclick="insertPrompt('How is my body feeling right now?')">Body Check</button>
+                            </div>
+                            <div class="journal-footer">
+                                <span class="journal-char-count" id="charCount">0 characters</span>
+                                <button class="journal-save-btn" id="journalSaveBtn" onclick="saveJournal()" disabled>Save Entry</button>
+                            </div>
+                        </div>
+
+                        <div class="journal-entries hidden" id="journalEntries"></div>
+                    </div>
+                </div>
+
+                <!-- UPCOMING APPOINTMENTS -->
+                <div class="card">
+                    <div class="card-header">
+                        Upcoming Appointments
+                        <span class="pill">This Week</span>
+                    </div>
+                    <div class="appt-list">
+                        <div class="appt-item">
+                            <div class="appt-avatar" style="background:#6d9ba0;">AT</div>
+                            <div class="appt-details">
+                                <div class="appt-name">Dr. Aris Thorne</div>
+                                <div class="appt-type">Therapy Session</div>
+                            </div>
+                            <div class="appt-time">Mar 5, 2:00 PM</div>
+                        </div>
+                        <div class="appt-item">
+                            <div class="appt-avatar" style="background:#5a8f6e;">RP</div>
+                            <div class="appt-details">
+                                <div class="appt-name">Dr. Riya Patel</div>
+                                <div class="appt-type">Medication Check-in</div>
+                            </div>
+                            <div class="appt-time">Mar 7, 10:00 AM</div>
+                        </div>
+                        <div class="appt-item">
+                            <div class="appt-avatar" style="background:#c4956a;">GR</div>
+                            <div class="appt-details">
+                                <div class="appt-name">Group Recovery</div>
+                                <div class="appt-type">Peer Support Circle</div>
+                            </div>
+                            <div class="appt-time">Mar 8, 4:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MESSAGES -->
+                <div class="card">
+                    <div class="card-header">
+                        Messages
+                        <span class="pill">2 new</span>
+                    </div>
+                    <div class="msg-list">
+                        <div class="msg-item msg-unread">
+                            <div class="msg-avatar" style="background:#6d9ba0;">AT</div>
+                            <div class="msg-content">
+                                <div class="msg-sender">Dr. Thorne</div>
+                                <div class="msg-preview">Great progress this week, Sarah. Keep up the breathing exercises before bed.</div>
+                            </div>
+                            <div class="msg-time">1 hr</div>
+                        </div>
+                        <div class="msg-item msg-unread">
+                            <div class="msg-avatar" style="background:#5a8f6e;">HP</div>
+                            <div class="msg-content">
+                                <div class="msg-sender">HealthPlus Care Team</div>
+                                <div class="msg-preview">Your lab results from Feb 28 are ready to view in Health Records.</div>
+                            </div>
+                            <div class="msg-time">3 hr</div>
+                        </div>
+                        <div class="msg-item">
+                            <div class="msg-avatar" style="background:#c4956a;">RP</div>
+                            <div class="msg-content">
+                                <div class="msg-sender">Dr. Patel</div>
+                                <div class="msg-preview">Adjusted dosage notes attached. Let me know how you feel after 3 days.</div>
+                            </div>
+                            <div class="msg-time">Yesterday</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ═══════ MOOD DATA ═══════
+        const moodLabels = [
+            '', 'Very Low', 'Low', 'Struggling', 'Difficult',
+            'Neutral', 'Okay', 'Good', 'Great', 'Wonderful', 'Excellent'
+        ];
+
+        const moodColors = [
+            '', '#c0392b', '#d35400', '#e67e22', '#f39c12',
+            '#b8b8b8', '#7dcea0', '#52be80', '#27ae60', '#1e8449', '#0e6631'
+        ];
+
+        // Sample historical mood data (last 30 days)
+        const baseMoodData = [];
+        const today = new Date(2026, 2, 3);
+        const moods30d = [6,5,7,8,7,6,7,8,7,6,5,6,7,8,9,8,7,6,7,8,7,8,9,8,7,8,7,8,7,null];
+
+        for (let i = 29; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            baseMoodData.push({
+                date: d,
+                mood: moods30d[29 - i],
+                label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+            });
+        }
+
+        let selectedMood = null;
+        let moodLogged = false;
+        let currentPeriod = '7d';
+
+        // ═══════ BUILD MOOD SCALE ═══════
+        function buildMoodScale() {
+            const container = document.getElementById('moodScale');
+            for (let i = 1; i <= 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'mood-btn';
+                btn.textContent = i;
+                btn.style.background = moodColors[i];
+                btn.style.height = (24 + i * 3.5) + 'px';
+                btn.onclick = () => selectMood(i);
+                container.appendChild(btn);
+            }
+        }
+
+        function selectMood(val) {
+            if (moodLogged) return;
+            selectedMood = val;
+            document.querySelectorAll('.mood-btn').forEach((b, idx) => {
+                b.classList.toggle('selected', idx + 1 === val);
+            });
+            document.getElementById('moodNum').textContent = val;
+            document.getElementById('moodNum').style.color = moodColors[val];
+            document.getElementById('moodLabel').textContent = moodLabels[val];
+            const btn = document.getElementById('moodSubmitBtn');
+            btn.classList.add('visible');
+        }
+
+        function submitMood() {
+            if (!selectedMood) return;
+            moodLogged = true;
+
+            // Update data
+            baseMoodData[baseMoodData.length - 1].mood = selectedMood;
+
+            // Update stat card
+            document.getElementById('todayMoodStat').textContent = selectedMood;
+            document.getElementById('todayMoodStat').style.color = moodColors[selectedMood];
+
+            // Recalculate average
+            const last7 = baseMoodData.slice(-7).filter(d => d.mood !== null);
+            const avg = (last7.reduce((s, d) => s + d.mood, 0) / last7.length).toFixed(1);
+            document.getElementById('avgMoodStat').textContent = avg;
+
+            // Show confirmation
+            const area = document.getElementById('moodEntryArea');
+            area.innerHTML = `
+                <div class="mood-logged-msg">
+                    <div class="check-circle">
+                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <strong style="color:${moodColors[selectedMood]}">Mood: ${selectedMood}/10 — ${moodLabels[selectedMood]}</strong>
+                    <p>Logged for today. Keep it up!</p>
+                </div>
+            `;
+
+            // Re-render chart
+            renderChart();
+        }
+
+        // ═══════ CHART ═══════
+        function setPeriod(period, el) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            renderChart();
+        }
+
+        function renderChart() {
+            const svg = document.getElementById('moodChart');
+            const tooltip = document.getElementById('chartTooltip');
+            const days = currentPeriod === '7d' ? 7 : currentPeriod === '14d' ? 14 : 30;
+            const data = baseMoodData.slice(-days).filter(d => d.mood !== null);
+
+            if (data.length === 0) { svg.innerHTML = ''; return; }
+
+            const W = svg.clientWidth || 500;
+            const H = 180;
+            const padL = 32, padR = 16, padT = 12, padB = 28;
+            const chartW = W - padL - padR;
+            const chartH = H - padT - padB;
+
+            const avg = data.reduce((s, d) => s + d.mood, 0) / data.length;
+
+            let svgContent = `<defs>
+                <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6d9ba0" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#6d9ba0" stop-opacity="0.02"/>
+                </linearGradient>
+            </defs>`;
+
+            // Y labels + grid
+            for (let y = 0; y <= 10; y += 2) {
+                const py = padT + chartH - (y / 10) * chartH;
+                svgContent += `<line x1="${padL}" y1="${py}" x2="${W - padR}" y2="${py}" class="chart-grid-line"/>`;
+                svgContent += `<text x="${padL - 6}" y="${py + 3.5}" class="chart-y-label">${y}</text>`;
+            }
+
+            // Average line
+            const avgY = padT + chartH - (avg / 10) * chartH;
+            svgContent += `<line x1="${padL}" y1="${avgY}" x2="${W - padR}" y2="${avgY}" stroke="${moodColors[Math.round(avg)]}" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>`;
+
+            // Build points
+            const points = data.map((d, i) => {
+                const x = padL + (i / (data.length - 1 || 1)) * chartW;
+                const y = padT + chartH - (d.mood / 10) * chartH;
+                return { x, y, ...d };
+            });
+
+            // Area fill
+            if (points.length > 1) {
+                let areaPath = `M${points[0].x},${points[0].y}`;
+                points.slice(1).forEach(p => areaPath += ` L${p.x},${p.y}`);
+                areaPath += ` L${points[points.length - 1].x},${padT + chartH} L${points[0].x},${padT + chartH} Z`;
+                svgContent += `<path d="${areaPath}" class="chart-area-fill"/>`;
+            }
+
+            // Line
+            if (points.length > 1) {
+                let linePath = `M${points[0].x},${points[0].y}`;
+                points.slice(1).forEach(p => linePath += ` L${p.x},${p.y}`);
+                svgContent += `<path d="${linePath}" class="chart-line"/>`;
+            }
+
+            // Dots + labels
+            points.forEach((p, i) => {
+                svgContent += `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart-dot" data-idx="${i}"
+                    onmouseenter="showTooltip(event, '${p.label}', ${p.mood})"
+                    onmouseleave="hideTooltip()"/>`;
+                // X labels (show subset)
+                const showLabel = data.length <= 14 || i % Math.ceil(data.length / 10) === 0 || i === data.length - 1;
+                if (showLabel) {
+                    svgContent += `<text x="${p.x}" y="${H - 4}" class="chart-label">${p.label.split(' ')[1]}</text>`;
+                }
+            });
+
+            svg.innerHTML = svgContent;
+        }
+
+        function showTooltip(e, label, mood) {
+            const tt = document.getElementById('chartTooltip');
+            const rect = document.getElementById('chartArea').getBoundingClientRect();
+            tt.innerHTML = `<strong>${label}</strong> — Mood: ${mood}/10 (${moodLabels[mood]})`;
+            tt.style.left = (e.clientX - rect.left + 12) + 'px';
+            tt.style.top = (e.clientY - rect.top - 36) + 'px';
+            tt.classList.add('visible');
+        }
+
+        function hideTooltip() {
+            document.getElementById('chartTooltip').classList.remove('visible');
+        }
+
+        // ═══════ JOURNAL ═══════
+        const journalEntries = [
+            {
+                date: 'March 2, 2026',
+                mood: 7,
+                text: 'Had a productive therapy session today. Dr. Thorne helped me work through some of the anxiety around my upcoming presentation at work. We practiced the breathing technique — 4-7-8 — and I actually felt calmer afterward. Going to try it before bed tonight.'
+            },
+            {
+                date: 'March 1, 2026',
+                mood: 8,
+                text: 'Woke up feeling lighter than usual. Went for a walk in the morning and noticed the trees starting to bud. Small things like that make such a difference. I\'m grateful for the medication adjustment — the side effects from last week seem to have settled.'
+            },
+            {
+                date: 'February 28, 2026',
+                mood: 7,
+                text: 'Challenging day at work but I managed to use the grounding technique when I felt overwhelmed. Five things I can see, four I can touch... it really does help break the spiral. Journaling before bed is becoming a habit I actually look forward to.'
+            },
+            {
+                date: 'February 27, 2026',
+                mood: 8,
+                text: 'Group session was really meaningful today. Hearing other people share similar experiences reminds me I\'m not alone in this. One person talked about their journey with panic attacks and it resonated deeply. Made plans to try the art therapy workshop next week.'
+            },
+            {
+                date: 'February 26, 2026',
+                mood: 7,
+                text: 'Tried cooking a new recipe tonight — something simple but it felt like an accomplishment. My energy levels have been more consistent this week. Going to mention that to Dr. Patel at the next check-in.'
+            }
+        ];
+
+        function switchJournalTab(tab) {
+            document.getElementById('tabWrite').classList.toggle('active', tab === 'write');
+            document.getElementById('tabEntries').classList.toggle('active', tab === 'entries');
+            document.getElementById('journalWrite').classList.toggle('hidden', tab !== 'write');
+            document.getElementById('journalEntries').classList.toggle('hidden', tab !== 'entries');
+
+            if (tab === 'entries') renderEntries();
+        }
+
+        function renderEntries() {
+            const container = document.getElementById('journalEntries');
+            container.innerHTML = journalEntries.map(e => `
+                <div class="journal-entry-card">
+                    <div class="entry-top">
+                        <span class="entry-date">${e.date}</span>
+                        <span class="entry-mood-badge" style="background:${moodColors[e.mood]}20; color:${moodColors[e.mood]};">
+                            Mood: ${e.mood}/10
+                        </span>
+                    </div>
+                    <div class="entry-text">${e.text}</div>
+                </div>
+            `).join('');
+        }
+
+        function insertPrompt(prompt) {
+            const ta = document.getElementById('journalText');
+            ta.value = ta.value ? ta.value + '\n\n' + prompt + '\n' : prompt + '\n';
+            ta.focus();
+            updateCharCount();
+        }
+
+        function updateCharCount() {
+            const len = document.getElementById('journalText').value.length;
+            document.getElementById('charCount').textContent = len + ' character' + (len !== 1 ? 's' : '');
+            document.getElementById('journalSaveBtn').disabled = len === 0;
+        }
+
+        function saveJournal() {
+            const text = document.getElementById('journalText').value.trim();
+            if (!text) return;
+
+            const newEntry = {
+                date: 'March 3, 2026',
+                mood: selectedMood || null,
+                text: text
+            };
+
+            journalEntries.unshift(newEntry);
+            document.getElementById('journalText').value = '';
+            updateCharCount();
+
+            // Show confirmation
+            const btn = document.getElementById('journalSaveBtn');
+            btn.textContent = '✓ Saved!';
+            btn.style.background = 'var(--accent-green)';
+            setTimeout(() => {
+                btn.textContent = 'Save Entry';
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // ═══════ INIT ═══════
+        buildMoodScale();
+        renderChart();
+        renderEntries();
+
+        // Responsive chart
+        window.addEventListener('resize', renderChart);
+    </script>
+</body>
+</html>

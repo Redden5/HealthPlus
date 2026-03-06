@@ -186,7 +186,11 @@ input {
         <div class="promo-section">
             <h2>Don’t have an account?</h2>
             <p>Create an account to access your health information and connect with your care team — fast, secure, and confidential.</p>
-            <button onclick="location.href='{% url 'profile_setup' %}'" class="btn-get-started">Let’s Get Started</button>
+            <form method="POST" style="margin: 0;" >
+                      {% csrf_token %}
+                    <input type="hidden" name="action" value="createAccount">
+                    <button type="submit" class="btn-get-started">Let's Get Started</button>
+                </form>
         </div>
     </div>
 <script>
