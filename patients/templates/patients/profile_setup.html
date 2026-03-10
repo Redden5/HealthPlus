@@ -6,15 +6,26 @@
     <title>HealthPlus Profile Setup</title>
     <style>
         :root {
-            --primary-green: #adbfa2;
-            --bg-color: #f4f7f0;
-            --text-main: #333;
-            --text-secondary: #666;
-            --border-light: rgba(255, 255, 255, 0.4);
+            --sidebar-bg: #a8c6b8;
+            --sidebar-active-bg: rgba(143,170,145,0.55);
+            --main-bg: #e4e9ef;
+            --card-bg: #ffffff;
+            --text-main: #2d3239;
+            --text-muted: #7a8290;
+            --accent-teal: #6d9ba0;
+            --accent-green: #5a8f6e;
+            --accent-warm: #c4956a;
+            --accent-red: #d46b6b;
+            --accent-blue: #5b8ec4;
+            --border-light: #e8ecf0;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --radius: 14px;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             font-family: 'DM Sans', sans-serif;
             background-color: var(--bg-color);
             display: flex;
             justify-content: center;
@@ -72,14 +83,14 @@
         }
 
         .active .step-num {
-            background: var(--primary-green);
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
             color: white;
             border-color: var(--primary-green);
         }
 
         /* Form Card */
         .form-card {
-            background-color: var(--primary-green);
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
             padding: 40px;
             border-radius: 30px;
             color: white;
@@ -136,13 +147,16 @@
         }
 
         .add-btn {
-            background: white;
-            color: var(--primary-green);
-            border: none;
-            padding: 0 20px;
-            border-radius: 10px;
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            padding: 14px 30px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
-            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s;
         }
 
         /* Bottom Controls */
@@ -166,24 +180,26 @@
             gap: 10px;
         }
 
+
         .btn-next {
-            background: white;
-            color: var(--primary-green);
-            border: none;
-            padding: 12px 30px;
+           background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            padding: 14px 30px;
             border-radius: 20px;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
         }
 
-        .btn-skip {
-            background: transparent;
-            color: white;
-            border: none;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.85rem;
+        .btn-next:hover {
+             opacity: 0.85;
         }
+
+
+
 
         /* Hide number input spinners */
         input[type=number]::-webkit-inner-spin-button,
@@ -228,7 +244,7 @@
             <span>Review & Consent</span>
         </div>
     </div>
-    <form method="POST" action="{% url 'profile_setup'%}">
+    <form method="POST" >
     {% csrf_token %}
     <div class="form-card">
         <h2>Tell Us About Yourself</h2>

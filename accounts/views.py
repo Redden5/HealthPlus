@@ -4,6 +4,11 @@ from django.contrib import messages
 
 def login_view(request):
     if request.method == 'POST':
+        action = request.POST.get('action')
+
+        # Create Account
+        if action == 'createAccount':
+            return redirect('/patients/setup/')
         #Get data from form
         username = request.POST.get('username')
         password = request.POST.get('password')

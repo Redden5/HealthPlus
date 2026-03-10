@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from patients.constants import ALLERGY_LIST, CONDITION_LIST, BLOOD_TYPE_CHOICES
 from patients.forms import ConsentForm
+from patients.forms import QuickEditForm
 from patients.models import PatientProfile
 from patients.validators import validate_profile_setup
 
@@ -65,7 +66,7 @@ def profile_setup(request):
     else:
         context['form'] = ConsentForm()
 
-    return render(request, 'patients/profile_setup.html', context)
+        return render(request, 'patients/profile_setup.html', context)
 
 
 @login_required
@@ -76,23 +77,39 @@ def preferences_setup(request):
         profile.sms_notifications = bool(request.POST.get('sms_alerts'))
         profile.lab_alert_notifications = bool(request.POST.get('lab_alerts'))
         profile.prescription_alerts = bool(request.POST.get('prescription_alerts'))
+        profile.track_weight = bool(request.POST.get('weight_alerts'))
+        profile.track_blood_pressure = bool(request.POST.get('blood_pressure'))
+        profile.track_activity = bool(request.POST.get('activity_alerts'))
+        profile.track_sleep = bool(request.POST.get('sleep_alerts'))
+        profile.dark_mode = bool(request.POST.get('dark_mode'))
         profile.save()
-
-    return render(request, 'patients/preferences_setup.html')
+        return redirect('/patients/consent/')
+    else:
+        return render(request, 'patients/preferences_setup.html')
 
 
 @login_required
 def consent_setup(request):
+    profile = PatientProfile.objects.get(user=request.user)
     if request.method == "POST":
-        profile = PatientProfile.objects.get(user=request.user)
-        profile.terms_agreed = bool(request.POST.get('terms_agreed'))
-        profile.private_policy = bool(request.POST.get('private_policy'))
-        profile.electronic_policy = bool(request.POST.get('electronic_policy'))
-        profile.save()
-        return redirect('/patients/dashboard/')
+        action = request.POST.get('action')
+        if action == 'Edit':
+            form = QuickEditForm(request.POST, instance=profile)
+            if form.is_valid():
+                form.save()
+                # refresh page
 
-    form = ConsentForm()
-    return render(request, 'patients/review_consent.html', {'form': form})
+                return redirect('/patients/consent_setup/')
+        elif action == 'next':
+            profile.terms_agreed = bool(request.POST.get('terms_agreed'))
+            profile.private_policy = bool(request.POST.get('private_policy'))
+            profile.electronic_policy = bool(request.POST.get('electronic_policy'))
+            profile.provider_agreement = bool(request.POST.get('provider_agreement'))
+            profile.save()
+            return redirect('/patients/dashboard/')
+    context = {'consent_form': ConsentForm(), 'profile': profile, 'profile_form': QuickEditForm()
+                   }
+    return render(request, 'patients/review_consent.html',context)
 
 @login_required
 def dashboard(request):
