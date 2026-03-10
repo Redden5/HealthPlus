@@ -8,7 +8,8 @@
     <style>
         :root {
             --primary-green: #adbfa2;
-            --bg-color: #f9f9f9;
+            --background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+
             --border-light: rgba(255, 255, 255, 0.4);
             --text-main: #333;
             --text-secondary: #666;
@@ -29,31 +30,59 @@
             background: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             max-width: 900px;
             width: 100%;
             text-align: center;
         }
 
-        h1 { color: var(--text-main); margin-bottom: 10px; }
+        h1 {
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
 
         /* Stepper Logic */
-        .stepper { display: flex; justify-content: center; gap: 50px; margin-bottom: 40px; }
-        .step { color: #ccc; font-weight: bold; text-align: center; }
-        .step.active { color: var(--text-main); }
-        .step-num {
-            width: 40px; height: 40px; border: 2px solid #ccc;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 5px;
+        .stepper {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 40px;
         }
-        .step.active .step-num { background: var(--primary-green); color: white; border-color: var(--primary-green); }
 
-        /* The Green Form Card */
+        .step {
+            color: #ccc;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .step.active {
+            color: var(#95b5a6);
+        }
+
+        .step-num {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #95b5a6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+        }
+
+        .step.active .step-num {
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+;
+            color: white;
+            border-color: var(--primary-green);
+        }
+
         .form-card {
-            background-color: var(--primary-green);
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+;
             border-radius: 20px;
             color: white;
-            padding: 0; /* Let the grid handle internal padding */
+            padding: 0;
             overflow: hidden;
             text-align: left;
         }
@@ -107,94 +136,107 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.05);
-        }
-
-        .btn-back {
-            background: transparent;
-            border: 1px solid white;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
         }
 
         .btn-next {
-            background: white;
-            color: var(--primary-green);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+        .btn-next:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Select your experience</h1>
-        <p style="color: #666; margin-bottom: 30px;">You can always change these later, we recommend selecting all to use the features available.</p>
-
-    <div class="stepper">
-        <div class="step"><div class="step-num">1</div>Profile Info</div>
-        <div class="step active"><div class="step-num">2</div>Preferences</div>
-        <div class="step"><div class="step-num">3</div>Review & Consent</div>
-    </div>
-
-    <div class="form-card">
-        <div class="pref-grid">
-            <div class="section">
-                <h3>Communication Preferences</h3>
-                <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="email_notifications" id="id_email_notif"> Email Notifications</label>
-                    <label class="checkbox-item"><input type="checkbox" name="lab_alerts" id="id_lab_alerts"> Lab Result Alerts</label>
-                    <label class="checkbox-item"><input type="checkbox" name="sms_alerts" id="id_sms_alerts"> SMS Text Alerts</label>
-                    <label class="checkbox-item"><input type="checkbox" name="prescription_alerts" id="id_refill_alerts"> Prescription Refill</label>
-                </div>
-                <select><option>Notification Frequency: Daily Summary</option>
-                <option>Notification Frequency: New Alert</option>
-                <option>Notification Frequency: None</option></select>
-
-
+    <p style="color: #666; margin-bottom: 30px;">You can always change these later, we recommend selecting all to use
+        the features available.</p>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="stepper">
+            <div class="step">
+                <div class="step-num">1</div>
+                Profile Info
             </div>
-
-            <div class="section">
-                <h3> Data Visibility Settings</h3>
-                <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox"> Share with provider</label>
-                    <label class="checkbox-item"><input type="checkbox"> Share with specialists</label>
-                </div>
+            <div class="step active">
+                <div class="step-num">2</div>
+                Preferences
             </div>
-
-            <div class="section">
-                <h3>Health Tracking Preferences</h3>
-                <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox"> Weight</label>
-                    <label class="checkbox-item"><input type="checkbox"> Sleep patterns</label>
-                    <label class="checkbox-item"><input type="checkbox"> Blood pressure</label>
-                    <label class="checkbox-item"><input type="checkbox"> Physical activity</label>
-                </div>
-            </div>
-
-            <div class="section">
-                <h3>Accessibility Settings</h3>
-                <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox"> Large text mode</label>
-                    <label class="checkbox-item"><input type="checkbox"> High contrast mode</label>
-                </div>
-                <select><option>Preferred Language: English</option></select>
+            <div class="step">
+                <div class="step-num">3</div>
+                Review & Consent
             </div>
         </div>
 
-        <div class="footer">
-            <button onclick="location.href='{% url 'profile_setup' %}'" class="btn-back">Back</button>
-            <button onclick="location.href='{% url 'consent_setup' %}'" class="btn-next">Next: Review & Consent ></button>
+        <div class="form-card">
+            <div class="pref-grid">
+                <div class="section">
+                    <h3>Communication Preferences</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="email_notifications"
+                                                            id="id_email_notif"> Email Notifications</label>
+                        <label class="checkbox-item"><input type="checkbox" name="lab_alerts" id="id_lab_alerts"> Lab
+                            Result Alerts</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sms_alerts" id="id_sms_alerts"> SMS
+                            Text Alerts</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prescription_alerts"
+                                                            id="id_refill_alerts"> Prescription Refill</label>
+                    </div>
+                    <select>
+                        <option>Notification Frequency: Daily Summary</option>
+                        <option>Notification Frequency: New Alert</option>
+                        <option>Notification Frequency: None</option>
+                    </select>
+
+
+                </div>
+
+                <div class="section">
+                    <h3> Data Visibility Settings</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox"> Share with provider</label>
+                        <label class="checkbox-item"><input type="checkbox"> Share with specialists</label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Health Tracking Preferences</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox"> Weight</label>
+                        <label class="checkbox-item"><input type="checkbox"> Sleep patterns</label>
+                        <label class="checkbox-item"><input type="checkbox"> Blood pressure</label>
+                        <label class="checkbox-item"><input type="checkbox"> Physical activity</label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Accessibility Settings</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox"> Dark mode</label>
+                    </div>
+                    <select>
+                        <option>Preferred Language: English</option>
+                    </select>
+                </div>
+            </div>
+            <div class="footer">
+                <button type="submit" class="btn-next">Next: Review & Consent </button>
+            </div>
+
+
         </div>
-
-
-    </div>
+    </form>
 </div>
+
 
 </body>
 </html>
