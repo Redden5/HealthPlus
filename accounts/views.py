@@ -29,12 +29,19 @@ def login_view(request):
 
     return render(request, 'accounts/login.html')
 
+def logout_view(request):
+    logout(request)
+    return redirect('/accounts/login/')
+
 def redirect_by_role(user):
     print("User: ", user.username)
     print("Groups: ", user.groups.values_list('name', flat=True))
 
     if user.groups.filter(name='Doctor').exists():
-        return redirect('/doctor/dashboard/')
+        return redirect('/doctors/dashboard/')
     elif user.groups.filter(name='Patient').exists():
         return redirect('/patients/dashboard/')
-    else: return redirect('/')
+    elif user.groups.filter(name='Receptionist').exists():
+        return redirect('/receptionist/dashboard/')
+    else:
+        return redirect('/')

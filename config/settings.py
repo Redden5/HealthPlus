@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts', #login page added by alec
-    'patients',  # patients added by alec
-    'doctor'
+    'accounts',      # login page
+    'patients',      # patient portal
+    'doctor',        # doctor portal
+    'receptionist',  # receptionist portal
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Courier API Configuration
+COURIER_AUTH_KEY = os.getenv("COURIER_AUTH_KEY")
+COURIER_TEMPLATE_ID = os.getenv("COURIER_TEMPLATE_ID")

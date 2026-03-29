@@ -11,6 +11,21 @@ class ConsentForm(forms.ModelForm):
         if not data:
             raise forms.ValidationError("Please accept terms to continue.")
         return data
+    def clean_private_policy(self):
+        data = self.cleaned_data.get('private_policy')
+        if not data:
+            raise forms.ValidationError("Please accept private policy to continue.")
+        return data
+    def clean_electronic_policy(self):
+        data = self.cleaned_data.get('electronic_policy')
+        if not data:
+            raise forms.ValidationError("Please accept electronic policy to continue.")
+        return data
+    def clean_data_participate(self):
+        data = self.cleaned_data.get('data_participate')
+        if not data:
+            raise forms.ValidationError("Please accept to participate with provider to continue.")
+        return data
 class QuickEditForm(forms.ModelForm):
     class Meta:
         model = PatientProfile

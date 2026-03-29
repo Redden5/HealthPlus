@@ -124,6 +124,7 @@
             padding: 28px 40px;
             overflow-y: auto;
             max-height: 100vh;
+            scroll-behavior: smooth;
         }
 
         .main-wrapper::-webkit-scrollbar { width: 6px; }
@@ -671,6 +672,41 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.badge {
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    vertical-align: top;
+    margin-left: -10px;
+}
+
+.notif-item.unread {
+    border-left: 4px solid #95b5a6; /* Matches your HealthPlus green */
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+}
 
         /* ═══════ APPOINTMENTS MINI ═══════ */
         .appt-list { flex: 1; display: flex; flex-direction: column; gap: 8px; }
@@ -749,6 +785,272 @@
             border-radius: 50%;
         }
 
+        /* ═══════ MESSAGING PANEL ═══════ */
+        .messaging-panel {
+            display: flex;
+            height: 420px;
+            gap: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+
+        /* Conversation list */
+        .conv-list {
+            width: 220px;
+            flex-shrink: 0;
+            border-right: 1px solid var(--border-light);
+            overflow-y: auto;
+            background: #f7f9fb;
+        }
+
+        .conv-list::-webkit-scrollbar { width: 4px; }
+        .conv-list::-webkit-scrollbar-thumb { background: #d0d5dc; border-radius: 2px; }
+
+        .conv-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.15s;
+            position: relative;
+        }
+
+        .conv-item:hover { background: #eef1f4; }
+
+        .conv-item.active {
+            background: #e4edf0;
+            border-left: 3px solid var(--accent-teal);
+        }
+
+        .conv-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.68rem;
+            color: white; flex-shrink: 0;
+        }
+
+        .conv-info { flex: 1; min-width: 0; }
+        .conv-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; }
+        .conv-last { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .conv-unread-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-teal);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Chat window */
+        .chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--white);
+            min-width: 0;
+        }
+
+        .chat-header {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex; align-items: center; gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .chat-header-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.7rem;
+            color: white;
+        }
+
+        .chat-header-info { flex: 1; }
+        .chat-header-name { font-size: 0.88rem; font-weight: 600; }
+        .chat-header-status { font-size: 0.7rem; color: var(--text-muted); }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #d0d5dc; border-radius: 2px; }
+
+        .msg-bubble-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .msg-bubble-row.sent { flex-direction: row-reverse; }
+
+        .bubble-avatar {
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.6rem;
+            color: white; flex-shrink: 0;
+        }
+
+        .bubble {
+            max-width: 65%;
+            padding: 9px 13px;
+            border-radius: 16px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            word-wrap: break-word;
+        }
+
+        .msg-bubble-row.received .bubble {
+            background: #f0f2f5;
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg-bubble-row.sent .bubble {
+            background: var(--accent-teal);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-time {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-bottom: 2px;
+            flex-shrink: 0;
+        }
+
+        .chat-date-divider {
+            text-align: center;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin: 4px 0;
+        }
+
+        .chat-compose {
+            padding: 12px 14px;
+            border-top: 1px solid var(--border-light);
+            display: flex; align-items: center; gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .compose-input {
+            flex: 1;
+            border: 1px solid var(--border-light);
+            border-radius: 22px;
+            padding: 9px 16px;
+            font-size: 0.82rem;
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+            background: #f7f9fb;
+            color: var(--text-main);
+            transition: border-color 0.2s;
+            resize: none;
+        }
+
+        .compose-input:focus { border-color: var(--accent-teal); background: white; }
+
+        .compose-send {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--accent-teal);
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .compose-send:hover { background: #5b878c; transform: scale(1.05); }
+
+        .compose-send svg {
+            width: 16px; height: 16px;
+            stroke: white; fill: none; stroke-width: 2;
+            stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        /* ═══════ HEALTH RECORDS ═══════ */
+        .hr-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .hr-block {
+            background: #f7f9fb;
+            border-radius: 12px;
+            padding: 16px 18px;
+        }
+
+        .hr-block-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hr-block-title svg {
+            width: 16px; height: 16px;
+            stroke: var(--accent-teal); fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .hr-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .hr-item {
+            background: var(--white);
+            border-radius: 9px;
+            padding: 10px 14px;
+            transition: box-shadow 0.15s;
+        }
+
+        .hr-item:hover { box-shadow: var(--shadow-sm); }
+
+        .hr-item-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 3px;
+        }
+
+        .hr-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .hr-item-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .hr-badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 2px 9px;
+            border-radius: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .hr-badge-green  { background: #e6f4ec; color: #3a7d52; }
+        .hr-badge-blue   { background: #e6eef8; color: #3a5f8a; }
+        .hr-badge-red    { background: #faeaea; color: #b94040; }
+        .hr-badge-warm   { background: #fdf1e6; color: #9a6030; }
+        .hr-badge-muted  { background: #eef1f4; color: var(--text-muted); }
+
         /* ═══════ ANIMATIONS ═══════ */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(12px); }
@@ -774,6 +1076,179 @@
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+
+        /* ═══════ APPOINTMENT REQUEST ═══════ */
+        .req-appt-btn {
+            background: var(--accent-teal); color: #fff;
+            border: none; border-radius: 8px;
+            padding: 5px 13px; font-size: 0.75rem; font-weight: 600;
+            font-family: inherit; cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .req-appt-btn:hover { background: #5b878c; }
+
+        .req-history-toggle {
+            background: none; border: none; cursor: pointer;
+            font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+            font-family: inherit; padding: 0;
+            transition: color 0.15s;
+        }
+
+        .req-history-toggle:hover { color: var(--text-main); }
+
+        .req-history-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 10px; border-radius: 8px;
+            background: #f7f9fb; margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .req-history-item:last-child { margin-bottom: 0; }
+
+        .req-history-type { font-weight: 600; }
+        .req-history-meta { color: var(--text-muted); margin-top: 2px; }
+
+        .req-status-pending  { background: #fdf1e6; color: #9a6030; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
+        .req-status-booked   { background: #e6f4ec; color: #2e7d4f; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
+        .req-status-declined { background: #faeaea; color: #b94040; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
+
+        /* Modal */
+        #reqApptOverlay.open { display: flex !important; }
+
+        .req-modal {
+            background: #fff; border-radius: var(--radius);
+            padding: 28px; width: 460px; max-width: 95vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+            animation: fadeUp 0.25s ease;
+        }
+
+        .req-modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .req-modal-title { font-weight: 600; font-size: 1rem; }
+
+        .req-modal-close {
+            background: none; border: none; cursor: pointer;
+            font-size: 1.3rem; color: var(--text-muted);
+            padding: 2px 6px; border-radius: 4px;
+        }
+
+        .req-modal-close:hover { background: #f0f2f5; }
+
+        .req-form-group { margin-bottom: 14px; }
+
+        .req-label {
+            display: block; font-size: 0.73rem; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.4px; margin-bottom: 5px;
+        }
+
+        .req-control {
+            width: 100%; border: 1.5px solid var(--border-light);
+            border-radius: 9px; padding: 9px 12px;
+            font-size: 0.85rem; font-family: inherit;
+            color: var(--text-main); background: #f7f9fb;
+            outline: none; transition: border-color 0.2s, background 0.2s;
+        }
+
+        .req-control:focus { border-color: var(--accent-teal); background: #fff; }
+        textarea.req-control { resize: vertical; }
+
+        .req-feedback {
+            font-size: 0.78rem; padding: 8px 12px;
+            border-radius: 8px; margin-bottom: 8px; display: none;
+        }
+
+        .req-feedback.success { background: #e6f4ec; color: #2e7d4f; display: block; }
+        .req-feedback.error   { background: #faeaea; color: #b94040; display: block; }
+
+        .req-btn-primary {
+            flex: 1; background: var(--accent-teal); color: #fff;
+            border: none; border-radius: 9px; padding: 10px;
+            font-size: 0.88rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.2s;
+        }
+
+        .req-btn-primary:hover { background: #5b878c; }
+        .req-btn-primary:disabled { opacity: 0.45; cursor: default; }
+
+        .req-btn-secondary {
+            background: #eef1f4; color: var(--text-muted);
+            border: none; border-radius: 9px; padding: 10px 18px;
+            font-size: 0.85rem; font-weight: 500; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .req-btn-secondary:hover { background: #e2e6eb; }
+
+        /* ═══════ MEETING ALERTS ═══════ */
+        .meeting-alerts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+
+        .meeting-alert {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #fff;
+            border-left: 4px solid var(--accent-teal);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeUp 0.35s ease both;
+        }
+
+        .meeting-alert-icon {
+            width: 38px; height: 38px;
+            background: #e8f4f6;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .meeting-alert-icon svg {
+            width: 18px; height: 18px;
+            stroke: var(--accent-teal); fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        .meeting-alert-body { flex: 1; }
+        .meeting-alert-title { font-size: 0.88rem; font-weight: 600; }
+        .meeting-alert-meta  { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        .meeting-alert-actions { display: flex; gap: 8px; }
+
+        .btn-join-meeting {
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .btn-join-meeting:hover { background: #5b878c; }
+
+        .btn-dismiss-meeting {
+            background: #eef1f4;
+            color: var(--text-muted);
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-dismiss-meeting:hover { background: #e2e6eb; }
     </style>
 </head>
 <body>
@@ -796,46 +1271,68 @@
             </div>
         </div>
 
+
         <nav class="nav-menu">
-            <a href="#" class="nav-item active">
+            <a href="#" class="nav-item active" data-target="section-dashboard">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
                 Dashboard
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" data-target="section-mood">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
                 Mood Tracker
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" data-target="section-journal">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
                 Journal
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" data-target="section-messages">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
                 Messages
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" data-target="section-appointments">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
                 Appointments
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" data-target="section-health-records">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
                 Health Records
             </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
-                Settings
-            </a>
         </nav>
-    </aside>
 
+        <div style="margin-top: auto; padding: 24px 14px 8px;">
+            <form method="post" action="/accounts/logout/">
+                {% csrf_token %}
+                <button type="submit" class="nav-item" style="width:100%;background:rgba(212,107,107,0.18);color:#fff;border:none;cursor:pointer;font-size:0.95rem;font-weight:500;">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+<div id="notif-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <hr>
+        <div class="notif-list">
+            {% for notif in notifications %}
+                <div class="notif-item {% if not notif.is_read %}unread{% endif %}">
+                    <strong>{{ notif.title }}</strong>
+                    <p>{{ notif.message }}</p>
+                    <small>{{ notif.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+            {% empty %}
+                <p>No new messages.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
     <!-- ═══════ MAIN CONTENT ═══════ -->
     <main class="main-wrapper">
         <header>
             <h1 class="header-title">Patient Dashboard</h1>
             <div class="user-controls">
-                <div class="notification-bell">
+                <div id="notif-btn" class="notification-bell">
                     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                    <span class="notif-dot"></span>
+                    {% if unread_count > 0 %}<span class="notif-dot"></span>{% endif %}
                 </div>
                  <form method="POST" style="margin: 0;" >
                       {% csrf_token %}
@@ -850,12 +1347,15 @@
         </header>
 
         <section class="dashboard-content">
+            <!-- MEETING ALERTS — injected by JS -->
+            <div id="meetingAlerts" class="meeting-alerts"></div>
+
             <div class="greeting-date">
                 Good morning, {{ profile.first_name }} <span>— Tuesday, March 3, 2026</span>
             </div>
 
             <!-- STAT CARDS -->
-            <div class="stats-bar">
+            <div id="section-dashboard" class="stats-bar">
                 <div class="stat-card">
                     <div class="stat-label">Today's Mood</div>
                     <div class="stat-value" id="todayMoodStat">—</div>
@@ -882,7 +1382,7 @@
             <div class="layout-grid">
 
                 <!-- MOOD ENTRY -->
-                <div class="card">
+                <div id="section-mood" class="card">
                     <div class="card-header">
                         How are you feeling today?
                     </div>
@@ -926,7 +1426,7 @@
                 </div>
 
                 <!-- JOURNAL (FULL WIDTH) -->
-                <div class="card full-width" style="min-height: 320px;">
+                <div id="section-journal" class="card full-width" style="min-height: 320px;">
                     <div class="card-header">
                         Journal
                         <span class="dots-menu">•••</span>
@@ -956,78 +1456,272 @@
                 </div>
 
                 <!-- UPCOMING APPOINTMENTS -->
-                <div class="card">
+                <div id="section-appointments" class="card">
                     <div class="card-header">
                         Upcoming Appointments
-                        <span class="pill">This Week</span>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <span class="pill" id="apptCount">Loading…</span>
+                            <button class="req-appt-btn" onclick="openRequestModal()">+ Request</button>
+                        </div>
                     </div>
-                    <div class="appt-list">
-                        <div class="appt-item">
-                            <div class="appt-avatar" style="background:#6d9ba0;">AT</div>
-                            <div class="appt-details">
-                                <div class="appt-name">Dr. Aris Thorne</div>
-                                <div class="appt-type">Therapy Session</div>
-                            </div>
-                            <div class="appt-time">Mar 5, 2:00 PM</div>
-                        </div>
-                        <div class="appt-item">
-                            <div class="appt-avatar" style="background:#5a8f6e;">RP</div>
-                            <div class="appt-details">
-                                <div class="appt-name">Dr. Riya Patel</div>
-                                <div class="appt-type">Medication Check-in</div>
-                            </div>
-                            <div class="appt-time">Mar 7, 10:00 AM</div>
-                        </div>
-                        <div class="appt-item">
-                            <div class="appt-avatar" style="background:#c4956a;">GR</div>
-                            <div class="appt-details">
-                                <div class="appt-name">Group Recovery</div>
-                                <div class="appt-type">Peer Support Circle</div>
-                            </div>
-                            <div class="appt-time">Mar 8, 4:00 PM</div>
+                    <div class="appt-list" id="apptList">
+                        <div style="text-align:center; padding:20px; font-size:0.82rem; color:var(--text-muted);">Loading…</div>
+                    </div>
+
+                    <!-- My Requests toggle -->
+                    <div style="margin-top:14px; border-top:1px solid var(--border-light); padding-top:12px;">
+                        <button class="req-history-toggle" onclick="toggleRequestHistory()" id="reqHistoryToggle">
+                            My Requests <span id="reqHistoryArrow">▾</span>
+                        </button>
+                        <div id="reqHistoryPanel" style="display:none; margin-top:10px;">
+                            <div id="reqHistoryList"><div style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;">Loading…</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- MESSAGES -->
-                <div class="card">
+
+                <!-- HEALTH RECORDS -->
+                <div id="section-health-records" class="card full-width">
                     <div class="card-header">
-                        Messages
-                        <span class="pill">2 new</span>
+                        Health Records
+                        <span class="pill">Overview</span>
                     </div>
-                    <div class="msg-list">
-                        <div class="msg-item msg-unread">
-                            <div class="msg-avatar" style="background:#6d9ba0;">AT</div>
-                            <div class="msg-content">
-                                <div class="msg-sender">Dr. Thorne</div>
-                                <div class="msg-preview">Great progress this week, Sarah. Keep up the breathing exercises before bed.</div>
+                    <div class="hr-grid">
+
+                        <!-- Medications -->
+                        <div class="hr-block">
+                            <div class="hr-block-title">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="13" rx="2"/><path d="M7 3v13"/><path d="M21 6h-4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/><path d="M19 6V4"/></svg>
+                                Current Medications
                             </div>
-                            <div class="msg-time">1 hr</div>
-                        </div>
-                        <div class="msg-item msg-unread">
-                            <div class="msg-avatar" style="background:#5a8f6e;">HP</div>
-                            <div class="msg-content">
-                                <div class="msg-sender">HealthPlus Care Team</div>
-                                <div class="msg-preview">Your lab results from Feb 28 are ready to view in Health Records.</div>
+                            <div class="hr-list">
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Sertraline</span>
+                                        <span class="hr-badge hr-badge-green">Active</span>
+                                    </div>
+                                    <div class="hr-item-sub">50 mg · Once daily · Dr. Patel</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Lorazepam</span>
+                                        <span class="hr-badge hr-badge-green">Active</span>
+                                    </div>
+                                    <div class="hr-item-sub">0.5 mg · As needed · Dr. Thorne</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Melatonin</span>
+                                        <span class="hr-badge hr-badge-muted">OTC</span>
+                                    </div>
+                                    <div class="hr-item-sub">5 mg · Nightly · Self-managed</div>
+                                </div>
                             </div>
-                            <div class="msg-time">3 hr</div>
                         </div>
-                        <div class="msg-item">
-                            <div class="msg-avatar" style="background:#c4956a;">RP</div>
-                            <div class="msg-content">
-                                <div class="msg-sender">Dr. Patel</div>
-                                <div class="msg-preview">Adjusted dosage notes attached. Let me know how you feel after 3 days.</div>
+
+                        <!-- Diagnoses -->
+                        <div class="hr-block">
+                            <div class="hr-block-title">
+                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                                Diagnoses
                             </div>
-                            <div class="msg-time">Yesterday</div>
+                            <div class="hr-list">
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Generalised Anxiety Disorder</span>
+                                        <span class="hr-badge hr-badge-blue">Primary</span>
+                                    </div>
+                                    <div class="hr-item-sub">ICD-10: F41.1 · Diagnosed Jan 2024</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Major Depressive Disorder</span>
+                                        <span class="hr-badge hr-badge-blue">Secondary</span>
+                                    </div>
+                                    <div class="hr-item-sub">ICD-10: F32.1 · Diagnosed Mar 2024</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Insomnia Disorder</span>
+                                        <span class="hr-badge hr-badge-muted">Monitoring</span>
+                                    </div>
+                                    <div class="hr-item-sub">ICD-10: G47.00 · Diagnosed Jun 2024</div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Allergies -->
+                        <div class="hr-block">
+                            <div class="hr-block-title">
+                                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                Allergies & Alerts
+                            </div>
+                            <div class="hr-list">
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Penicillin</span>
+                                        <span class="hr-badge hr-badge-red">Severe</span>
+                                    </div>
+                                    <div class="hr-item-sub">Reaction: Anaphylaxis · Confirmed 2019</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Ibuprofen</span>
+                                        <span class="hr-badge hr-badge-warm">Moderate</span>
+                                    </div>
+                                    <div class="hr-item-sub">Reaction: GI distress · Confirmed 2021</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Lab Results -->
+                        <div class="hr-block">
+                            <div class="hr-block-title">
+                                <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H3m6 0h10m0 0V3m0 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"/></svg>
+                                Recent Lab Results
+                            </div>
+                            <div class="hr-list">
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Full Blood Count</span>
+                                        <span class="hr-badge hr-badge-green">Normal</span>
+                                    </div>
+                                    <div class="hr-item-sub">Mar 1, 2026 · HealthPlus Lab</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Thyroid Panel (TSH)</span>
+                                        <span class="hr-badge hr-badge-warm">Review</span>
+                                    </div>
+                                    <div class="hr-item-sub">Feb 18, 2026 · 4.8 mIU/L (high-normal)</div>
+                                </div>
+                                <div class="hr-item">
+                                    <div class="hr-item-main">
+                                        <span class="hr-item-name">Vitamin D</span>
+                                        <span class="hr-badge hr-badge-red">Low</span>
+                                    </div>
+                                    <div class="hr-item-sub">Feb 18, 2026 · 18 ng/mL</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- MESSAGES -->
+                <div id="section-messages" class="card full-width" style="padding: 0; overflow: hidden;">
+                    <div class="card-header" style="padding: 16px 22px; border-bottom: 1px solid var(--border-light); margin-bottom: 0;">
+                        Messages
+                        <span class="pill" id="msgUnreadPill">2 new</span>
+                    </div>
+                    <div class="messaging-panel">
+
+                        <!-- Conversation list -->
+                        <div class="conv-list" id="convList">
+                            <div class="conv-item active" onclick="openConv(0)" data-conv="0">
+                                <div class="conv-avatar" style="background:#6d9ba0;">AT</div>
+                                <div class="conv-info">
+                                    <div class="conv-name">Dr. Thorne</div>
+                                    <div class="conv-last">Great progress this week…</div>
+                                </div>
+                                <div class="conv-unread-dot"></div>
+                            </div>
+                            <div class="conv-item" onclick="openConv(1)" data-conv="1">
+                                <div class="conv-avatar" style="background:#5a8f6e;">HP</div>
+                                <div class="conv-info">
+                                    <div class="conv-name">HealthPlus Care</div>
+                                    <div class="conv-last">Your lab results are ready…</div>
+                                </div>
+                                <div class="conv-unread-dot"></div>
+                            </div>
+                            <div class="conv-item" onclick="openConv(2)" data-conv="2">
+                                <div class="conv-avatar" style="background:#c4956a;">RP</div>
+                                <div class="conv-info">
+                                    <div class="conv-name">Dr. Patel</div>
+                                    <div class="conv-last">Adjusted dosage notes…</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat window -->
+                        <div class="chat-window">
+                            <div class="chat-header" id="chatHeader">
+                                <div class="chat-header-avatar" id="chatHeaderAvatar" style="background:#6d9ba0;">AT</div>
+                                <div class="chat-header-info">
+                                    <div class="chat-header-name" id="chatHeaderName">Dr. Thorne</div>
+                                    <div class="chat-header-status">Therapist · Therapy Session</div>
+                                </div>
+                            </div>
+
+                            <div class="chat-messages" id="chatMessages"></div>
+
+                            <div class="chat-compose">
+                                <input type="text" class="compose-input" id="composeInput" placeholder="Type a message…" onkeydown="handleComposeKey(event)">
+                                <button class="compose-send" onclick="sendMessage()" title="Send">
+                                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- ═══════ REQUEST APPOINTMENT MODAL ═══════ -->
+    <div id="reqApptOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; align-items:center; justify-content:center;">
+        <div class="req-modal">
+            <div class="req-modal-header">
+                <span class="req-modal-title">Request an Appointment</span>
+                <button class="req-modal-close" onclick="closeRequestModal()">&times;</button>
+            </div>
+
+            <div class="req-form-group">
+                <label class="req-label">Appointment Type</label>
+                <select class="req-control" id="rType">
+                    <option value="therapy">Therapy Session</option>
+                    <option value="medication">Medication Check-in</option>
+                    <option value="consultation" selected>General Consultation</option>
+                    <option value="followup">Follow-up</option>
+                    <option value="assessment">Assessment</option>
+                </select>
+            </div>
+
+            <div class="req-form-group">
+                <label class="req-label">Preferred Doctor <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <select class="req-control" id="rDoctor">
+                    <option value="">No preference</option>
+                </select>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="req-form-group">
+                    <label class="req-label">Preferred Date <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                    <input type="date" class="req-control" id="rDate">
+                </div>
+                <div class="req-form-group">
+                    <label class="req-label">Preferred Time <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                    <input type="time" class="req-control" id="rTime">
+                </div>
+            </div>
+
+            <div class="req-form-group">
+                <label class="req-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <textarea class="req-control" id="rNotes" rows="3" placeholder="Describe your concern or any specific needs…"></textarea>
+            </div>
+
+            <div class="req-feedback" id="rFeedback"></div>
+
+            <div style="display:flex; gap:10px; margin-top:6px;">
+                <button class="req-btn-secondary" onclick="closeRequestModal()">Cancel</button>
+                <button class="req-btn-primary" id="rSubmitBtn" onclick="submitRequest()">Send Request</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ═══════ MOOD DATA ═══════
+        // ═══════ MOOD CONFIG ═══════
         const moodLabels = [
             '', 'Very Low', 'Low', 'Struggling', 'Difficult',
             'Neutral', 'Okay', 'Good', 'Great', 'Wonderful', 'Excellent'
@@ -1038,24 +1732,57 @@
             '#b8b8b8', '#7dcea0', '#52be80', '#27ae60', '#1e8449', '#0e6631'
         ];
 
-        // Sample historical mood data (last 30 days)
-        const baseMoodData = [];
-        const today = new Date(2026, 2, 3);
-        const moods30d = [6,5,7,8,7,6,7,8,7,6,5,6,7,8,9,8,7,6,7,8,7,8,9,8,7,8,7,8,7,null];
+        const CSRF = '{{ csrf_token }}';
 
-        for (let i = 29; i >= 0; i--) {
-            const d = new Date(today);
-            d.setDate(d.getDate() - i);
-            baseMoodData.push({
-                date: d,
-                mood: moods30d[29 - i],
-                label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-            });
-        }
-
+        // History loaded from the backend, keyed by period ('7d','14d','30d')
+        const moodHistoryCache = {};
         let selectedMood = null;
         let moodLogged = false;
         let currentPeriod = '7d';
+
+        // ═══════ INIT ═══════
+        function initMood() {
+            buildMoodScale();
+            loadMoodStats();
+            loadMoodHistory(currentPeriod);
+        }
+
+        // ═══════ STATS (today + 7-day avg) ═══════
+        function loadMoodStats() {
+            fetch('{% url "patients:mood_stats" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.today.score !== null) {
+                        document.getElementById('todayMoodStat').textContent = data.today.score;
+                        document.getElementById('todayMoodStat').style.color = moodColors[data.today.score];
+                        // Already logged today — show confirmation state
+                        if (data.today.logged) {
+                            moodLogged = true;
+                            showLoggedConfirmation(data.today.score);
+                        }
+                    }
+                    if (data.week_avg !== null) {
+                        document.getElementById('avgMoodStat').textContent = data.week_avg;
+                    }
+                });
+        }
+
+        // ═══════ HISTORY ═══════
+        function loadMoodHistory(period) {
+            const days = period === '7d' ? 7 : period === '14d' ? 14 : 30;
+            if (moodHistoryCache[period]) { renderChart(); return; }
+
+            fetch(`{% url "patients:mood_history" %}?days=${days}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    moodHistoryCache[period] = data.history.map(d => ({
+                        label: d.label,
+                        mood: d.score,
+                        mood_label: d.mood_label,
+                    }));
+                    renderChart();
+                });
+        }
 
         // ═══════ BUILD MOOD SCALE ═══════
         function buildMoodScale() {
@@ -1080,40 +1807,52 @@
             document.getElementById('moodNum').textContent = val;
             document.getElementById('moodNum').style.color = moodColors[val];
             document.getElementById('moodLabel').textContent = moodLabels[val];
-            const btn = document.getElementById('moodSubmitBtn');
-            btn.classList.add('visible');
+            document.getElementById('moodSubmitBtn').classList.add('visible');
         }
 
         function submitMood() {
             if (!selectedMood) return;
-            moodLogged = true;
 
-            // Update data
-            baseMoodData[baseMoodData.length - 1].mood = selectedMood;
+            fetch('{% url "patients:mood_log" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CSRF,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ score: selectedMood }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.ok) return;
+                moodLogged = true;
 
-            // Update stat card
-            document.getElementById('todayMoodStat').textContent = selectedMood;
-            document.getElementById('todayMoodStat').style.color = moodColors[selectedMood];
+                // Update stat card
+                document.getElementById('todayMoodStat').textContent = selectedMood;
+                document.getElementById('todayMoodStat').style.color = moodColors[selectedMood];
 
-            // Recalculate average
-            const last7 = baseMoodData.slice(-7).filter(d => d.mood !== null);
-            const avg = (last7.reduce((s, d) => s + d.mood, 0) / last7.length).toFixed(1);
-            document.getElementById('avgMoodStat').textContent = avg;
+                // Bust history cache so chart reloads fresh data next period switch
+                Object.keys(moodHistoryCache).forEach(k => delete moodHistoryCache[k]);
+                loadMoodHistory(currentPeriod);
 
-            // Show confirmation
+                // Reload avg
+                loadMoodStats();
+
+                showLoggedConfirmation(selectedMood);
+            });
+        }
+
+        function showLoggedConfirmation(score) {
             const area = document.getElementById('moodEntryArea');
             area.innerHTML = `
                 <div class="mood-logged-msg">
                     <div class="check-circle">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
-                    <strong style="color:${moodColors[selectedMood]}">Mood: ${selectedMood}/10 — ${moodLabels[selectedMood]}</strong>
+                    <strong style="color:${moodColors[score]}">Mood: ${score}/10 — ${moodLabels[score]}</strong>
                     <p>Logged for today. Keep it up!</p>
                 </div>
             `;
-
-            // Re-render chart
-            renderChart();
         }
 
         // ═══════ CHART ═══════
@@ -1121,14 +1860,12 @@
             currentPeriod = period;
             document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
-            renderChart();
+            loadMoodHistory(period);
         }
 
         function renderChart() {
             const svg = document.getElementById('moodChart');
-            const tooltip = document.getElementById('chartTooltip');
-            const days = currentPeriod === '7d' ? 7 : currentPeriod === '14d' ? 14 : 30;
-            const data = baseMoodData.slice(-days).filter(d => d.mood !== null);
+            const data = (moodHistoryCache[currentPeriod] || []).filter(d => d.mood !== null);
 
             if (data.length === 0) { svg.innerHTML = ''; return; }
 
@@ -1182,10 +1919,11 @@
 
             // Dots + labels
             points.forEach((p, i) => {
+                const safeLabel = p.label.replace(/'/g, "\\'");
+                const safeMoodLabel = (p.mood_label || moodLabels[p.mood] || '').replace(/'/g, "\\'");
                 svgContent += `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart-dot" data-idx="${i}"
-                    onmouseenter="showTooltip(event, '${p.label}', ${p.mood})"
+                    onmouseenter="showTooltip(event, '${safeLabel}', ${p.mood}, '${safeMoodLabel}')"
                     onmouseleave="hideTooltip()"/>`;
-                // X labels (show subset)
                 const showLabel = data.length <= 14 || i % Math.ceil(data.length / 10) === 0 || i === data.length - 1;
                 if (showLabel) {
                     svgContent += `<text x="${p.x}" y="${H - 4}" class="chart-label">${p.label.split(' ')[1]}</text>`;
@@ -1195,10 +1933,10 @@
             svg.innerHTML = svgContent;
         }
 
-        function showTooltip(e, label, mood) {
+        function showTooltip(e, label, mood, moodLabel) {
             const tt = document.getElementById('chartTooltip');
             const rect = document.getElementById('chartArea').getBoundingClientRect();
-            tt.innerHTML = `<strong>${label}</strong> — Mood: ${mood}/10 (${moodLabels[mood]})`;
+            tt.innerHTML = `<strong>${label}</strong> — Mood: ${mood}/10 (${moodLabel})`;
             tt.style.left = (e.clientX - rect.left + 12) + 'px';
             tt.style.top = (e.clientY - rect.top - 36) + 'px';
             tt.classList.add('visible');
@@ -1207,6 +1945,184 @@
         function hideTooltip() {
             document.getElementById('chartTooltip').classList.remove('visible');
         }
+        // Notifications
+        const modal = document.getElementById("notif-modal");
+const btn = document.getElementById("notif-btn");
+const span = document.getElementsByClassName("close-btn")[0];
+
+// Open modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Close modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Close if user clicks outside of modal
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+        // ═══════ MESSAGING ═══════
+        let activeConvId = null;
+        const myInitial = '{{ profile.first_name|make_list|first }}';
+        const convColors = {};
+
+        const CONV_COLORS = ['#6d9ba0','#5a8f6e','#c4956a','#5b8ec4','#9b7db8'];
+        let colorIdx = 0;
+
+        function convColor(convId) {
+            if (!convColors[convId]) convColors[convId] = CONV_COLORS[colorIdx++ % CONV_COLORS.length];
+            return convColors[convId];
+        }
+
+        // Load and render conversation list
+        function loadConversations() {
+            fetch('{% url "patients:list_conversations" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    const list = document.getElementById('convList');
+                    list.innerHTML = '';
+                    let totalUnread = 0;
+
+                    data.conversations.forEach((conv, i) => {
+                        totalUnread += conv.unread_count;
+                        const item = document.createElement('div');
+                        item.className = 'conv-item' + (i === 0 ? ' active' : '');
+                        item.dataset.convId = conv.id;
+                        item.onclick = () => openConv(conv.id);
+
+                        item.innerHTML = `
+                            <div class="conv-avatar" style="background:${convColor(conv.id)}">${conv.participant_initials}</div>
+                            <div class="conv-info">
+                                <div class="conv-name">${conv.participant_name}</div>
+                                <div class="conv-last">${conv.last_message}</div>
+                            </div>
+                            ${conv.unread_count > 0 ? '<div class="conv-unread-dot"></div>' : ''}
+                        `;
+                        list.appendChild(item);
+                    });
+
+                    const pill = document.getElementById('msgUnreadPill');
+                    if (totalUnread > 0) { pill.textContent = totalUnread + ' new'; pill.style.display = ''; }
+                    else { pill.style.display = 'none'; }
+
+                    // Open first conversation automatically
+                    if (data.conversations.length > 0) openConv(data.conversations[0].id);
+                });
+        }
+
+        // Open a conversation and load its messages
+        function openConv(convId) {
+            activeConvId = convId;
+
+            document.querySelectorAll('.conv-item').forEach(el => {
+                el.classList.toggle('active', parseInt(el.dataset.convId) === convId);
+                if (parseInt(el.dataset.convId) === convId) {
+                    const dot = el.querySelector('.conv-unread-dot');
+                    if (dot) dot.remove();
+                }
+            });
+
+            fetch(`/patients/messages/${convId}/`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    // Update header
+                    const convItem = document.querySelector(`.conv-item[data-conv-id="${convId}"]`);
+                    if (convItem) {
+                        document.getElementById('chatHeaderAvatar').style.background = convColor(convId);
+                        document.getElementById('chatHeaderAvatar').textContent = convItem.querySelector('.conv-avatar').textContent;
+                        document.getElementById('chatHeaderName').textContent = convItem.querySelector('.conv-name').textContent;
+                    }
+
+                    renderMessages(data.messages);
+                });
+        }
+
+        // Render messages in the chat window
+        function renderMessages(messages) {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+
+            messages.forEach(msg => {
+                const row = document.createElement('div');
+                row.className = 'msg-bubble-row ' + (msg.from_me ? 'sent' : 'received');
+
+                const avatarEl = document.createElement('div');
+                avatarEl.className = 'bubble-avatar';
+                avatarEl.style.background = msg.from_me ? '#b0bec5' : convColor(activeConvId);
+                avatarEl.textContent = msg.from_me ? myInitial : msg.sender_initials;
+
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.textContent = msg.text;
+
+                const timeEl = document.createElement('div');
+                timeEl.className = 'bubble-time';
+                timeEl.textContent = msg.time;
+
+                row.append(
+                    ...(msg.from_me ? [timeEl, bubble, avatarEl] : [avatarEl, bubble, timeEl])
+                );
+                container.appendChild(row);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Send a message
+        function sendMessage() {
+            const input = document.getElementById('composeInput');
+            const text = input.value.trim();
+            if (!text || activeConvId === null) return;
+
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch(`/patients/messages/${activeConvId}/send/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ text }),
+            })
+            .then(r => r.json())
+            .then(msg => {
+                if (msg.error) { console.error(msg.error); return; }
+
+                // Append the new message locally
+                const container = document.getElementById('chatMessages');
+                const row = document.createElement('div');
+                row.className = 'msg-bubble-row sent';
+                row.innerHTML = `
+                    <div class="bubble-time">${msg.time}</div>
+                    <div class="bubble">${msg.text}</div>
+                    <div class="bubble-avatar" style="background:#b0bec5">${myInitial}</div>
+                `;
+                container.appendChild(row);
+                container.scrollTop = container.scrollHeight;
+
+                // Update preview in conv list
+                const convItem = document.querySelector(`.conv-item[data-conv-id="${activeConvId}"]`);
+                if (convItem) convItem.querySelector('.conv-last').textContent = msg.text;
+
+                input.value = '';
+            });
+        }
+
+        function handleComposeKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+
+        loadConversations();
 
         // ═══════ JOURNAL ═══════
         const journalEntries = [
@@ -1299,12 +2215,226 @@
         }
 
         // ═══════ INIT ═══════
-        buildMoodScale();
-        renderChart();
+        initMood();
         renderEntries();
 
         // Responsive chart
         window.addEventListener('resize', renderChart);
+
+        // ═══════ MEETING ALERTS ═══════
+        const _dismissedMeetings = new Set();
+
+        function loadMeetingAlerts() {
+            fetch('{% url "patients:patient_meetings" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.json())
+            .then(data => {
+                const container = document.getElementById('meetingAlerts');
+                const active = data.meetings.filter(m => !_dismissedMeetings.has(m.id));
+                container.innerHTML = '';
+
+                active.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = 'meeting-alert';
+                    div.id = `meeting-alert-${m.id}`;
+                    div.innerHTML = `
+                        <div class="meeting-alert-icon">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div class="meeting-alert-body">
+                            <div class="meeting-alert-title">Upcoming Teams Call: ${m.title}</div>
+                            <div class="meeting-alert-meta">${m.doctor_name} · ${m.scheduled_fmt}</div>
+                        </div>
+                        <div class="meeting-alert-actions">
+                            ${m.join_url ? `<a href="${m.join_url}" target="_blank" class="btn-join-meeting">Join Call</a>` : ''}
+                            <button class="btn-dismiss-meeting" onclick="dismissMeetingAlert(${m.id})">Dismiss</button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function dismissMeetingAlert(id) {
+            _dismissedMeetings.add(id);
+            const el = document.getElementById(`meeting-alert-${id}`);
+            if (el) el.remove();
+        }
+
+        loadMeetingAlerts();
+        // Poll every 30 seconds for new meetings
+        setInterval(loadMeetingAlerts, 30000);
+
+        // ═══════ APPOINTMENTS ═══════
+        const APPT_COLORS = ['#6d9ba0','#5a8f6e','#c4956a','#5b8ec4','#9b7db8'];
+        function apptColor(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+            return APPT_COLORS[Math.abs(h) % APPT_COLORS.length];
+        }
+
+        function loadAppointments() {
+            fetch('{% url "patients:patient_appointments" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.json())
+            .then(data => {
+                const list = document.getElementById('apptList');
+                const pill = document.getElementById('apptCount');
+                const appts = data.appointments;
+
+                pill.textContent = appts.length ? `${appts.length} upcoming` : 'None';
+
+                if (appts.length === 0) {
+                    list.innerHTML = '<div style="text-align:center;padding:20px;font-size:0.82rem;color:var(--text-muted);">No upcoming appointments.</div>';
+                    return;
+                }
+
+                list.innerHTML = appts.map(a => {
+                    const initials = a.doctor_name.replace('Dr. ','').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+                    const color = apptColor(a.doctor_name);
+                    return `
+                        <div class="appt-item">
+                            <div class="appt-avatar" style="background:${color};">${initials}</div>
+                            <div class="appt-details">
+                                <div class="appt-name">${a.doctor_name}</div>
+                                <div class="appt-type">${a.type_display}</div>
+                            </div>
+                            <div class="appt-time">${a.scheduled_fmt}</div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        loadAppointments();
+
+        // ═══════ APPOINTMENT REQUESTS ═══════
+        let reqDoctorsLoaded = false;
+
+        function openRequestModal() {
+            document.getElementById('reqApptOverlay').classList.add('open');
+            document.getElementById('rFeedback').className = 'req-feedback';
+            if (!reqDoctorsLoaded) loadReqDoctors();
+        }
+
+        function closeRequestModal() {
+            document.getElementById('reqApptOverlay').classList.remove('open');
+        }
+
+        document.getElementById('reqApptOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeRequestModal();
+        });
+
+        function loadReqDoctors() {
+            fetch('/receptionist/api/doctors/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.json())
+            .then(data => {
+                const sel = document.getElementById('rDoctor');
+                data.doctors.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.id;
+                    opt.textContent = d.name;
+                    sel.appendChild(opt);
+                });
+                reqDoctorsLoaded = true;
+            });
+        }
+
+        function submitRequest() {
+            const btn = document.getElementById('rSubmitBtn');
+            const fb  = document.getElementById('rFeedback');
+            btn.disabled = true;
+            fb.className = 'req-feedback';
+
+            const payload = {
+                appointment_type:    document.getElementById('rType').value,
+                preferred_doctor_id: document.getElementById('rDoctor').value || null,
+                preferred_date:      document.getElementById('rDate').value || null,
+                preferred_time:      document.getElementById('rTime').value || null,
+                notes:               document.getElementById('rNotes').value.trim(),
+            };
+
+            fetch('{% url "patients:appointment_request" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CSRF,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                if (data.ok) {
+                    fb.textContent = 'Request sent! The reception team will confirm your appointment.';
+                    fb.className = 'req-feedback success';
+                    document.getElementById('rType').value = 'consultation';
+                    document.getElementById('rDoctor').value = '';
+                    document.getElementById('rDate').value = '';
+                    document.getElementById('rTime').value = '';
+                    document.getElementById('rNotes').value = '';
+                    // Refresh history if visible
+                    if (document.getElementById('reqHistoryPanel').style.display !== 'none') {
+                        loadRequestHistory();
+                    }
+                    setTimeout(closeRequestModal, 1800);
+                } else {
+                    fb.textContent = data.error || 'Something went wrong.';
+                    fb.className = 'req-feedback error';
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                fb.textContent = 'Network error — please try again.';
+                fb.className = 'req-feedback error';
+            });
+        }
+
+        let reqHistoryOpen = false;
+
+        function toggleRequestHistory() {
+            reqHistoryOpen = !reqHistoryOpen;
+            document.getElementById('reqHistoryPanel').style.display = reqHistoryOpen ? 'block' : 'none';
+            document.getElementById('reqHistoryArrow').textContent = reqHistoryOpen ? '▴' : '▾';
+            if (reqHistoryOpen) loadRequestHistory();
+        }
+
+        function loadRequestHistory() {
+            fetch('{% url "patients:appointment_requests_list" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.json())
+            .then(data => {
+                const el = document.getElementById('reqHistoryList');
+                if (data.requests.length === 0) {
+                    el.innerHTML = '<div style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:8px;">No requests yet.</div>';
+                    return;
+                }
+                el.innerHTML = data.requests.map(r => `
+                    <div class="req-history-item">
+                        <div>
+                            <div class="req-history-type">${r.type_display}</div>
+                            <div class="req-history-meta">
+                                ${r.preferred_doctor_name ? r.preferred_doctor_name + ' · ' : ''}${r.preferred_fmt} · ${r.created_fmt}
+                            </div>
+                        </div>
+                        <span class="req-status-${r.status}">${r.status_display}</span>
+                    </div>
+                `).join('');
+            });
+        }
+
+        // Sidebar nav scroll
+        document.querySelectorAll('.nav-item[data-target]').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                const wrapper = document.querySelector('.main-wrapper');
+                if (target && wrapper) {
+                    wrapper.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+                }
+                document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+                this.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
