@@ -27,25 +27,53 @@
             background: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             max-width: 900px;
             width: 100%;
             text-align: center;
         }
 
-        h1 { color: var(--text-main); margin-bottom: 10px; font-weight: 600; }
+        h1 {
+            color: var(--text-main);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
         /* Stepper Logic */
-        .stepper { display: flex; justify-content: center; gap: 50px; margin-bottom: 40px; }
-        .step { color: #ccc; font-weight: 600; text-align: center; font-size: 0.9rem; }
-        .step.active { color: var(--text-main); }
-        .step-num {
-            width: 35px; height: 35px; border: 2px solid #ccc;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 8px;
+        .stepper {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 40px;
         }
-        .step.active .step-num {             background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
-; color: white; border-color: var(--primary-green); }
+
+        .step {
+            color: #ccc;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .step.active {
+            color: var(--text-main);
+        }
+
+        .step-num {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+        }
+
+        .step.active .step-num {
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);;
+            color: white;
+            border-color: var(--primary-green);
+        }
 
         /* The Green Review Card */
         .form-card {
@@ -78,10 +106,22 @@
             line-height: 1.8;
         }
 
-        .summary-col:first-child { border-right: 1px solid var(--border-light); }
+        .summary-col:first-child {
+            border-right: 1px solid var(--border-light);
+        }
 
-        .summary-item { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .edit-link { text-decoration: underline; cursor: pointer; opacity: 0.8; font-size: 0.75rem; }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .edit-link {
+            text-decoration: underline;
+            cursor: pointer;
+            opacity: 0.8;
+            font-size: 0.75rem;
+        }
 
         /* Bottom Two-Column Section */
         .bottom-grid {
@@ -93,7 +133,9 @@
             padding: 30px;
         }
 
-        .consent-section:first-child { border-right: 1px solid var(--border-light); }
+        .consent-section:first-child {
+            border-right: 1px solid var(--border-light);
+        }
 
         .section-title {
             display: flex;
@@ -104,105 +146,120 @@
             border-bottom: 1px solid var(--border-light);
             padding-bottom: 10px;
         }
+
         /* Modal */
 
-.modal-overlay {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px); /* Modern blur effect */
-    align-items: center;
-    justify-content: center;
-}
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px); /* Modern blur effect */
+            align-items: center;
+            justify-content: center;
+        }
 
-/* Modal Box */
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 450px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    animation: slideIn 0.3s ease-out;
-}
+        /* Modal Box */
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease-out;
+        }
 
-@keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
 
-.modal-header {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
+        .modal-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
 
-/* Styling the Django form fields */
-.modal-body p {
-    margin-bottom: 15px;
-}
+        /* Styling the Django form fields */
+        .modal-body p {
+            margin-bottom: 15px;
+        }
 
-.modal-body label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 5px;
-}
+        .modal-body label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+        }
 
-.modal-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-}
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
 
-.modal-input:focus {
-    outline: none;
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(173, 191, 162, 0.3);
-}
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(173, 191, 162, 0.3);
+        }
 
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-}
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
 
-.btn-save {
-    background: var(--primary-green);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
+        .btn-save {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
 
-.btn-save:hover { opacity: 0.9; }
+        .btn-save:hover {
+            opacity: 0.9;
+        }
 
-.btn-cancel {
-    background: transparent;
-    border: 1px solid #ddd;
-    color: #666;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-}
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
 
         /* Lists & Links */
-        .policy-list { list-style: none; padding: 0; }
+        .policy-list {
+            list-style: none;
+            padding: 0;
+        }
+
         .policy-item {
             display: flex;
             justify-content: space-between;
@@ -231,13 +288,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.03);
+            background: rgba(0, 0, 0, 0.03);
         }
 
         .btn-complete {
             background: transparent;
             color: white;
-            border: 1.5px solid rgba(255,255,255,0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
             padding: 14px 30px;
             border-radius: 20px;
             font-weight: 600;
@@ -246,8 +303,9 @@
             text-decoration: none;
             transition: background 0.2s;
         }
+
         .btn-complete:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
 
         }
     </style>
@@ -257,62 +315,90 @@
 <div class="container">
     <form method="POST">
         {% csrf_token %}
-    <h1>Let's Review</h1>
-    <p style="color: #666; margin-bottom: 30px; font-size: 0.95rem;">Make sure all your information is correct!</p>
+        <h1>Let's Review</h1>
+        <p style="color: #666; margin-bottom: 30px; font-size: 0.95rem;">Make sure all your information is correct!</p>
 
-    <div class="stepper">
-        <div class="step"><div class="step-num">1</div>Profile Info</div>
-        <div class="step"><div class="step-num">2</div>Preferences</div>
-        <div class="step active"><div class="step-num">3</div>Review & Consent</div>
-    </div>
-
-    <div class="form-card">
-        <div class="summary-header">Profile Summary</div>
-
-        <div class="summary-grid">
-            <div class="summary-col">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                    <strong style="font-size: 1rem;">Demographics</strong>
-                </div>
-                <div class="summary-item"><span>Height: {{ profile.height }}"</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Weight: {{ profile.weight }} lbs</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Blood Type: {{ profile.blood_type }}</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>DOB: {{ profile.date_of_birth}}</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
+        <div class="stepper">
+            <div class="step">
+                <div class="step-num">1</div>
+                Profile Info
             </div>
-
-            <div class="summary-col">
-                <div class="summary-item"><span>Allergies: None</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Conditions: Hypertension</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Notifications: Email, Lab results</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Tracking: Weight, Blood Pressure</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
-                <div class="summary-item"><span>Privacy: Share with Primary Provider</span> <span class="edit-link" onclick="openModal()">Edit</span></div>
+            <div class="step">
+                <div class="step-num">2</div>
+                Preferences
+            </div>
+            <div class="step active">
+                <div class="step-num">3</div>
+                Review & Consent
             </div>
         </div>
 
-        <div class="bottom-grid">
-            <div class="consent-section">
-                <div class="section-title">Terms & Policies</div>
-                <div class="policy-list">
-                    <div class="policy-item">Privacy Policy <span>›</span></div>
-                    <div class="policy-item">HIPAA Notice <span>›</span></div>
-                    <div class="policy-item">Terms of Use <span>›</span></div>
+        <div class="form-card">
+            <div class="summary-header">Profile Summary</div>
+
+            <div class="summary-grid">
+                <div class="summary-col">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <strong style="font-size: 1rem;">Demographics</strong>
+                    </div>
+                    <div class="summary-item"><span>Height: {{ profile.height }}"</span> <span class="edit-link"
+                                                                                               onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>Weight: {{ profile.weight }} lbs</span> <span class="edit-link"
+                                                                                                  onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>Blood Type: {{ profile.blood_type }}</span> <span class="edit-link"
+                                                                                                      onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>DOB: {{ profile.date_of_birth }}</span> <span class="edit-link"
+                                                                                                  onclick="openModal()">Edit</span>
+                    </div>
+                </div>
+
+                <div class="summary-col">
+                    <div class="summary-item"><span>Allergies: {{ profile.allergies }}</span> <span class="edit-link"
+                                                                                 onclick="openModal()">Edit</span></div>
+                    <div class="summary-item"><span>Conditions: {{ profile.medical_conditions }}</span> <span class="edit-link"
+                                                                                          onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>Notifications: {{ profile.email_notifications }}, Lab results</span> <span class="edit-link"
+                                                                                                   onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>Tracking: Weight, Blood Pressure</span> <span class="edit-link"
+                                                                                                  onclick="openModal()">Edit</span>
+                    </div>
+                    <div class="summary-item"><span>Privacy: Share with Primary Provider</span> <span class="edit-link"
+                                                                                                      onclick="openModal()">Edit</span>
+                    </div>
                 </div>
             </div>
+
+            <div class="bottom-grid">
+                <div class="consent-section">
+                    <div class="section-title">Terms & Policies</div>
+                    <div class="policy-list">
+                        <div class="policy-item" onclick="openPolicy('privacy')">Privacy Policy <span>›</span></div>
+                        <div class="policy-item" onclick="openPolicy('hipaa')">HIPAA Notice <span>›</span></div>
+                        <div class="policy-item" onclick="openPolicy('terms')">Terms of Use <span>›</span></div>
+                    </div>
+                </div>
+
 
             <div class="consent-section">
                 <div class="section-title">Consent & Agreement</div>
                 <label class="checkbox-item"><input type="checkbox"> I agree to the Terms of Use</label>
                 <label class="checkbox-item"><input type="checkbox"> I acknowledge the Privacy Policy</label>
                 <label class="checkbox-item"><input type="checkbox"> I consent to electronic communication</label>
-                <label class="checkbox-item"><input type="checkbox"> I agree to participate with Primary Provider</label>
+                <label class="checkbox-item"><input type="checkbox"> I agree to participate with Primary
+                    Provider</label>
             </div>
         </div>
 
         <div class="footer">
             <button type="submit" name="action" value="next" class="btn-complete">Complete Setup ›</button>
         </div>
-    </div>
-    </form>
+</div>
+</form>
 </div>
 <div id="editModal" class="modal-overlay">
     <div class="modal-content">
@@ -331,13 +417,51 @@
         </form>
     </div>
 </div>
-    <script>
+<div id="policyModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 700px; max-height: 80vh; overflow-y: auto;">
+        <div class="modal-header" id="policyTitle">Policy Title</div>
+
+        <div class="modal-body" id="policyContent" style="font-size: 0.9rem; line-height: 1.6; color: #444;">
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-save" onclick="closePolicyModal()">I Understand</button>
+        </div>
+    </div>
+</div>
+<script>
     function openModal() {
         document.getElementById('editModal').style.display = 'flex';
     }
 
     function closeModal() {
         document.getElementById('editModal').style.display = 'none';
+    }
+
+    const policies = {
+        privacy: {
+            title: "Privacy Policy",
+            text: "Your health data is encrypted and stored securely. We do not sell your personal information to third parties..."
+        },
+        hipaa: {
+            title: "HIPAA Notice",
+            text: "This notice describes how medical information about you may be used and disclosed and how you can get access to this information..."
+        },
+        terms: {
+            title: "Terms of Use",
+            text: "By using HealthPlus, you agree to provide accurate information and use the platform for its intended medical purposes..."
+        }
+    };
+
+    function openPolicy(type) {
+        const policy = policies[type];
+        document.getElementById('policyTitle').innerText = policy.title;
+        document.getElementById('policyContent').innerText = policy.text;
+        document.getElementById('policyModal').style.display = 'flex';
+    }
+
+    function closePolicyModal() {
+        document.getElementById('policyModal').style.display = 'none';
     }
 </script>
 </body>

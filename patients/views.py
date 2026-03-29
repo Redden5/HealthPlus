@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from patients.constants import ALLERGY_LIST, CONDITION_LIST, BLOOD_TYPE_CHOICES
 from patients.forms import ConsentForm
 from patients.forms import QuickEditForm
-from patients.models import PatientProfile
+from patients.models import PatientProfile, InAppNotification
+#from patients.notifications import notify_patient
 from patients.validators import validate_profile_setup
 
 
@@ -77,12 +78,16 @@ def preferences_setup(request):
         profile.sms_notifications = bool(request.POST.get('sms_alerts'))
         profile.lab_alert_notifications = bool(request.POST.get('lab_alerts'))
         profile.prescription_alerts = bool(request.POST.get('prescription_alerts'))
+
+        profile.notification_frequency = request.POST.get('notification_frequency')
+
         profile.track_weight = bool(request.POST.get('weight_alerts'))
         profile.track_blood_pressure = bool(request.POST.get('blood_pressure'))
         profile.track_activity = bool(request.POST.get('activity_alerts'))
         profile.track_sleep = bool(request.POST.get('sleep_alerts'))
         profile.dark_mode = bool(request.POST.get('dark_mode'))
         profile.save()
+
         return redirect('/patients/consent/')
     else:
         return render(request, 'patients/preferences_setup.html')
@@ -114,17 +119,24 @@ def consent_setup(request):
 @login_required
 def dashboard(request):
     profile = PatientProfile.objects.get(user=request.user)
+    notifications = InAppNotification.objects.filter(patient=profile).order_by('-created_at')
+
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'account':
             return redirect('/patients/account/')
-    return render(request, 'patients/dashboard.html', {'profile': profile})
+        if action == 'notifications':
+            notif_id = request.POST.get('notif_id')
+            InAppNotification.objects.filter(id=notif_id, patient=profile).update(is_read=True)
+            return redirect('/patients/dashboard/')
+    context = {'profile': profile, 'notifications': notifications, 'unread_count': notifications.filter(is_read=False).count()}
+
+    return render(request, 'patients/dashboard.html', context)
 
 
 @login_required
 def account_profile(request):
     profile = PatientProfile.objects.get(user=request.user)
-
     if request.method == 'POST':
         action = request.POST.get('action')
 

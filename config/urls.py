@@ -20,7 +20,8 @@ from django.urls import path, include # Import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')), #bridge page url
-    path('patients/', include('patients.urls')), # patients logic
+    path('accounts/', include('accounts.urls')),
+    path('patients/', include('patients.urls')),
     path('doctors/', include('doctor.urls')),
+    path('receptionist/', include('receptionist.urls')),
 ]

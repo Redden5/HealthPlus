@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception | HealthPlus</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg: #a8c6b8;
+            --main-bg: #e4e9ef;
+            --white: #ffffff;
+            --text-main: #2d3239;
+            --text-muted: #7a8290;
+            --accent-teal: #6d9ba0;
+            --accent-green: #5a8f6e;
+            --accent-warm: #c4956a;
+            --accent-red: #d46b6b;
+            --accent-blue: #5b8ec4;
+            --border-light: #e8ecf0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(175deg, #a8c6b8 0%, #95b5a6 50%, #8aab9a 100%);
+            padding: 28px 0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo-section {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0 22px; margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 42px; height: 42px;
+            background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo-icon svg { width: 24px; height: 24px; }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            color: white; font-size: 1.05rem; font-weight: 600; line-height: 1.2;
+        }
+
+        .logo-sub {
+            font-size: 0.52rem; font-weight: 500; letter-spacing: 2px;
+            text-transform: uppercase; opacity: 0.8;
+        }
+
+        .nav-menu { list-style: none; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 22px; margin: 2px 12px;
+            color: white; text-decoration: none;
+            font-weight: 500; font-size: 0.9rem;
+            border-radius: 10px; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover { background: rgba(255,255,255,0.12); }
+
+        .nav-item.active {
+            background: rgba(143,170,145,0.55);
+            color: #1a2e1f; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+        .nav-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        .sidebar-spacer { flex: 1; }
+
+        .sidebar-user {
+            margin: 0 12px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .sidebar-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: white; color: var(--accent-teal);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.78rem; flex-shrink: 0;
+        }
+
+        .sidebar-user-name { font-size: 0.8rem; color: white; font-weight: 500; line-height: 1.3; }
+        .sidebar-user-role { font-size: 0.65rem; opacity: 0.75; }
+
+        /* ── MAIN ── */
+        .main-wrapper {
+            flex: 1; padding: 28px 36px;
+            overflow-y: auto; max-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        .main-wrapper::-webkit-scrollbar { width: 5px; }
+        .main-wrapper::-webkit-scrollbar-thumb { background: #c5cad1; border-radius: 3px; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-teal); font-size: 1.75rem; font-weight: 500;
+        }
+
+        .header-sub { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* ── STATS BAR ── */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 14px; margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white); border-radius: var(--radius);
+            padding: 16px 18px; box-shadow: var(--shadow-sm);
+            position: relative; overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%; border-radius: 4px 0 0 4px;
+        }
+
+        .stat-card:nth-child(1)::before { background: var(--accent-teal); }
+        .stat-card:nth-child(2)::before { background: var(--accent-green); }
+        .stat-card:nth-child(3)::before { background: var(--accent-warm); }
+        .stat-card:nth-child(4)::before { background: var(--accent-blue); }
+
+        .stat-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; }
+
+        /* ── LAYOUT ── */
+        .layout-grid {
+            display: grid; grid-template-columns: 380px 1fr;
+            gap: 18px; align-items: start;
+        }
+
+        .card {
+            background: var(--white); border-radius: var(--radius);
+            padding: 22px; box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 18px; font-weight: 600; font-size: 0.95rem;
+        }
+
+        /* ── APPOINTMENT FORM ── */
+        .form-group { margin-bottom: 14px; }
+
+        .form-label {
+            display: block; font-size: 0.75rem; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.4px; margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1.5px solid var(--border-light);
+            border-radius: 9px;
+            padding: 9px 12px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: var(--text-main);
+            background: #f7f9fb;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .form-control:focus { border-color: var(--accent-teal); background: white; }
+
+        select.form-control { cursor: pointer; }
+
+        textarea.form-control { resize: vertical; min-height: 72px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .btn-primary {
+            width: 100%; background: var(--accent-teal); color: white;
+            border: none; border-radius: 9px; padding: 11px;
+            font-size: 0.88rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.2s; margin-top: 6px;
+        }
+
+        .btn-primary:hover { background: #5b878c; }
+        .btn-primary:disabled { opacity: 0.45; cursor: default; }
+
+        .btn-secondary {
+            background: #eef1f4; color: var(--text-muted);
+            border: none; border-radius: 9px; padding: 8px 14px;
+            font-size: 0.78rem; font-weight: 500; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-secondary:hover { background: #e2e6eb; }
+
+        .form-feedback {
+            font-size: 0.78rem; padding: 8px 12px;
+            border-radius: 8px; margin-top: 8px; display: none;
+        }
+
+        .form-feedback.success { background: #e6f4ec; color: #2e7d4f; display: block; }
+        .form-feedback.error   { background: #faeaea; color: #b94040; display: block; }
+
+        /* ── APPOINTMENTS TABLE ── */
+        .full-width { grid-column: span 2; }
+
+        .table-filters {
+            display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border-light);
+            font-size: 0.75rem; font-weight: 500; font-family: inherit;
+            cursor: pointer; background: white; color: var(--text-muted);
+            transition: all 0.15s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-teal); color: white; border-color: var(--accent-teal);
+        }
+
+        .filter-input {
+            border: 1.5px solid var(--border-light); border-radius: 9px;
+            padding: 5px 12px; font-size: 0.78rem; font-family: inherit;
+            color: var(--text-main); background: #f7f9fb; outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-input:focus { border-color: var(--accent-teal); }
+
+        .appt-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+
+        .appt-table th {
+            text-align: left; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--text-muted); padding: 8px 12px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .appt-table td {
+            padding: 11px 12px; font-size: 0.83rem;
+            border-bottom: 1px solid #f0f2f5; vertical-align: middle;
+        }
+
+        .appt-table tr:hover td { background: #fafbfd; }
+
+        .appt-table tr:last-child td { border-bottom: none; }
+
+        .patient-cell { display: flex; align-items: center; gap: 9px; }
+
+        .table-avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.65rem; color: white; flex-shrink: 0;
+        }
+
+        .cell-name { font-weight: 600; font-size: 0.83rem; }
+        .cell-sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block; padding: 3px 10px;
+            border-radius: 12px; font-size: 0.68rem; font-weight: 600;
+        }
+
+        .status-scheduled  { background: #e8f4f6; color: #2e6b72; }
+        .status-confirmed  { background: #e6f4ec; color: #2e7d4f; }
+        .status-completed  { background: #eef1f4; color: var(--text-muted); }
+        .status-cancelled  { background: #faeaea; color: #b94040; }
+        .status-no_show    { background: #fdf1e6; color: #9a6030; }
+
+        /* Row actions */
+        .row-actions { display: flex; gap: 6px; }
+
+        .btn-edit {
+            background: #e8f4f6; color: #2e6b72; border: none;
+            border-radius: 6px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-edit:hover { background: #d0eaf0; }
+
+        .btn-cancel-appt {
+            background: #faeaea; color: #b94040; border: none;
+            border-radius: 6px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-cancel-appt:hover { background: #f5d5d5; }
+
+        .empty-row td {
+            text-align: center; color: var(--text-muted);
+            font-size: 0.82rem; padding: 28px;
+        }
+
+        /* ── EDIT MODAL ── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.4); z-index: 200;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: white; border-radius: var(--radius);
+            padding: 28px; width: 480px; max-width: 95vw;
+            box-shadow: var(--shadow-md);
+            animation: popIn 0.2s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to   { transform: scale(1);    opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title { font-weight: 600; font-size: 1rem; }
+
+        .modal-close {
+            background: none; border: none; cursor: pointer;
+            font-size: 1.3rem; color: var(--text-muted); line-height: 1;
+            padding: 2px 6px; border-radius: 4px;
+        }
+
+        .modal-close:hover { background: #f0f2f5; }
+
+        .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+
+        .modal-actions .btn-primary { flex: 1; margin-top: 0; }
+
+        /* ── TYPE COLORS ── */
+        .type-therapy      { color: #2e6b72; }
+        .type-medication   { color: #5a3e8f; }
+        .type-consultation { color: var(--accent-warm); }
+        .type-followup     { color: var(--accent-green); }
+        .type-assessment   { color: var(--accent-blue); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card { animation: fadeUp 0.4s ease both; }
+        .stat-card:nth-child(1) { animation-delay: 0.04s; }
+        .stat-card:nth-child(2) { animation-delay: 0.08s; }
+        .stat-card:nth-child(3) { animation-delay: 0.12s; }
+        .stat-card:nth-child(4) { animation-delay: 0.16s; }
+
+        /* ── REQUEST QUEUE ── */
+        .status-pending  { background: #fdf1e6; color: #9a6030; }
+        .status-booked   { background: #e6f4ec; color: #2e7d4f; }
+        .status-declined { background: #faeaea; color: #b94040; }
+
+        .btn-book-req {
+            background: #e6f4ec; color: #2e7d4f; border: none;
+            border-radius: 6px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-book-req:hover { background: #cdeada; }
+
+        .btn-decline-req {
+            background: #faeaea; color: #b94040; border: none;
+            border-radius: 6px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-decline-req:hover { background: #f5d5d5; }
+
+        .req-notes-cell {
+            max-width: 180px; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+            color: var(--text-muted); font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+    <div class="logo-section">
+        <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6d9ba0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+        </div>
+        <div class="logo-text">HealthPlus<br><span class="logo-sub">Mental Health</span></div>
+    </div>
+
+    <nav class="nav-menu">
+        <a class="nav-item active">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+            Appointments
+        </a>
+        <a class="nav-item">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            Patients
+        </a>
+        <a class="nav-item">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            Doctors
+        </a>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="sidebar-user">
+        <div class="sidebar-avatar">{{ profile.first_name|make_list|first }}{{ profile.last_name|make_list|first }}</div>
+        <div>
+            <div class="sidebar-user-name">{{ profile.first_name }} {{ profile.last_name }}</div>
+            <div class="sidebar-user-role">Receptionist</div>
+        </div>
+    </div>
+
+    <div style="padding: 12px 12px 20px;">
+        <form method="post" action="/accounts/logout/">
+            {% csrf_token %}
+            <button type="submit" class="nav-item" style="width:100%;background:rgba(212,107,107,0.18);color:#fff;border:none;cursor:pointer;font-size:0.9rem;font-weight:500;">
+                Logout
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<main class="main-wrapper">
+    <header>
+        <div>
+            <h1 class="header-title">Reception Dashboard</h1>
+            <div class="header-sub">Manage doctor–patient appointments</div>
+        </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-card"><div class="stat-label">Total Today</div><div class="stat-value" id="statToday">—</div></div>
+        <div class="stat-card"><div class="stat-label">Scheduled</div><div class="stat-value" id="statScheduled">—</div></div>
+        <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="statConfirmed">—</div></div>
+        <div class="stat-card"><div class="stat-label">Cancelled</div><div class="stat-value" id="statCancelled">—</div></div>
+    </div>
+
+    <div class="layout-grid">
+
+        <!-- BOOK APPOINTMENT FORM -->
+        <div class="card" id="formCard">
+            <div class="card-header">
+                Book Appointment
+                <span id="editingBadge" style="display:none; background:#e8f4f6; color:#2e6b72; font-size:0.72rem; font-weight:600; padding:3px 10px; border-radius:10px;">Editing</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Doctor</label>
+                <select class="form-control" id="fDoctor">
+                    <option value="">Select doctor…</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Patient</label>
+                <select class="form-control" id="fPatient">
+                    <option value="">Select patient…</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Appointment Title</label>
+                <input type="text" class="form-control" id="fTitle" placeholder="e.g. Therapy Session">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <select class="form-control" id="fType">
+                        <option value="therapy">Therapy Session</option>
+                        <option value="medication">Medication Check-in</option>
+                        <option value="consultation" selected>General Consultation</option>
+                        <option value="followup">Follow-up</option>
+                        <option value="assessment">Assessment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Duration (min)</label>
+                    <input type="number" class="form-control" id="fDuration" value="60" min="15" step="15">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Date &amp; Time</label>
+                <input type="datetime-local" class="form-control" id="fDateTime">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Location <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <input type="text" class="form-control" id="fLocation" placeholder="e.g. Room 204 / Online">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <textarea class="form-control" id="fNotes" placeholder="Any additional notes…"></textarea>
+            </div>
+
+            <div class="form-feedback" id="formFeedback"></div>
+
+            <div style="display:flex; gap:10px;">
+                <button class="btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">Cancel Edit</button>
+                <button class="btn-primary" id="submitBtn" onclick="submitAppointment()">Book &amp; Notify Patient</button>
+            </div>
+        </div>
+
+        <!-- APPOINTMENTS TABLE -->
+        <div class="card full-width" style="grid-column: 2; grid-row: 1;">
+            <div class="card-header">
+                All Appointments
+                <div class="table-filters">
+                    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+                    <button class="filter-btn" onclick="setFilter('scheduled', this)">Scheduled</button>
+                    <button class="filter-btn" onclick="setFilter('confirmed', this)">Confirmed</button>
+                    <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+                    <input type="date" class="filter-input" id="dateFilter" onchange="applyDateFilter()">
+                </div>
+            </div>
+
+            <table class="appt-table" id="apptTable">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Type</th>
+                        <th>Date &amp; Time</th>
+                        <th>Duration</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="apptTableBody">
+                    <tr class="empty-row"><td colspan="8">Loading appointments…</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- /layout-grid -->
+
+    <!-- PATIENT REQUESTS -->
+    <div class="card" style="margin-top:18px;" id="requestsSection">
+        <div class="card-header">
+            Patient Appointment Requests
+            <div style="display:flex; gap:8px; align-items:center;">
+                <span class="status-badge status-scheduled" id="pendingBadge" style="font-size:0.72rem;">— pending</span>
+                <div class="table-filters">
+                    <button class="filter-btn active" onclick="setReqFilter('pending', this)">Pending</button>
+                    <button class="filter-btn" onclick="setReqFilter('booked', this)">Booked</button>
+                    <button class="filter-btn" onclick="setReqFilter('declined', this)">Declined</button>
+                    <button class="filter-btn" onclick="setReqFilter('all', this)">All</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="appt-table" id="reqTable">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Preferred Doctor</th>
+                    <th>Preferred Date / Time</th>
+                    <th>Notes</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="reqTableBody">
+                <tr class="empty-row"><td colspan="8">Loading requests…</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<!-- ═══════ BOOK-FROM-REQUEST MODAL ═══════ -->
+<div class="modal-overlay" id="bookReqModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Book Appointment from Request</span>
+            <button class="modal-close" onclick="closeBookModal()">&times;</button>
+        </div>
+
+        <input type="hidden" id="bReqId">
+
+        <div style="background:#f7f9fb; border-radius:9px; padding:12px 14px; margin-bottom:16px; font-size:0.82rem;">
+            <strong id="bPatientName"></strong>
+            <div style="color:var(--text-muted); margin-top:3px;" id="bRequestMeta"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Doctor</label>
+            <select class="form-control" id="bDoctor"></select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" id="bTitle">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-control" id="bType">
+                    <option value="therapy">Therapy Session</option>
+                    <option value="medication">Medication Check-in</option>
+                    <option value="consultation">General Consultation</option>
+                    <option value="followup">Follow-up</option>
+                    <option value="assessment">Assessment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input type="number" class="form-control" id="bDuration" value="60" min="15" step="15">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Date &amp; Time</label>
+                <input type="datetime-local" class="form-control" id="bDateTime">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" id="bLocation" placeholder="Room / Online">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="bNotes"></textarea>
+        </div>
+
+        <div class="form-feedback" id="bFeedback"></div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeBookModal()">Cancel</button>
+            <button class="btn-primary" id="bSaveBtn" onclick="saveBookFromRequest()">Confirm &amp; Notify Patient</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ EDIT MODAL ═══════ -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Edit Appointment</span>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+
+        <input type="hidden" id="mApptId">
+
+        <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" id="mTitle">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-control" id="mType">
+                    <option value="therapy">Therapy Session</option>
+                    <option value="medication">Medication Check-in</option>
+                    <option value="consultation">General Consultation</option>
+                    <option value="followup">Follow-up</option>
+                    <option value="assessment">Assessment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-control" id="mStatus">
+                    <option value="scheduled">Scheduled</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="completed">Completed</option>
+                    <option value="no_show">No Show</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Date &amp; Time</label>
+                <input type="datetime-local" class="form-control" id="mDateTime">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input type="number" class="form-control" id="mDuration" min="15" step="15">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-control" id="mLocation">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="mNotes"></textarea>
+        </div>
+
+        <div class="form-feedback" id="modalFeedback"></div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn-primary" id="modalSaveBtn" onclick="saveEdit()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CSRF = '{{ csrf_token }}';
+    let allAppointments = [];
+    let currentFilter  = 'all';
+    let currentDate    = '';
+
+    const AVATAR_COLORS = ['#6d9ba0','#5a8f6e','#c4956a','#5b8ec4','#9b7db8','#d46b6b'];
+    function avatarColor(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+        return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+    }
+
+    // ── INIT ────────────────────────────────────────────────────────────────
+    function init() {
+        // Set datetime-local min
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('fDateTime').min = now.toISOString().slice(0, 16);
+
+        loadDoctors();
+        loadPatients();
+        loadAppointments();
+    }
+
+    // ── LOAD DOCTORS ─────────────────────────────────────────────────────────
+    function loadDoctors() {
+        fetch('/receptionist/api/doctors/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(r => r.json())
+        .then(data => {
+            const sel = document.getElementById('fDoctor');
+            data.doctors.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.id;
+                opt.textContent = d.name;
+                sel.appendChild(opt);
+            });
+        });
+    }
+
+    // ── LOAD PATIENTS ────────────────────────────────────────────────────────
+    function loadPatients() {
+        fetch('/receptionist/api/patients/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(r => r.json())
+        .then(data => {
+            const sel = document.getElementById('fPatient');
+            data.patients.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `${p.name} (${p.email})`;
+                sel.appendChild(opt);
+            });
+        });
+    }
+
+    // ── LOAD APPOINTMENTS ─────────────────────────────────────────────────────
+    function loadAppointments() {
+        let url = '/receptionist/api/appointments/';
+        const params = [];
+        if (currentFilter !== 'all') params.push(`status=${currentFilter}`);
+        if (currentDate) params.push(`date=${currentDate}`);
+        if (params.length) url += '?' + params.join('&');
+
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(r => r.json())
+        .then(data => {
+            allAppointments = data.appointments;
+            renderTable(allAppointments);
+            updateStats(allAppointments);
+        });
+    }
+
+    // ── RENDER TABLE ──────────────────────────────────────────────────────────
+    function renderTable(appts) {
+        const tbody = document.getElementById('apptTableBody');
+        if (appts.length === 0) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No appointments found.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = appts.map(a => {
+            const patInitials = a.patient_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+            const docInitials = a.doctor_name.replace('Dr. ','').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+            const cancelBtn = (a.status !== 'cancelled' && a.status !== 'completed')
+                ? `<button class="btn-cancel-appt" onclick="cancelAppt(${a.id})">Cancel</button>`
+                : '';
+            const editBtn = (a.status !== 'cancelled' && a.status !== 'completed')
+                ? `<button class="btn-edit" onclick="openEdit(${a.id})">Edit</button>`
+                : '';
+
+            return `
+                <tr>
+                    <td>
+                        <div class="patient-cell">
+                            <div class="table-avatar" style="background:${avatarColor(a.patient_name)}">${patInitials}</div>
+                            <div>
+                                <div class="cell-name">${a.patient_name}</div>
+                                <div class="cell-sub">${a.patient_email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="patient-cell">
+                            <div class="table-avatar" style="background:${avatarColor(a.doctor_name)}">${docInitials}</div>
+                            <div class="cell-name">${a.doctor_name}</div>
+                        </div>
+                    </td>
+                    <td><span class="type-${a.appointment_type}">${a.type_display}</span></td>
+                    <td>${a.scheduled_fmt}</td>
+                    <td>${a.duration_minutes} min</td>
+                    <td>${a.location || '—'}</td>
+                    <td><span class="status-badge status-${a.status}">${a.status_display}</span></td>
+                    <td><div class="row-actions">${editBtn}${cancelBtn}</div></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ── STATS ─────────────────────────────────────────────────────────────────
+    function updateStats(appts) {
+        const today = new Date().toDateString();
+        const todayAppts = appts.filter(a => new Date(a.scheduled_at).toDateString() === today);
+        document.getElementById('statToday').textContent     = todayAppts.length;
+        document.getElementById('statScheduled').textContent = appts.filter(a => a.status === 'scheduled').length;
+        document.getElementById('statConfirmed').textContent = appts.filter(a => a.status === 'confirmed').length;
+        document.getElementById('statCancelled').textContent = appts.filter(a => a.status === 'cancelled').length;
+    }
+
+    // ── FILTER ────────────────────────────────────────────────────────────────
+    function setFilter(status, el) {
+        currentFilter = status;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        loadAppointments();
+    }
+
+    function applyDateFilter() {
+        currentDate = document.getElementById('dateFilter').value;
+        loadAppointments();
+    }
+
+    // ── SUBMIT FORM ───────────────────────────────────────────────────────────
+    function submitAppointment() {
+        const btn      = document.getElementById('submitBtn');
+        const feedback = document.getElementById('formFeedback');
+        btn.disabled = true;
+        feedback.className = 'form-feedback';
+
+        const payload = {
+            doctor_id:        parseInt(document.getElementById('fDoctor').value),
+            patient_id:       parseInt(document.getElementById('fPatient').value),
+            title:            document.getElementById('fTitle').value.trim(),
+            appointment_type: document.getElementById('fType').value,
+            scheduled_at:     document.getElementById('fDateTime').value,
+            duration_minutes: parseInt(document.getElementById('fDuration').value),
+            location:         document.getElementById('fLocation').value.trim(),
+            notes:            document.getElementById('fNotes').value.trim(),
+        };
+
+        fetch('/receptionist/api/appointments/create/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify(payload),
+        })
+        .then(r => r.json())
+        .then(data => {
+            btn.disabled = false;
+            if (data.ok) {
+                feedback.textContent = `Appointment booked! ${data.appointment.patient_name} has been notified.`;
+                feedback.className = 'form-feedback success';
+                resetForm();
+                loadAppointments();
+            } else {
+                const msg = typeof data.error === 'object' ? Object.values(data.error).join(' · ') : (data.error || 'Error');
+                feedback.textContent = msg;
+                feedback.className = 'form-feedback error';
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            feedback.textContent = 'Network error — please try again.';
+            feedback.className = 'form-feedback error';
+        });
+    }
+
+    function resetForm() {
+        ['fDoctor','fPatient','fTitle','fLocation','fNotes'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            else el.value = '';
+        });
+        document.getElementById('fDuration').value = 60;
+        document.getElementById('fDateTime').value = '';
+        document.getElementById('fType').value = 'consultation';
+    }
+
+    function cancelEdit() {
+        resetForm();
+        document.getElementById('cancelEditBtn').style.display = 'none';
+        document.getElementById('editingBadge').style.display = 'none';
+        document.getElementById('submitBtn').textContent = 'Book & Notify Patient';
+    }
+
+    // ── EDIT MODAL ────────────────────────────────────────────────────────────
+    function openEdit(id) {
+        const a = allAppointments.find(x => x.id === id);
+        if (!a) return;
+
+        document.getElementById('mApptId').value    = a.id;
+        document.getElementById('mTitle').value     = a.title;
+        document.getElementById('mType').value      = a.appointment_type;
+        document.getElementById('mStatus').value    = a.status;
+        document.getElementById('mDateTime').value  = a.scheduled_at.slice(0, 16);
+        document.getElementById('mDuration').value  = a.duration_minutes;
+        document.getElementById('mLocation').value  = a.location;
+        document.getElementById('mNotes').value     = a.notes;
+
+        document.getElementById('modalFeedback').className = 'form-feedback';
+        document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').classList.remove('open');
+    }
+
+    document.getElementById('editModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    function saveEdit() {
+        const id  = parseInt(document.getElementById('mApptId').value);
+        const btn = document.getElementById('modalSaveBtn');
+        const fb  = document.getElementById('modalFeedback');
+        btn.disabled = true;
+        fb.className = 'form-feedback';
+
+        const payload = {
+            title:            document.getElementById('mTitle').value.trim(),
+            appointment_type: document.getElementById('mType').value,
+            status:           document.getElementById('mStatus').value,
+            scheduled_at:     document.getElementById('mDateTime').value,
+            duration_minutes: parseInt(document.getElementById('mDuration').value),
+            location:         document.getElementById('mLocation').value.trim(),
+            notes:            document.getElementById('mNotes').value.trim(),
+        };
+
+        fetch(`/receptionist/api/appointments/${id}/update/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify(payload),
+        })
+        .then(r => r.json())
+        .then(data => {
+            btn.disabled = false;
+            if (data.ok) {
+                closeModal();
+                loadAppointments();
+            } else {
+                fb.textContent = data.error || 'Error saving changes.';
+                fb.className = 'form-feedback error';
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            fb.textContent = 'Network error.';
+            fb.className = 'form-feedback error';
+        });
+    }
+
+    // ── CANCEL ────────────────────────────────────────────────────────────────
+    function cancelAppt(id) {
+        const a = allAppointments.find(x => x.id === id);
+        if (!confirm(`Cancel appointment for ${a ? a.patient_name : 'this patient'}? They will be notified.`)) return;
+
+        fetch(`/receptionist/api/appointments/${id}/cancel/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+        })
+        .then(r => r.json())
+        .then(data => { if (data.ok) loadAppointments(); });
+    }
+
+    init();
+
+    // ── REQUEST QUEUE ────────────────────────────────────────────────────────
+    let currentReqFilter = 'pending';
+    let allRequests = [];
+
+    function loadRequests() {
+        fetch(`/receptionist/api/requests/?status=${currentReqFilter}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(r => r.json())
+        .then(data => {
+            allRequests = data.requests;
+            renderRequestTable(allRequests);
+
+            // Update pending badge
+            if (currentReqFilter === 'pending') {
+                document.getElementById('pendingBadge').textContent = `${allRequests.length} pending`;
+            }
+        });
+    }
+
+    function renderRequestTable(reqs) {
+        const tbody = document.getElementById('reqTableBody');
+        if (reqs.length === 0) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No requests found.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = reqs.map(r => {
+            const initials = r.patient_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+            const actionBtns = r.status === 'pending'
+                ? `<div class="row-actions">
+                       <button class="btn-book-req" onclick="openBookModal(${r.id})">Book</button>
+                       <button class="btn-decline-req" onclick="declineRequest(${r.id})">Decline</button>
+                   </div>`
+                : `<span style="font-size:0.72rem;color:var(--text-muted);">${r.status_display}</span>`;
+
+            return `
+                <tr>
+                    <td>
+                        <div class="patient-cell">
+                            <div class="table-avatar" style="background:${avatarColor(r.patient_name)}">${initials}</div>
+                            <div>
+                                <div class="cell-name">${r.patient_name}</div>
+                                <div class="cell-sub">${r.patient_email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="type-${r.appointment_type}">${r.type_display}</span></td>
+                    <td>${r.preferred_doctor_name || '<span style="color:var(--text-muted)">No preference</span>'}</td>
+                    <td>${r.preferred_fmt}</td>
+                    <td><div class="req-notes-cell" title="${r.notes}">${r.notes || '—'}</div></td>
+                    <td>${r.created_fmt}</td>
+                    <td><span class="status-badge status-${r.status}">${r.status_display}</span></td>
+                    <td>${actionBtns}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function setReqFilter(status, el) {
+        currentReqFilter = status;
+        document.querySelectorAll('#requestsSection .filter-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        loadRequests();
+    }
+
+    function declineRequest(id) {
+        if (!confirm('Decline this request? The patient will be notified.')) return;
+        fetch(`/receptionist/api/requests/${id}/decline/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+        })
+        .then(r => r.json())
+        .then(data => { if (data.ok) loadRequests(); });
+    }
+
+    // ── BOOK-FROM-REQUEST MODAL ───────────────────────────────────────────────
+    let cachedDoctorsForModal = null;
+
+    function openBookModal(id) {
+        const req = allRequests.find(r => r.id === id);
+        if (!req) return;
+
+        document.getElementById('bReqId').value    = id;
+        document.getElementById('bPatientName').textContent = req.patient_name;
+        document.getElementById('bRequestMeta').textContent =
+            `${req.type_display} · ${req.preferred_fmt}` +
+            (req.notes ? ` · "${req.notes}"` : '');
+
+        document.getElementById('bType').value     = req.appointment_type;
+        document.getElementById('bTitle').value    = req.type_display;
+        document.getElementById('bDuration').value = 60;
+        document.getElementById('bLocation').value = '';
+        document.getElementById('bNotes').value    = req.notes || '';
+        document.getElementById('bDateTime').value = '';
+        document.getElementById('bFeedback').className = 'form-feedback';
+
+        // Pre-fill date if provided
+        if (req.preferred_date && req.preferred_time) {
+            document.getElementById('bDateTime').value = `${req.preferred_date}T${req.preferred_time}`;
+        } else if (req.preferred_date) {
+            document.getElementById('bDateTime').value = `${req.preferred_date}T09:00`;
+        }
+
+        // Load doctors into the select
+        const sel = document.getElementById('bDoctor');
+        if (cachedDoctorsForModal) {
+            populateDoctorSelect(sel, req.preferred_doctor_id, cachedDoctorsForModal);
+            document.getElementById('bookReqModal').classList.add('open');
+        } else {
+            fetch('/receptionist/api/doctors/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.json())
+            .then(data => {
+                cachedDoctorsForModal = data.doctors;
+                populateDoctorSelect(sel, req.preferred_doctor_id, data.doctors);
+                document.getElementById('bookReqModal').classList.add('open');
+            });
+        }
+    }
+
+    function populateDoctorSelect(sel, preferredId, doctors) {
+        sel.innerHTML = '<option value="">Select doctor…</option>';
+        doctors.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.id;
+            opt.textContent = d.name;
+            if (preferredId && d.id === preferredId) opt.selected = true;
+            sel.appendChild(opt);
+        });
+    }
+
+    function closeBookModal() {
+        document.getElementById('bookReqModal').classList.remove('open');
+    }
+
+    document.getElementById('bookReqModal').addEventListener('click', function(e) {
+        if (e.target === this) closeBookModal();
+    });
+
+    function saveBookFromRequest() {
+        const id  = parseInt(document.getElementById('bReqId').value);
+        const btn = document.getElementById('bSaveBtn');
+        const fb  = document.getElementById('bFeedback');
+        btn.disabled = true;
+        fb.className = 'form-feedback';
+
+        const payload = {
+            doctor_id:        parseInt(document.getElementById('bDoctor').value),
+            title:            document.getElementById('bTitle').value.trim(),
+            appointment_type: document.getElementById('bType').value,
+            scheduled_at:     document.getElementById('bDateTime').value,
+            duration_minutes: parseInt(document.getElementById('bDuration').value),
+            location:         document.getElementById('bLocation').value.trim(),
+            notes:            document.getElementById('bNotes').value.trim(),
+        };
+
+        fetch(`/receptionist/api/requests/${id}/book/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify(payload),
+        })
+        .then(r => r.json())
+        .then(data => {
+            btn.disabled = false;
+            if (data.ok) {
+                closeBookModal();
+                loadRequests();
+                loadAppointments();
+            } else {
+                fb.textContent = data.error || 'Error booking appointment.';
+                fb.className = 'form-feedback error';
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            fb.textContent = 'Network error.';
+            fb.className = 'form-feedback error';
+        });
+    }
+
+    loadRequests();
+    // Poll pending requests every 60 s
+    setInterval(() => { if (currentReqFilter === 'pending') loadRequests(); }, 60000);
+
+</script>
+</body>
+</html>

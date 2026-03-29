@@ -191,22 +191,15 @@
                         <label class="checkbox-item"><input type="checkbox" name="prescription_alerts"
                                                             id="id_refill_alerts"> Prescription Refill</label>
                     </div>
-                    <select>
-                        <option>Notification Frequency: Daily Summary</option>
-                        <option>Notification Frequency: New Alert</option>
-                        <option>Notification Frequency: None</option>
+                    <select name="notification_frequency">
+                        <option value="daily">Notification Frequency: Daily Summary</option>
+                        <option value="instant">Notification Frequency: New Alert</option>
+                        <option value="none">Notification Frequency: None</option>
                     </select>
 
 
                 </div>
 
-                <div class="section">
-                    <h3> Data Visibility Settings</h3>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item"><input type="checkbox"> Share with provider</label>
-                        <label class="checkbox-item"><input type="checkbox"> Share with specialists</label>
-                    </div>
-                </div>
 
                 <div class="section">
                     <h3>Health Tracking Preferences</h3>
