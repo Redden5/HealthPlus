@@ -1,0 +1,27 @@
+<div class="card card-flush full-width">
+    <div class="card-header card-header-inset">
+        Active Patients
+        <div class="card-header-controls">
+            <input type="text" class="patient-search" id="patientSearch"
+                   placeholder="Search patients…" oninput="filterPatients(this.value)">
+            <span class="pill" id="patientCountPill">—</span>
+        </div>
+    </div>
+    <div class="table-scroll">
+        <table class="patient-table">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Date of Birth</th>
+                    <th>Blood Type</th>
+                    <th>Conditions</th>
+                    <th>Last Prescription</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="patientTableBody">
+                <tr><td colspan="6" class="pt-loading">Loading patients…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

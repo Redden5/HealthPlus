@@ -1,0 +1,49 @@
+<div id="reqApptOverlay" class="req-overlay">
+    <div class="req-modal">
+        <div class="req-modal-header">
+            <span class="req-modal-title">Request an Appointment</span>
+            <button class="req-modal-close" onclick="closeRequestModal()">&times;</button>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Appointment Type</label>
+            <select class="req-control" id="rType">
+                <option value="therapy">Therapy Session</option>
+                <option value="medication">Medication Check-in</option>
+                <option value="consultation" selected>General Consultation</option>
+                <option value="followup">Follow-up</option>
+                <option value="assessment">Assessment</option>
+            </select>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Preferred Doctor <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <select class="req-control" id="rDoctor">
+                <option value="">No preference</option>
+            </select>
+        </div>
+
+        <div class="req-date-row">
+            <div class="req-form-group">
+                <label class="req-label">Preferred Date <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <input type="date" class="req-control" id="rDate">
+            </div>
+            <div class="req-form-group">
+                <label class="req-label">Preferred Time <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <input type="time" class="req-control" id="rTime">
+            </div>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <textarea class="req-control" id="rNotes" rows="3" placeholder="Describe your concern or any specific needs…"></textarea>
+        </div>
+
+        <div class="req-feedback" id="rFeedback"></div>
+
+        <div class="req-modal-actions">
+            <button class="req-btn-secondary" onclick="closeRequestModal()">Cancel</button>
+            <button class="req-btn-primary" id="rSubmitBtn" onclick="submitRequest()">Send Request</button>
+        </div>
+    </div>
+</div>

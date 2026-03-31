@@ -1,0 +1,33 @@
+<div class="card card-flush full-width">
+    <div class="card-header card-header-inset">
+        Messages
+        <div class="card-header-actions">
+            <span class="pill pill-unread" id="msgUnreadPill"></span>
+            <button class="btn-new-conv" onclick="openNewConvModal()">+ New</button>
+        </div>
+    </div>
+    <div class="messaging-panel">
+        <div class="conv-list" id="convList">
+            <div class="conv-loading">Loading…</div>
+        </div>
+        <div class="chat-window">
+            <div class="chat-header" id="chatHeader" style="display:none;">
+                <div class="chat-header-avatar" id="chatHeaderAvatar"></div>
+                <div>
+                    <div class="chat-header-name" id="chatHeaderName"></div>
+                    <div class="chat-header-sub">Patient</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-empty">Select a conversation to begin</div>
+            </div>
+            <div class="chat-compose" id="chatCompose" style="display:none;">
+                <input type="text" class="compose-input" id="composeInput"
+                       placeholder="Type a message…" onkeydown="handleKey(event)">
+                <button class="compose-send" onclick="sendMessage()" title="Send">
+                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="card-header">
+        Mood History
+        <div class="period-tabs">
+            <button class="period-tab active" onclick="setPeriod('7d', this)">7D</button>
+            <button class="period-tab" onclick="setPeriod('14d', this)">14D</button>
+            <button class="period-tab" onclick="setPeriod('30d', this)">30D</button>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-area" id="chartArea">
+            <svg class="chart-svg" id="moodChart"></svg>
+            <div class="chart-tooltip" id="chartTooltip"></div>
+        </div>
+        <div class="chart-legend">
+            <div class="legend-item">
+                <div class="legend-dot legend-dot-teal"></div>
+                Daily mood
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot legend-dot-warm"></div>
+                Average
+            </div>
+        </div>
+    </div>
+</div>

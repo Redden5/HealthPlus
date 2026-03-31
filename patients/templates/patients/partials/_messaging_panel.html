@@ -1,0 +1,56 @@
+<div id="section-messages" class="card full-width card-flush">
+    <div class="card-header card-header-inset">
+        Messages
+        <span class="pill" id="msgUnreadPill">2 new</span>
+    </div>
+    <div class="messaging-panel">
+
+        <!-- Conversation list -->
+        <div class="conv-list" id="convList">
+            <div class="conv-item active" onclick="openConv(0)" data-conv="0">
+                <div class="conv-avatar" style="background:#6d9ba0;">AT</div>
+                <div class="conv-info">
+                    <div class="conv-name">Dr. Thorne</div>
+                    <div class="conv-last">Great progress this week…</div>
+                </div>
+                <div class="conv-unread-dot"></div>
+            </div>
+            <div class="conv-item" onclick="openConv(1)" data-conv="1">
+                <div class="conv-avatar" style="background:#5a8f6e;">HP</div>
+                <div class="conv-info">
+                    <div class="conv-name">HealthPlus Care</div>
+                    <div class="conv-last">Your lab results are ready…</div>
+                </div>
+                <div class="conv-unread-dot"></div>
+            </div>
+            <div class="conv-item" onclick="openConv(2)" data-conv="2">
+                <div class="conv-avatar" style="background:#c4956a;">RP</div>
+                <div class="conv-info">
+                    <div class="conv-name">Dr. Patel</div>
+                    <div class="conv-last">Adjusted dosage notes…</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat window -->
+        <div class="chat-window">
+            <div class="chat-header" id="chatHeader">
+                <div class="chat-header-avatar" id="chatHeaderAvatar" style="background:#6d9ba0;">AT</div>
+                <div class="chat-header-info">
+                    <div class="chat-header-name" id="chatHeaderName">Dr. Thorne</div>
+                    <div class="chat-header-status">Therapist · Therapy Session</div>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="chat-compose">
+                <input type="text" class="compose-input" id="composeInput" placeholder="Type a message…" onkeydown="handleComposeKey(event)">
+                <button class="compose-send" onclick="sendMessage()" title="Send">
+                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
