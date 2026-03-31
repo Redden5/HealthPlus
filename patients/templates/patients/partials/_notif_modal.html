@@ -1,0 +1,17 @@
+<div id="notif-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <hr>
+        <div class="notif-list">
+            {% for notif in notifications %}
+                <div class="notif-item {% if not notif.is_read %}unread{% endif %}">
+                    <strong>{{ notif.title }}</strong>
+                    <p>{{ notif.message }}</p>
+                    <small>{{ notif.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+            {% empty %}
+                <p>No new messages.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>

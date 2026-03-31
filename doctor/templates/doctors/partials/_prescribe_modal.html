@@ -1,0 +1,40 @@
+<div class="modal-overlay" id="prescribeModal" onclick="if(event.target===this)closePrescribeModal()">
+    <div class="modal-box modal-box-prescribe">
+        <div class="modal-title">Prescribe Medication</div>
+        <div class="prescribe-patient-label" id="prescribePatientLabel"></div>
+
+        <div class="modal-form-grid">
+            <div>
+                <label class="modal-label">Medication Name *</label>
+                <input type="text" class="modal-input" id="rxMedication" placeholder="e.g. Sertraline">
+            </div>
+            <div class="modal-form-row">
+                <div>
+                    <label class="modal-label">Dosage *</label>
+                    <input type="text" class="modal-input" id="rxDosage" placeholder="e.g. 50 mg">
+                </div>
+                <div>
+                    <label class="modal-label">Frequency *</label>
+                    <input type="text" class="modal-input" id="rxFrequency" placeholder="e.g. Once daily">
+                </div>
+            </div>
+            <div>
+                <label class="modal-label">Duration</label>
+                <input type="text" class="modal-input" id="rxDuration" placeholder="e.g. 30 days">
+            </div>
+            <div>
+                <label class="modal-label">Instructions / Notes</label>
+                <textarea class="modal-input" id="rxInstructions"
+                          placeholder="e.g. Take with food, avoid alcohol…" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="modal-error" id="prescribeError"></div>
+        <div class="prescribe-success" id="prescribeSuccess"></div>
+
+        <div class="modal-actions modal-actions-spaced">
+            <button class="btn-modal-cancel" onclick="closePrescribeModal()">Cancel</button>
+            <button class="btn-modal-start" id="prescribeSubmitBtn" onclick="submitPrescription()">Prescribe</button>
+        </div>
+    </div>
+</div>

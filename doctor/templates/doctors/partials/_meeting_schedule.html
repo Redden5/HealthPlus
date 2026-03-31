@@ -1,0 +1,26 @@
+<div class="card tall">
+    <div class="card-header">
+        Schedule Teams Call
+        <span class="pill pill-teams">Teams</span>
+    </div>
+
+    <form class="meeting-form" id="meetingForm" onsubmit="scheduleMeeting(event)">
+        {% csrf_token %}
+        <div>
+            <label for="patientEmail">Patient Email</label>
+            <input type="email" id="patientEmail" placeholder="patient@example.com" required>
+        </div>
+        <div>
+            <label for="meetingTitle">Meeting Title</label>
+            <input type="text" id="meetingTitle" placeholder="e.g. Therapy Session" required>
+        </div>
+        <div>
+            <label for="meetingTime">Date &amp; Time</label>
+            <input type="datetime-local" id="meetingTime" required>
+        </div>
+        <div id="meetingFeedback" class="meeting-feedback"></div>
+        <button type="submit" class="meeting-submit-btn" id="meetingSubmitBtn">
+            Create &amp; Notify Patient
+        </button>
+    </form>
+</div>

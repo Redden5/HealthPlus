@@ -1,0 +1,28 @@
+<div id="section-journal" class="card full-width card-journal">
+    <div class="card-header">
+        Journal
+        <span class="dots-menu">•••</span>
+    </div>
+    <div class="journal-content">
+        <div class="journal-tabs">
+            <button class="journal-tab active" id="tabWrite" onclick="switchJournalTab('write')">Write</button>
+            <button class="journal-tab" id="tabEntries" onclick="switchJournalTab('entries')">Past Entries</button>
+        </div>
+
+        <div class="journal-write" id="journalWrite">
+            <textarea class="journal-textarea" id="journalText" placeholder="Write about your day, thoughts, feelings, or anything on your mind..." oninput="updateCharCount()"></textarea>
+            <div class="journal-prompts">
+                <button class="journal-prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Gratitude</button>
+                <button class="journal-prompt-chip" onclick="insertPrompt('What challenged me today and how did I handle it?')">Challenges</button>
+                <button class="journal-prompt-chip" onclick="insertPrompt('What is one thing I want to improve tomorrow?')">Goals</button>
+                <button class="journal-prompt-chip" onclick="insertPrompt('How is my body feeling right now?')">Body Check</button>
+            </div>
+            <div class="journal-footer">
+                <span class="journal-char-count" id="charCount">0 characters</span>
+                <button class="journal-save-btn" id="journalSaveBtn" onclick="saveJournal()" disabled>Save Entry</button>
+            </div>
+        </div>
+
+        <div class="journal-entries hidden" id="journalEntries"></div>
+    </div>
+</div>

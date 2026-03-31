@@ -1,0 +1,32 @@
+<div class="card requests-section" id="requestsSection">
+    <div class="card-header">
+        Patient Appointment Requests
+        <div class="req-header-actions">
+            <span class="status-badge status-scheduled" id="pendingBadge" style="font-size:0.72rem;">— pending</span>
+            <div class="table-filters">
+                <button class="filter-btn active" onclick="setReqFilter('pending', this)">Pending</button>
+                <button class="filter-btn" onclick="setReqFilter('booked', this)">Booked</button>
+                <button class="filter-btn" onclick="setReqFilter('declined', this)">Declined</button>
+                <button class="filter-btn" onclick="setReqFilter('all', this)">All</button>
+            </div>
+        </div>
+    </div>
+
+    <table class="appt-table" id="reqTable">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Type</th>
+                <th>Preferred Doctor</th>
+                <th>Preferred Date / Time</th>
+                <th>Notes</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="reqTableBody">
+            <tr class="empty-row"><td colspan="8">Loading requests…</td></tr>
+        </tbody>
+    </table>
+</div>

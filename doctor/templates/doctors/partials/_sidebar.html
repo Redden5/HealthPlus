@@ -1,0 +1,28 @@
+<aside class="sidebar">
+    <div class="logo-section">
+        <div class="logo-icon">🌿</div>
+        <div>
+            <div class="logo-text">HealthPlus</div>
+            <div class="logo-sub">MENTAL HEALTH</div>
+        </div>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">Meetings</a>
+        <a href="#" class="nav-item">Messages</a>
+        <a href="#" class="nav-item">Settings</a>
+        <a href="{% url 'scheduling:schedule' %}" class="nav-item">Calendar</a>
+        <a href="#" class="nav-item">Patient List</a>
+        <a href="#" class="nav-item">Health Records</a>
+    </nav>
+
+    <div class="sidebar-logout">
+        <form method="post" action="/accounts/logout/">
+            {% csrf_token %}
+            <button type="submit" class="nav-item nav-item-logout">
+                Logout
+            </button>
+        </form>
+    </div>
+</aside>

@@ -1,0 +1,13 @@
+<div class="modal-overlay" id="newConvModal" onclick="if(event.target===this)closeNewConvModal()">
+    <div class="modal-box">
+        <div class="modal-title">Start New Conversation</div>
+        <input type="email" class="modal-input" id="newConvEmail"
+               placeholder="Patient email address"
+               onkeydown="if(event.key==='Enter')startNewConversation()">
+        <div class="modal-error" id="newConvError"></div>
+        <div class="modal-actions">
+            <button class="btn-modal-cancel" onclick="closeNewConvModal()">Cancel</button>
+            <button class="btn-modal-start" onclick="startNewConversation()">Start Chat</button>
+        </div>
+    </div>
+</div>

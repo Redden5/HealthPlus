@@ -1,0 +1,64 @@
+<div class="card" id="formCard">
+    <div class="card-header">
+        Book Appointment
+        <span id="editingBadge" class="badge-editing">Editing</span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Doctor</label>
+        <select class="form-control" id="fDoctor">
+            <option value="">Select doctor…</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Patient</label>
+        <select class="form-control" id="fPatient">
+            <option value="">Select patient…</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Appointment Title</label>
+        <input type="text" class="form-control" id="fTitle" placeholder="e.g. Therapy Session">
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-control" id="fType">
+                <option value="therapy">Therapy Session</option>
+                <option value="medication">Medication Check-in</option>
+                <option value="consultation" selected>General Consultation</option>
+                <option value="followup">Follow-up</option>
+                <option value="assessment">Assessment</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Duration (min)</label>
+            <input type="number" class="form-control" id="fDuration" value="60" min="15" step="15">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Date &amp; Time</label>
+        <input type="datetime-local" class="form-control" id="fDateTime">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Location <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+        <input type="text" class="form-control" id="fLocation" placeholder="e.g. Room 204 / Online">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+        <textarea class="form-control" id="fNotes" placeholder="Any additional notes…"></textarea>
+    </div>
+
+    <div class="form-feedback" id="formFeedback"></div>
+
+    <div class="form-btn-row">
+        <button class="btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">Cancel Edit</button>
+        <button class="btn-primary" id="submitBtn" onclick="submitAppointment()">Book &amp; Notify Patient</button>
+    </div>
+</div>

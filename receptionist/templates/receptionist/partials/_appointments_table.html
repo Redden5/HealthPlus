@@ -1,0 +1,30 @@
+<div class="card full-width appt-table-card">
+    <div class="card-header">
+        All Appointments
+        <div class="table-filters">
+            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('scheduled', this)">Scheduled</button>
+            <button class="filter-btn" onclick="setFilter('confirmed', this)">Confirmed</button>
+            <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+            <input type="date" class="filter-input" id="dateFilter" onchange="applyDateFilter()">
+        </div>
+    </div>
+
+    <table class="appt-table" id="apptTable">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Type</th>
+                <th>Date &amp; Time</th>
+                <th>Duration</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="apptTableBody">
+            <tr class="empty-row"><td colspan="8">Loading appointments…</td></tr>
+        </tbody>
+    </table>
+</div>
