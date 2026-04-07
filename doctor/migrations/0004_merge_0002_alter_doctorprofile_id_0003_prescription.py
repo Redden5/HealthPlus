@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("doctor", "0002_alter_doctorprofile_id"),
+        ("doctor", "0002_teamscall"),
         ("doctor", "0003_prescription"),
     ]
 
