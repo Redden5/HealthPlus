@@ -142,7 +142,7 @@ def create_appointment(request):
     )
 
     # Notify patient
-    fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+    fmt_time = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
     trigger_full_notification(
         profile=patient,
         title=f"New Appointment: {title}",
@@ -210,7 +210,7 @@ def update_appointment(request, appt_id):
 
         # Notify patient if time or status changed
         if 'scheduled_at' in changed_fields or 'status' in changed_fields:
-            fmt_time = appt.scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+            fmt_time = appt.scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
             trigger_full_notification(
                 profile=appt.patient,
                 title=f"Appointment Updated: {appt.title}",
@@ -241,7 +241,7 @@ def cancel_appointment(request, appt_id):
         title=f"Appointment Cancelled: {appt.title}",
         content=(
             f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
-            f"on {appt.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled."
+            f"on {appt.scheduled_at.strftime('%b %#d at %#I:%M %p')} has been cancelled."
         ),
         doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
     )
@@ -273,7 +273,7 @@ def patient_appointments(request):
             'doctor_name':  f"Dr. {a.doctor.first_name} {a.doctor.last_name}",
             'type_display': a.get_appointment_type_display(),
             'scheduled_at': a.scheduled_at.isoformat(),
-            'scheduled_fmt': a.scheduled_at.strftime('%b %-d · %-I:%M %p'),
+            'scheduled_fmt': a.scheduled_at.strftime('%b %#d · %#I:%M %p'),
             'location':     a.location,
             'status':       a.status,
             'status_display': a.get_status_display(),
@@ -409,7 +409,7 @@ def book_from_request(request, req_id):
     req.booked_appointment = appt
     req.save(update_fields=['status', 'booked_appointment', 'updated_at'])
 
-    fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+    fmt_time = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
     trigger_full_notification(
         profile=req.patient,
         title=f"Appointment Confirmed: {title}",
@@ -466,16 +466,16 @@ def _serialize_request(r):
         'status':           r.status,
         'status_display':   r.get_status_display(),
         'created_at':       r.created_at.isoformat(),
-        'created_fmt':      r.created_at.strftime('%b %-d, %Y'),
+        'created_fmt':      r.created_at.strftime('%b %#d, %Y'),
     }
 
 
 def _fmt_preferred(r):
     parts = []
     if r.preferred_date:
-        parts.append(r.preferred_date.strftime('%b %-d, %Y'))
+        parts.append(r.preferred_date.strftime('%b %#d, %Y'))
     if r.preferred_time:
-        parts.append(r.preferred_time.strftime('%-I:%M %p'))
+        parts.append(r.preferred_time.strftime('%#I:%M %p'))
     return ' · '.join(parts) if parts else 'Flexible'
 
 
@@ -488,7 +488,7 @@ def _serialize(a):
         'appointment_type': a.appointment_type,
         'type_display':     a.get_appointment_type_display(),
         'scheduled_at':     a.scheduled_at.isoformat(),
-        'scheduled_fmt':    a.scheduled_at.strftime('%b %-d, %Y · %-I:%M %p'),
+        'scheduled_fmt':    a.scheduled_at.strftime('%b %#d, %Y · %#I:%M %p'),
         'duration_minutes': a.duration_minutes,
         'location':         a.location,
         'notes':            a.notes,

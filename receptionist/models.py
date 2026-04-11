@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.db import models
 
@@ -55,6 +57,14 @@ class Appointment(models.Model):
     status           = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_SCHEDULED)
     created_at       = models.DateTimeField(auto_now_add=True)
     updated_at       = models.DateTimeField(auto_now=True)
+
+    @property
+    def start_time(self):
+        return self.scheduled_at
+
+    @property
+    def end_time(self):
+        return self.scheduled_at + timedelta(minutes=self.duration_minutes)
 
     class Meta:
         ordering = ['scheduled_at']

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',      # login page
     'patients',      # patient portal
+    'scheduling',    # Appointments, calendar
     'doctor',        # doctor portal
     'receptionist',  # receptionist portal
 ]
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,14 +85,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-    }
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': os.getenv('DB_NAME'),
+       'USER': os.getenv('DB_USER'),
+       'PASSWORD': os.getenv('DB_PASSWORD'),
+       'HOST': os.getenv('DB_HOST'),
+       'PORT': os.getenv('DB_PORT'),
+   }
 }
+
 
 LOGIN_URL = '/accounts/login/'
 
@@ -135,3 +137,5 @@ STATIC_URL = 'static/'
 # Courier API Configuration
 COURIER_AUTH_KEY = os.getenv("COURIER_AUTH_KEY")
 COURIER_TEMPLATE_ID = os.getenv("COURIER_TEMPLATE_ID")
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
