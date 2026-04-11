@@ -138,7 +138,7 @@ def create_appointment(request):
         notes=notes,
     )
 
-    fmt = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+    fmt = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
     _notify(
         patient,
         f"New Appointment: {title}",
@@ -195,7 +195,7 @@ def update_appointment(request, appt_id):
     if changed:
         appt.save(update_fields=changed + ['updated_at'])
         if 'scheduled_at' in changed or 'status' in changed:
-            fmt = appt.scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+            fmt = appt.scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
             _notify(
                 appt.patient,
                 f"Appointment Updated: {appt.title}",
@@ -221,7 +221,7 @@ def cancel_appointment(request, appt_id):
         appt.patient,
         f"Appointment Cancelled: {appt.title}",
         f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
-        f"on {appt.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled.",
+        f"on {appt.scheduled_at.strftime('%b %#d at %#I:%M %p')} has been cancelled.",
         f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
     )
 
@@ -304,7 +304,7 @@ def book_from_request(request, req_id):
     req.booked_appointment = appt
     req.save(update_fields=['status', 'booked_appointment', 'updated_at'])
 
-    fmt = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
+    fmt = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
     _notify(
         req.patient,
         f"Appointment Confirmed: {title}",

@@ -5,6 +5,8 @@ from django.conf import settings
 from .constants import BLOOD_TYPE_CHOICES
 
 
+
+
 class PatientProfile(models.Model):
     # Link to the User account
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -44,9 +46,9 @@ class PatientProfile(models.Model):
 
     #Mood Tracking (see MoodEntry)
 
-
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
 
 class MoodEntry(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='mood_entries')
@@ -95,7 +97,7 @@ class Message(models.Model):
         return f"[{self.conversation}] {self.sender.username}: {self.text[:40]}"
 
 
-#Notifications
+# Notifications
 class InAppNotification(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)  # e.g., "New Lab Result"

@@ -1692,6 +1692,9 @@
                 <label class="req-label">Preferred Doctor <span style="font-weight:400;text-transform:none;">(optional)</span></label>
                 <select class="req-control" id="rDoctor">
                     <option value="">No preference</option>
+                    {% for doc in doctors %}
+                    <option value="{{ doc.id }}">Dr. {{ doc.first_name }} {{ doc.last_name }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -2307,12 +2310,9 @@ window.onclick = function(event) {
         loadAppointments();
 
         // ═══════ APPOINTMENT REQUESTS ═══════
-        let reqDoctorsLoaded = false;
-
         function openRequestModal() {
             document.getElementById('reqApptOverlay').classList.add('open');
             document.getElementById('rFeedback').className = 'req-feedback';
-            if (!reqDoctorsLoaded) loadReqDoctors();
         }
 
         function closeRequestModal() {
@@ -2322,21 +2322,6 @@ window.onclick = function(event) {
         document.getElementById('reqApptOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeRequestModal();
         });
-
-        function loadReqDoctors() {
-            fetch('/receptionist/api/doctors/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-            .then(r => r.json())
-            .then(data => {
-                const sel = document.getElementById('rDoctor');
-                data.doctors.forEach(d => {
-                    const opt = document.createElement('option');
-                    opt.value = d.id;
-                    opt.textContent = d.name;
-                    sel.appendChild(opt);
-                });
-                reqDoctorsLoaded = true;
-            });
-        }
 
         function submitRequest() {
             const btn = document.getElementById('rSubmitBtn');
@@ -2433,6 +2418,222 @@ window.onclick = function(event) {
                 }
                 document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
                 this.classList.add('active');
+            });
+        });
+    </script>
+
+    <!-- ═══════ APPOINTMENT BOOKING MODAL ═══════ -->
+    <div id="appt-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:16px; padding:32px; width:100%; max-width:480px; box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative;">
+            <button id="close-appt-modal" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#7a8290;">&times;</button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:6px; color:#2d3239;">Book an Appointment</h2>
+            <p style="color:#7a8290; font-size:0.85rem; margin-bottom:22px;">Select a doctor and date to see available time slots.</p>
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+                <!-- Doctor -->
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <label style="font-size:0.8rem; font-weight:600; color:#2d3239;">Doctor</label>
+                        <a id="view-profile-link" href="#" target="_blank"
+                           style="display:none; font-size:0.78rem; font-weight:500; color:#5b8ec4; text-decoration:none;">
+                            View Profile
+                        </a>
+                    </div>
+                    <select id="appt-doctor" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+                        <option value="">-- Select a doctor --</option>
+                        {% for doc in doctors %}
+                        <option value="{{ doc.id }}">Dr. {{ doc.first_name }} {{ doc.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Date -->
+                <div>
+                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Date</label>
+                    <input type="date" id="appt-date" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+                </div>
+
+                <!-- Time Slots -->
+                <div id="slots-section" style="display:none;">
+                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:8px;">Available Time Slots</label>
+                    <div id="slots-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+                    <p id="no-slots-msg" style="display:none; color:#d46b6b; font-size:0.85rem; margin-top:4px;">No available slots for this date.</p>
+                </div>
+
+                <!-- Appointment Type -->
+                <div id="appt-type-section" style="display:none;">
+                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Appointment Type</label>
+                    <select id="appt-type" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+                        <option value="in_person">In Person</option>
+                        <option value="virtual">Virtual</option>
+                        <option value="phone">Phone Call</option>
+                    </select>
+                </div>
+
+                <!-- Error / Success messages -->
+                <p id="appt-error" style="display:none; color:#d46b6b; font-size:0.85rem;"></p>
+                <p id="appt-success" style="display:none; color:#5a8f6e; font-size:0.85rem; font-weight:600;"></p>
+
+                <!-- Book Button -->
+                <button id="book-btn" style="display:none; background:#5a8f6e; color:#fff; border:none; border-radius:10px; padding:12px; font-size:0.95rem; font-weight:600; cursor:pointer;">
+                    Book Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════ APPOINTMENT MODAL ═══════
+        const overlay = document.getElementById('appt-modal-overlay');
+        const closeBtn = document.getElementById('close-appt-modal');
+        const doctorSelect = document.getElementById('appt-doctor');
+        const dateInput = document.getElementById('appt-date');
+        const slotsSection = document.getElementById('slots-section');
+        const slotsContainer = document.getElementById('slots-container');
+        const noSlotsMsg = document.getElementById('no-slots-msg');
+        const apptTypeSection = document.getElementById('appt-type-section');
+        const bookBtn = document.getElementById('book-btn');
+        const apptError = document.getElementById('appt-error');
+        const apptSuccess = document.getElementById('appt-success');
+
+        let selectedSlot = null;
+
+        // Set min date to today
+        dateInput.min = new Date().toISOString().split('T')[0];
+
+        function openApptModal() {
+            overlay.style.display = 'flex';
+        }
+
+        closeBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            resetModal();
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.style.display = 'none';
+                resetModal();
+            }
+        });
+
+        function resetModal() {
+            doctorSelect.value = '';
+            dateInput.value = '';
+            slotsSection.style.display = 'none';
+            slotsContainer.innerHTML = '';
+            noSlotsMsg.style.display = 'none';
+            apptTypeSection.style.display = 'none';
+            bookBtn.style.display = 'none';
+            apptError.style.display = 'none';
+            apptSuccess.style.display = 'none';
+            selectedSlot = null;
+        }
+
+        function fetchSlots() {
+            const doctorId = doctorSelect.value;
+            const date = dateInput.value;
+            if (!doctorId || !date) return;
+
+            slotsContainer.innerHTML = '<span style="color:#7a8290; font-size:0.85rem;">Loading...</span>';
+            slotsSection.style.display = 'block';
+            noSlotsMsg.style.display = 'none';
+            apptTypeSection.style.display = 'none';
+            bookBtn.style.display = 'none';
+            selectedSlot = null;
+
+            fetch(`/scheduling/available-slots/?doctor_id=${doctorId}&date=${date}`)
+                .then(r => r.json())
+                .then(data => {
+                    slotsContainer.innerHTML = '';
+                    if (!data.slots || data.slots.length === 0) {
+                        noSlotsMsg.style.display = 'block';
+                        return;
+                    }
+                    data.slots.forEach(slot => {
+                        const btn = document.createElement('button');
+                        btn.textContent = slot.display;
+                        btn.dataset.start = slot.start;
+                        btn.style.cssText = 'padding:7px 13px; border:1.5px solid #e8ecf0; border-radius:8px; background:#f9fafb; font-size:0.82rem; cursor:pointer; color:#2d3239; transition:all 0.15s;';
+                        btn.addEventListener('click', () => {
+                            document.querySelectorAll('#slots-container button').forEach(b => {
+                                b.style.background = '#f9fafb';
+                                b.style.borderColor = '#e8ecf0';
+                                b.style.color = '#2d3239';
+                            });
+                            btn.style.background = '#5a8f6e';
+                            btn.style.borderColor = '#5a8f6e';
+                            btn.style.color = '#fff';
+                            selectedSlot = slot.start;
+                            apptTypeSection.style.display = 'block';
+                            bookBtn.style.display = 'block';
+                            apptError.style.display = 'none';
+                        });
+                        slotsContainer.appendChild(btn);
+                    });
+                })
+                .catch(() => {
+                    slotsContainer.innerHTML = '<span style="color:#d46b6b; font-size:0.85rem;">Failed to load slots. Try again.</span>';
+                });
+        }
+
+        const viewProfileLink = document.getElementById('view-profile-link');
+
+        doctorSelect.addEventListener('change', () => {
+            if (doctorSelect.value) {
+                viewProfileLink.href = `/doctors/profile/${doctorSelect.value}/`;
+                viewProfileLink.style.display = 'inline';
+            } else {
+                viewProfileLink.style.display = 'none';
+            }
+            fetchSlots();
+        });
+        dateInput.addEventListener('change', fetchSlots);
+
+        bookBtn.addEventListener('click', () => {
+            if (!selectedSlot) return;
+            apptError.style.display = 'none';
+            bookBtn.textContent = 'Booking...';
+            bookBtn.disabled = true;
+
+            fetch('/scheduling/book-appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({
+                    doctor_id: doctorSelect.value,
+                    date: dateInput.value,
+                    start_time: selectedSlot,
+                    appointment_type: document.getElementById('appt-type').value,
+                    title: 'Appointment',
+                }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                bookBtn.textContent = 'Book Appointment';
+                bookBtn.disabled = false;
+                if (data.success) {
+                    apptSuccess.textContent = 'Appointment booked successfully!';
+                    apptSuccess.style.display = 'block';
+                    bookBtn.style.display = 'none';
+                    apptTypeSection.style.display = 'none';
+                    // Remove the booked slot button from the UI
+                    document.querySelectorAll('#slots-container button').forEach(b => {
+                        if (b.dataset.start === selectedSlot) b.remove();
+                    });
+                    selectedSlot = null;
+                } else {
+                    apptError.textContent = data.error || 'Something went wrong.';
+                    apptError.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                bookBtn.textContent = 'Book Appointment';
+                bookBtn.disabled = false;
+                apptError.textContent = 'Network error. Please try again.';
+                apptError.style.display = 'block';
             });
         });
     </script>

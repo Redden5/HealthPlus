@@ -92,7 +92,7 @@ def get_mood_history(request):
         entry = entries.get(d)
         result.append({
             'date': d.isoformat(),
-            'label': d.strftime('%b %-d'),
+            'label': d.strftime('%b %#d'),
             'score': entry.score if entry else None,
             'mood_label': MOOD_LABELS.get(entry.score) if entry else None,
         })
