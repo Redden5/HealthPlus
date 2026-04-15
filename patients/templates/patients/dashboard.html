@@ -2125,33 +2125,10 @@ window.onclick = function(event) {
         loadConversations();
 
         // ═══════ JOURNAL ═══════
-        const journalEntries = [
-            {
-                date: 'March 2, 2026',
-                mood: 7,
-                text: 'Had a productive therapy session today. Dr. Thorne helped me work through some of the anxiety around my upcoming presentation at work. We practiced the breathing technique — 4-7-8 — and I actually felt calmer afterward. Going to try it before bed tonight.'
-            },
-            {
-                date: 'March 1, 2026',
-                mood: 8,
-                text: 'Woke up feeling lighter than usual. Went for a walk in the morning and noticed the trees starting to bud. Small things like that make such a difference. I\'m grateful for the medication adjustment — the side effects from last week seem to have settled.'
-            },
-            {
-                date: 'February 28, 2026',
-                mood: 7,
-                text: 'Challenging day at work but I managed to use the grounding technique when I felt overwhelmed. Five things I can see, four I can touch... it really does help break the spiral. Journaling before bed is becoming a habit I actually look forward to.'
-            },
-            {
-                date: 'February 27, 2026',
-                mood: 8,
-                text: 'Group session was really meaningful today. Hearing other people share similar experiences reminds me I\'m not alone in this. One person talked about their journey with panic attacks and it resonated deeply. Made plans to try the art therapy workshop next week.'
-            },
-            {
-                date: 'February 26, 2026',
-                mood: 7,
-                text: 'Tried cooking a new recipe tonight — something simple but it felt like an accomplishment. My energy levels have been more consistent this week. Going to mention that to Dr. Patel at the next check-in.'
-            }
-        ];
+        const JOURNAL_ENTRIES_URL = '{% url "patients:journal_entries" %}';
+        const JOURNAL_CREATE_URL = '{% url "patients:journal_create" %}';
+        let journalEntries = [];
+        let journalLoaded = false;
 
         function switchJournalTab(tab) {
             document.getElementById('tabWrite').classList.toggle('active', tab === 'write');
@@ -2159,22 +2136,69 @@ window.onclick = function(event) {
             document.getElementById('journalWrite').classList.toggle('hidden', tab !== 'write');
             document.getElementById('journalEntries').classList.toggle('hidden', tab !== 'entries');
 
-            if (tab === 'entries') renderEntries();
+            if (tab === 'entries') loadJournalEntries();
+        }
+
+        function loadJournalEntries() {
+            if (journalLoaded) {
+                renderEntries();
+                return;
+            }
+
+            const container = document.getElementById('journalEntries');
+            container.textContent = 'Loading entries...';
+
+            fetch(JOURNAL_ENTRIES_URL, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    journalEntries = data.entries || [];
+                    journalLoaded = true;
+                    renderEntries();
+                })
+                .catch(err => {
+                    console.error('Failed to load journal entries:', err);
+                    container.textContent = 'Could not load journal entries.';
+                });
         }
 
         function renderEntries() {
             const container = document.getElementById('journalEntries');
-            container.innerHTML = journalEntries.map(e => `
-                <div class="journal-entry-card">
-                    <div class="entry-top">
-                        <span class="entry-date">${e.date}</span>
-                        <span class="entry-mood-badge" style="background:${moodColors[e.mood]}20; color:${moodColors[e.mood]};">
-                            Mood: ${e.mood}/10
-                        </span>
-                    </div>
-                    <div class="entry-text">${e.text}</div>
-                </div>
-            `).join('');
+            container.innerHTML = '';
+
+            if (!journalEntries.length) {
+                container.textContent = 'No journal entries yet.';
+                return;
+            }
+
+            journalEntries.forEach(e => {
+                const card = document.createElement('div');
+                card.className = 'journal-entry-card';
+
+                const top = document.createElement('div');
+                top.className = 'entry-top';
+
+                const date = document.createElement('span');
+                date.className = 'entry-date';
+                date.textContent = e.date;
+                top.appendChild(date);
+
+                if (e.mood) {
+                    const mood = document.createElement('span');
+                    mood.className = 'entry-mood-badge';
+                    mood.style.background = moodColors[e.mood] + '20';
+                    mood.style.color = moodColors[e.mood];
+                    mood.textContent = `Mood: ${e.mood}/10`;
+                    top.appendChild(mood);
+                }
+
+                const text = document.createElement('div');
+                text.className = 'entry-text';
+                text.textContent = e.text;
+
+                card.appendChild(top);
+                card.appendChild(text);
+                container.appendChild(card);
+            });
         }
 
         function insertPrompt(prompt) {
@@ -2194,29 +2218,51 @@ window.onclick = function(event) {
             const text = document.getElementById('journalText').value.trim();
             if (!text) return;
 
-            const newEntry = {
-                date: 'March 3, 2026',
-                mood: selectedMood || null,
-                text: text
-            };
-
-            journalEntries.unshift(newEntry);
-            document.getElementById('journalText').value = '';
-            updateCharCount();
-
-            // Show confirmation
             const btn = document.getElementById('journalSaveBtn');
-            btn.textContent = '✓ Saved!';
-            btn.style.background = 'var(--accent-green)';
-            setTimeout(() => {
-                btn.textContent = 'Save Entry';
-                btn.style.background = '';
-            }, 2000);
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            fetch(JOURNAL_CREATE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CSRF,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({
+                    text: text,
+                    mood: selectedMood || null,
+                }),
+            })
+            .then(r => {
+                if (!r.ok) throw new Error('Journal save failed');
+                return r.json();
+            })
+            .then(data => {
+                journalEntries.unshift(data.entry);
+                journalLoaded = true;
+                document.getElementById('journalText').value = '';
+                updateCharCount();
+
+                btn.textContent = '✓ Saved!';
+                btn.style.background = 'var(--accent-green)';
+                setTimeout(() => {
+                    btn.textContent = 'Save Entry';
+                    btn.style.background = '';
+                    updateCharCount();
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to save journal entry:', err);
+                btn.textContent = 'Try Again';
+                btn.style.background = 'var(--accent-red)';
+                btn.disabled = false;
+            });
         }
 
         // ═══════ INIT ═══════
         initMood();
-        renderEntries();
+        loadJournalEntries();
 
         // Responsive chart
         window.addEventListener('resize', renderChart);
@@ -2438,4 +2484,3 @@ window.onclick = function(event) {
     </script>
 </body>
 </html>
-

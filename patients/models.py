@@ -63,6 +63,20 @@ class MoodEntry(models.Model):
         return f"{self.patient} — {self.date}: {self.score}/10"
 
 
+class JournalEntry(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='journal_entries')
+    text = models.TextField()
+    mood_score = models.PositiveSmallIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.patient} — {self.created_at:%Y-%m-%d}: {self.text[:40]}"
+
+
 # Messaging
 class Conversation(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='conversations')
@@ -105,4 +119,3 @@ class InAppNotification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.patient.user.username}: {self.title}"
-
