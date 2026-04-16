@@ -5,6 +5,7 @@ CS-310 Software Engineering II
 3.   Download and install VS Code: https://code.visualstudio.com/download
        Install Python, must be version 3.13 or later: https://www.python.org/downloads/ | Use command: python --version | to double check
        Install Git: https://github.com/git-guides/install-git | Use command: git --version | to double check
+       Install Postgre SQL: https://www.postgresql.org/download/
      
 6. Cloning Repository:
    Open a new project folder in VS Code
