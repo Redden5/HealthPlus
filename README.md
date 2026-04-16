@@ -26,5 +26,5 @@ CS-310 Software Engineering II
      Log into this admin panel using the credentials you created with the superuser command. Navigate to the 'Groups' page
      Create 3 seperate groups named 'Patient', 'Doctor', and 'Receptionist'
     
-12. Set up Doctor account
-13. Set up receptionist account
+12. Create a new user and add them to the 'Doctor' group you created.
+13. Create a new user and add them to the 'Receptionist' group you created.
