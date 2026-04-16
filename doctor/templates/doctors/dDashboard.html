@@ -752,9 +752,8 @@
             <a href="#" class="nav-item active"> Dashboard</a>
             <a href="#" class="nav-item"> Meetings</a>
             <a href="#" class="nav-item"> Messages</a>
-            <a href="#" class="nav-item">️ Settings</a>
-            <a href="#" class="nav-item"> Calendar</a>
             <a href="#" class="nav-item"> Patient List</a>
+            <a href="#" class="nav-item"> Calendar</a>
             <a href="#" class="nav-item"> Health Records</a>
         </nav>
 
@@ -776,8 +775,8 @@
                     <span class="notif-dot"></span>
                 </div>
                 <div class="profile-chip">
-                    <div class="initial-avatar">B</div>
-                    <span class="user-name"><strong>Dr. Redden</strong> ∨</span>
+                    <div class="initial-avatar">{{ profile.first_name|slice:":1" }}</div>
+                    <span class="user-name"><strong>Dr. {{ profile.last_name }}</strong> ∨</span>
                 </div>
             </div>
         </header>

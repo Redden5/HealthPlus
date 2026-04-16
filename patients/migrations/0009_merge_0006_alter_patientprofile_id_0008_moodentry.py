@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("patients", "0006_alter_patientprofile_id"),
+        ("patients", "0006_inappnotification"),
         ("patients", "0008_moodentry"),
     ]
 

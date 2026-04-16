@@ -43,5 +43,7 @@ def redirect_by_role(user):
         return redirect('/patients/dashboard/')
     elif user.groups.filter(name='Receptionist').exists():
         return redirect('/receptionist/dashboard/')
+    elif user.is_staff:
+        return redirect('/admin/')
     else:
-        return redirect('/')
+        return redirect('/accounts/login/')

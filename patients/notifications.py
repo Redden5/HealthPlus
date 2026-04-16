@@ -4,14 +4,12 @@ from courier import Courier
 # Load the .env file to get your keys
 load_dotenv()
 
-# Initialize the Courier client
-client = Courier(api_key=os.getenv("COURIER_AUTH_KEY"))
-
 def notify_patient(profile, title, content, doctor_name):
     """
     Sends the notification using the Courier SDK v7.x syntax.
     """
     try:
+        client = Courier(api_key=os.getenv("COURIER_AUTH_KEY"))
         response = client.send(
             message={
                 "to": {
