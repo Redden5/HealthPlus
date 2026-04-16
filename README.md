@@ -21,7 +21,7 @@ CS-310 Software Engineering II
      Copy the contents of .env.example into your own .env file, I can supply keys
 
 8. Prepare Database and Groups:
-     Use the command: pythone manage.py migrate
+     Use the command: python manage.py migrate
      Use the command: python manage.py createsuperuser | follow the prompts and remember your user and password
      Use the command: python manage.py runserver, at the end of IP it provides, add /admin/
      Log into this admin panel using the credentials you created with the superuser command. Navigate to the 'Groups' page
