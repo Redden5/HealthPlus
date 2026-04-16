@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, time
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
@@ -179,3 +179,27 @@ def edit_profile(request):
         'conditions': CONDITION_LIST,
     }
     return render(request, 'patients/edit_profile.html', context)
+
+
+@login_required
+@require_POST
+def change_password(request):
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    current = body.get('current_password', '')
+    new_pw  = body.get('new_password', '')
+
+    if not request.user.check_password(current):
+        return JsonResponse({'error': 'Current password is incorrect.'}, status=400)
+
+    if len(new_pw) < 8:
+        return JsonResponse({'error': 'New password must be at least 8 characters.'}, status=400)
+
+    request.user.set_password(new_pw)
+    request.user.save()
+    update_session_auth_hash(request, request.user)
+
+    return JsonResponse({'ok': True})

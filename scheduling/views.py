@@ -144,3 +144,80 @@ def available_slots(request):
             for b_start, b_end in booked
         )
         if not overlap:
+            available.append(slot_start.isoformat())
+
+    return JsonResponse({'slots': available})
+
+
+@login_required
+@require_POST
+def book_appointment(request):
+    """POST endpoint for a doctor to book an appointment with a patient."""
+    try:
+        doctor_profile = DoctorProfile.objects.get(user=request.user)
+    except DoctorProfile.DoesNotExist:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    patient_id   = body.get('patient_id')
+    title        = (body.get('title') or '').strip()
+    start_str    = (body.get('start_time') or '').strip()
+    end_str      = (body.get('end_time') or '').strip()
+    appt_type    = body.get('appointment_type', 'in_person')
+    location     = (body.get('location') or '').strip()
+    notes        = (body.get('notes') or '').strip()
+
+    errors = {}
+    if not patient_id: errors['patient_id'] = 'Required'
+    if not title:      errors['title']      = 'Required'
+    if not start_str:  errors['start_time'] = 'Required'
+    if not end_str:    errors['end_time']   = 'Required'
+    if errors:
+        return JsonResponse({'error': errors}, status=400)
+
+    try:
+        patient = PatientProfile.objects.get(id=patient_id)
+    except PatientProfile.DoesNotExist:
+        return JsonResponse({'error': 'Patient not found'}, status=404)
+
+    from django.utils.dateparse import parse_datetime
+    start_time = parse_datetime(start_str)
+    end_time   = parse_datetime(end_str)
+    if not start_time or not end_time:
+        return JsonResponse({'error': 'start_time and end_time must be ISO 8601'}, status=400)
+    if timezone.is_naive(start_time):
+        start_time = timezone.make_aware(start_time)
+    if timezone.is_naive(end_time):
+        end_time = timezone.make_aware(end_time)
+    if end_time <= start_time:
+        return JsonResponse({'error': 'end_time must be after start_time'}, status=400)
+
+    appt = Appointment.objects.create(
+        doctor=doctor_profile,
+        patient=patient,
+        title=title,
+        appointment_type=appt_type,
+        start_time=start_time,
+        end_time=end_time,
+        location=location,
+        notes=notes,
+    )
+
+    return JsonResponse({
+        'ok': True,
+        'appointment': {
+            'id':               appt.id,
+            'title':            appt.title,
+            'patient_name':     f'{patient.first_name} {patient.last_name}',
+            'appointment_type': appt.get_appointment_type_display(),
+            'start_time':       appt.start_time.isoformat(),
+            'end_time':         appt.end_time.isoformat(),
+            'status':           appt.status,
+            'location':         appt.location,
+            'notes':            appt.notes,
+        },
+    }, status=201)

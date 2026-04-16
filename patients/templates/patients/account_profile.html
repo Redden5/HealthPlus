@@ -517,6 +517,132 @@
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ═══════════ PASSWORD MODAL ═══════════ */
+        .pw-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pw-overlay.open { display: flex; }
+
+        .pw-modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px 30px 28px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            animation: fadeUp 0.25s ease both;
+        }
+
+        .pw-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .pw-modal-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .pw-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            line-height: 1;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .pw-modal-close:hover { background: #f0f2f5; color: var(--text-main); }
+
+        .pw-form-group { margin-bottom: 18px; }
+
+        .pw-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 7px;
+        }
+
+        .pw-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 9px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .pw-control:focus { border-color: var(--accent-teal); }
+
+        .pw-feedback {
+            font-size: 0.82rem;
+            margin-bottom: 14px;
+            min-height: 20px;
+            padding: 0 2px;
+        }
+
+        .pw-feedback.error { color: var(--accent-red); }
+        .pw-feedback.success { color: var(--accent-green); }
+
+        .pw-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .pw-btn-secondary {
+            padding: 9px 20px;
+            background: transparent;
+            border: 1.5px solid var(--border-light);
+            color: var(--text-muted);
+            border-radius: 9px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .pw-btn-secondary:hover { border-color: var(--text-muted); color: var(--text-main); }
+
+        .pw-btn-primary {
+            padding: 9px 22px;
+            background: var(--accent-teal);
+            color: var(--white);
+            border: none;
+            border-radius: 9px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .pw-btn-primary:hover { background: #5d8a8f; transform: translateY(-1px); }
+        .pw-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     </style>
 </head>
 <body>
@@ -583,11 +709,10 @@
 
             {# ── PROFILE CARD ── #}
             <div class="profile-card">
-                <div class="profile-avatar">{{ user_profile.initial|default:"J" }}</div>
+                <div class="profile-avatar">{{ profile.first_name|make_list|first }}</div>
                 <div class="profile-info">
-                    <div class="profile-name">{{ user_profile.full_name|default:"Jane Doe" }}</div>
-                    <div class="profile-email">{{ user_profile.email|default:"jane.doe@gmail.com" }}</div>
-                    <div class="profile-id">Patient ID: {{ user_profile.patient_id|default:"PT-2024-1847" }}</div>
+                    <div class="profile-name">{{ profile.first_name|default:"Jane Doe" }}</div>
+                    <div class="profile-email">{{ profile.email|default:"jane.doe@gmail.com" }}</div>
                 </div>
                 <form method="POST" style="margin:0;">
                     {% csrf_token %}
@@ -610,11 +735,7 @@
                         <div class="setting-desc">Update your password to keep your account secure.</div>
                     </div>
                     <div class="setting-action">
-                        <form method="POST" style="margin:0;">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="change_password">
-                            <button type="submit" class="action-btn outline">Change Password</button>
-                        </form>
+                        <button type="button" class="action-btn outline" onclick="openPasswordModal()">Change Password</button>
                     </div>
                 </div>
 
@@ -672,6 +793,122 @@
 
         </div>
     </main>
+
+    {# ═══════════ CHANGE PASSWORD MODAL ═══════════ #}
+    <div id="pwOverlay" class="pw-overlay" onclick="handleOverlayClick(event)">
+        <div class="pw-modal">
+            <div class="pw-modal-header">
+                <span class="pw-modal-title">Change Password</span>
+                <button class="pw-modal-close" onclick="closePasswordModal()">&times;</button>
+            </div>
+
+            <div class="pw-form-group">
+                <label class="pw-label" for="pwCurrent">Current Password</label>
+                <input type="password" class="pw-control" id="pwCurrent" placeholder="Enter current password">
+            </div>
+
+            <div class="pw-form-group">
+                <label class="pw-label" for="pwNew">New Password</label>
+                <input type="password" class="pw-control" id="pwNew" placeholder="Enter new password">
+            </div>
+
+            <div class="pw-form-group">
+                <label class="pw-label" for="pwConfirm">Confirm New Password</label>
+                <input type="password" class="pw-control" id="pwConfirm" placeholder="Re-enter new password">
+            </div>
+
+            <div class="pw-feedback" id="pwFeedback"></div>
+
+            <div class="pw-modal-actions">
+                <button class="pw-btn-secondary" onclick="closePasswordModal()">Cancel</button>
+                <button class="pw-btn-primary" id="pwSubmitBtn" onclick="submitPasswordChange()">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPasswordModal() {
+            document.getElementById('pwOverlay').classList.add('open');
+            document.getElementById('pwCurrent').focus();
+        }
+
+        function closePasswordModal() {
+            document.getElementById('pwOverlay').classList.remove('open');
+            document.getElementById('pwCurrent').value = '';
+            document.getElementById('pwNew').value = '';
+            document.getElementById('pwConfirm').value = '';
+            const fb = document.getElementById('pwFeedback');
+            fb.textContent = '';
+            fb.className = 'pw-feedback';
+            const btn = document.getElementById('pwSubmitBtn');
+            btn.disabled = false;
+            btn.textContent = 'Update Password';
+        }
+
+        function handleOverlayClick(e) {
+            if (e.target === document.getElementById('pwOverlay')) closePasswordModal();
+        }
+
+        function submitPasswordChange() {
+            const current = document.getElementById('pwCurrent').value.trim();
+            const newPw   = document.getElementById('pwNew').value;
+            const confirm = document.getElementById('pwConfirm').value;
+            const fb      = document.getElementById('pwFeedback');
+            const btn     = document.getElementById('pwSubmitBtn');
+
+            fb.className = 'pw-feedback';
+            fb.textContent = '';
+
+            if (!current || !newPw || !confirm) {
+                fb.className = 'pw-feedback error';
+                fb.textContent = 'All fields are required.';
+                return;
+            }
+            if (newPw !== confirm) {
+                fb.className = 'pw-feedback error';
+                fb.textContent = 'New passwords do not match.';
+                return;
+            }
+            if (newPw.length < 8) {
+                fb.className = 'pw-feedback error';
+                fb.textContent = 'New password must be at least 8 characters.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Updating…';
+
+            const csrfToken = document.cookie.match(/csrftoken=([^;]+)/)?.[1] || '';
+
+            fetch('{% url "patients:change_password" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ current_password: current, new_password: newPw }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = 'Update Password';
+                if (data.ok) {
+                    fb.className = 'pw-feedback success';
+                    fb.textContent = 'Password updated successfully.';
+                    setTimeout(closePasswordModal, 1800);
+                } else {
+                    fb.className = 'pw-feedback error';
+                    fb.textContent = data.error || 'Something went wrong.';
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Update Password';
+                fb.className = 'pw-feedback error';
+                fb.textContent = 'Network error. Please try again.';
+            });
+        }
+    </script>
 
 </body>
 </html>

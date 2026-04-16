@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, messaging, mood, meetings
+from . import views, messaging, mood, meetings, journal
 from receptionist.appointments import patient_appointments, submit_appointment_request, list_patient_requests
 app_name = 'patients'
 
@@ -10,6 +10,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('account/', views.account_profile, name='account'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('change_password/', views.change_password, name='change_password'),
 
     # Messaging API
     path('messages/', messaging.list_conversations, name='list_conversations'),
@@ -20,6 +21,11 @@ urlpatterns = [
     path('mood/log/', mood.log_mood, name='mood_log'),
     path('mood/history/', mood.get_mood_history, name='mood_history'),
     path('mood/stats/', mood.get_mood_stats, name='mood_stats'),
+
+    # Journal API
+    path('journal/', journal.list_journal_entries, name='journal_list'),
+    path('journal/create/', journal.create_journal_entry, name='journal_create'),
+    path('journal/stats/', journal.journal_stats, name='journal_stats'),
 
     # Meetings API (patient-side)
     path('meetings/', meetings.get_upcoming_meetings, name='patient_meetings'),

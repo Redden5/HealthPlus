@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard | HealthPlus</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600&display=swap"
+          rel="stylesheet">
     <style>
         :root {
             --sidebar-bg: #a8c6b8;
-            --sidebar-active-bg: rgba(143,170,145,0.55);
+            --sidebar-active-bg: rgba(143, 170, 145, 0.55);
             --main-bg: #e4e9ef;
             --card-bg: #ffffff;
             --text-main: #2d3239;
@@ -20,12 +21,16 @@
             --accent-blue: #5b8ec4;
             --border-light: #e8ecf0;
             --white: #ffffff;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
             --radius: 14px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             background: var(--main-bg);
@@ -55,14 +60,20 @@
         }
 
         .logo-icon {
-            width: 46px; height: 46px;
+            width: 46px;
+            height: 46px;
             background: white;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .logo-icon svg { width: 28px; height: 28px; }
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+        }
 
         .logo-text {
             font-family: 'Playfair Display', serif;
@@ -70,7 +81,7 @@
             font-weight: 600;
             font-size: 1.15rem;
             line-height: 1.15;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
         }
 
         .logo-sub {
@@ -82,10 +93,14 @@
             opacity: 0.85;
         }
 
-        .nav-menu { list-style: none; }
+        .nav-menu {
+            list-style: none;
+        }
 
         .nav-item {
-            display: flex; align-items: center; gap: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
             padding: 14px 24px;
             margin: 2px 14px;
             color: var(--white);
@@ -97,25 +112,34 @@
             cursor: pointer;
         }
 
-        .nav-item:hover { background: rgba(255,255,255,0.12); }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
 
         .nav-item.active {
             background: var(--sidebar-active-bg);
             color: #1a2e1f;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         .nav-icon {
-            width: 22px; height: 22px;
-            display: flex; align-items: center; justify-content: center;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
         }
 
         .nav-icon svg {
-            width: 20px; height: 20px;
-            stroke: currentColor; fill: none;
-            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* ═══════ MAIN ═══════ */
@@ -127,9 +151,18 @@
             scroll-behavior: smooth;
         }
 
-        .main-wrapper::-webkit-scrollbar { width: 6px; }
-        .main-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .main-wrapper::-webkit-scrollbar-thumb { background: #c5cad1; border-radius: 3px; }
+        .main-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-wrapper::-webkit-scrollbar-thumb {
+            background: #c5cad1;
+            border-radius: 3px;
+        }
 
         header {
             display: flex;
@@ -145,49 +178,72 @@
             font-weight: 500;
         }
 
-        .user-controls { display: flex; align-items: center; gap: 22px; }
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
 
         .notification-bell {
             position: relative;
             cursor: pointer;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
             transition: background 0.2s;
         }
 
-        .notification-bell:hover { background: rgba(0,0,0,0.04); }
+        .notification-bell:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
 
         .notification-bell svg {
-            width: 22px; height: 22px;
-            stroke: var(--text-muted); fill: none; stroke-width: 1.8;
+            width: 22px;
+            height: 22px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 1.8;
         }
 
         .notif-dot {
-            position: absolute; top: 8px; right: 8px;
-            width: 9px; height: 9px;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 9px;
+            height: 9px;
             background: #e05555;
             border: 2px solid var(--main-bg);
             border-radius: 50%;
         }
 
         .profile-chip {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             cursor: pointer;
             padding: 4px 8px 4px 4px;
             border-radius: 28px;
             transition: background 0.2s;
         }
 
-        .profile-chip:hover { background: rgba(0,0,0,0.03); }
+        .profile-chip:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
 
         .initial-avatar {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             background: var(--white);
             border: 2px solid var(--text-main);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .greeting-date {
@@ -196,7 +252,12 @@
             margin-bottom: 22px;
         }
 
-        .greeting-date span { color: var(--text-muted); font-weight: 400; font-size: 0.95rem; margin-left: 6px; }
+        .greeting-date span {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.95rem;
+            margin-left: 6px;
+        }
 
         /* ═══════ STAT CARDS ═══════ */
         .stats-bar {
@@ -216,19 +277,36 @@
             transition: transform 0.15s, box-shadow 0.15s;
         }
 
-        .stat-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .stat-card:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
 
         .stat-card::before {
             content: '';
-            position: absolute; top: 0; left: 0;
-            width: 4px; height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
             border-radius: 4px 0 0 4px;
         }
 
-        .stat-card:nth-child(1)::before { background: var(--accent-teal); }
-        .stat-card:nth-child(2)::before { background: var(--accent-green); }
-        .stat-card:nth-child(3)::before { background: var(--accent-warm); }
-        .stat-card:nth-child(4)::before { background: var(--accent-blue); }
+        .stat-card:nth-child(1)::before {
+            background: var(--accent-teal);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: var(--accent-green);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: var(--accent-warm);
+        }
+
+        .stat-card:nth-child(4)::before {
+            background: var(--accent-blue);
+        }
 
         .stat-label {
             font-size: 0.78rem;
@@ -275,7 +353,9 @@
             font-size: 0.95rem;
         }
 
-        .full-width { grid-column: span 2; }
+        .full-width {
+            grid-column: span 2;
+        }
 
         .pill {
             background: #eef1f4;
@@ -288,7 +368,9 @@
             transition: background 0.15s;
         }
 
-        .pill:hover { background: #e2e6eb; }
+        .pill:hover {
+            background: #e2e6eb;
+        }
 
         .dots-menu {
             cursor: pointer;
@@ -332,11 +414,14 @@
             position: relative;
         }
 
-        .mood-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .mood-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
         .mood-btn.selected {
             transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
             outline: 3px solid var(--text-main);
             outline-offset: 2px;
         }
@@ -379,7 +464,9 @@
             transform: translateY(0);
         }
 
-        .mood-submit-btn:hover { background: #5b878c; }
+        .mood-submit-btn:hover {
+            background: #5b878c;
+        }
 
         .mood-logged-msg {
             display: flex;
@@ -390,16 +477,21 @@
         }
 
         .mood-logged-msg .check-circle {
-            width: 48px; height: 48px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: #e8f4ec;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .mood-logged-msg .check-circle svg {
-            width: 24px; height: 24px;
+            width: 24px;
+            height: 24px;
             stroke: var(--accent-green);
-            fill: none; stroke-width: 2.5;
+            fill: none;
+            stroke-width: 2.5;
         }
 
         .mood-logged-msg p {
@@ -456,7 +548,9 @@
             transition: r 0.15s;
         }
 
-        .chart-dot:hover { r: 6; }
+        .chart-dot:hover {
+            r: 6;
+        }
 
         .chart-label {
             fill: var(--text-muted);
@@ -480,12 +574,17 @@
         }
 
         .legend-item {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 0.72rem; color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
         }
 
         .legend-dot {
-            width: 8px; height: 8px; border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
 
         .chart-tooltip {
@@ -502,7 +601,9 @@
             z-index: 10;
         }
 
-        .chart-tooltip.visible { opacity: 1; }
+        .chart-tooltip.visible {
+            opacity: 1;
+        }
 
         .period-tabs {
             display: flex;
@@ -528,14 +629,19 @@
         .period-tab.active {
             background: white;
             color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         /* ═══════ JOURNAL ═══════ */
-        .journal-content { flex: 1; display: flex; flex-direction: column; }
+        .journal-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
         .journal-tabs {
-            display: flex; gap: 4px;
+            display: flex;
+            gap: 4px;
             margin-bottom: 14px;
         }
 
@@ -557,12 +663,21 @@
             color: white;
         }
 
-        .journal-tab:hover:not(.active) { background: #e2e6eb; }
+        .journal-tab:hover:not(.active) {
+            background: #e2e6eb;
+        }
 
         /* Write view */
-        .journal-write { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .journal-write {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-        .journal-write.hidden { display: none; }
+        .journal-write.hidden {
+            display: none;
+        }
 
         .journal-textarea {
             flex: 1;
@@ -579,8 +694,13 @@
             transition: border-color 0.2s;
         }
 
-        .journal-textarea::placeholder { color: #b8bfc8; }
-        .journal-textarea:focus { border-color: var(--accent-teal); }
+        .journal-textarea::placeholder {
+            color: #b8bfc8;
+        }
+
+        .journal-textarea:focus {
+            border-color: var(--accent-teal);
+        }
 
         .journal-footer {
             display: flex;
@@ -611,7 +731,10 @@
             transition: all 0.15s;
         }
 
-        .journal-prompt-chip:hover { background: #e2e6eb; color: var(--text-main); }
+        .journal-prompt-chip:hover {
+            background: #e2e6eb;
+            color: var(--text-main);
+        }
 
         .journal-save-btn {
             background: var(--accent-teal);
@@ -626,12 +749,27 @@
             transition: all 0.2s;
         }
 
-        .journal-save-btn:hover { background: #5b878c; }
-        .journal-save-btn:disabled { opacity: 0.4; cursor: default; }
+        .journal-save-btn:hover {
+            background: #5b878c;
+        }
+
+        .journal-save-btn:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
 
         /* Past entries view */
-        .journal-entries { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-        .journal-entries.hidden { display: none; }
+        .journal-entries {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .journal-entries.hidden {
+            display: none;
+        }
 
         .journal-entry-card {
             padding: 14px 16px;
@@ -641,7 +779,9 @@
             cursor: pointer;
         }
 
-        .journal-entry-card:hover { background: #eff2f6; }
+        .journal-entry-card:hover {
+            background: #eff2f6;
+        }
 
         .entry-top {
             display: flex;
@@ -672,66 +812,93 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 12px;
-    width: 400px;
-    max-height: 70vh;
-    overflow-y: auto;
-}
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
 
-.badge {
-    background: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 10px;
-    vertical-align: top;
-    margin-left: -10px;
-}
+        .badge {
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            vertical-align: top;
+            margin-left: -10px;
+        }
 
-.notif-item.unread {
-    border-left: 4px solid #95b5a6; /* Matches your HealthPlus green */
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin-bottom: 5px;
-}
+        .notif-item.unread {
+            border-left: 4px solid #95b5a6; /* Matches your HealthPlus green */
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
 
         /* ═══════ APPOINTMENTS MINI ═══════ */
-        .appt-list { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .appt-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
         .appt-item {
-            display: flex; align-items: center; gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 10px 14px;
             border-radius: 10px;
             background: #f7f9fb;
             transition: background 0.15s;
         }
 
-        .appt-item:hover { background: #eff2f6; }
-
-        .appt-avatar {
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.75rem;
-            color: white; flex-shrink: 0;
+        .appt-item:hover {
+            background: #eff2f6;
         }
 
-        .appt-details { flex: 1; }
-        .appt-name { font-size: 0.85rem; font-weight: 600; }
-        .appt-type { font-size: 0.72rem; color: var(--text-muted); }
+        .appt-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .appt-details {
+            flex: 1;
+        }
+
+        .appt-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .appt-type {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
 
         .appt-time {
             font-size: 0.75rem;
@@ -741,10 +908,16 @@
         }
 
         /* ═══════ MESSAGES ═══════ */
-        .msg-list { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .msg-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
         .msg-item {
-            display: flex; gap: 12px;
+            display: flex;
+            gap: 12px;
             padding: 10px 12px;
             border-radius: 10px;
             background: #f7f9fb;
@@ -753,34 +926,57 @@
             position: relative;
         }
 
-        .msg-item:hover { background: #eff2f6; }
-
-        .msg-avatar {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.7rem;
-            color: white; flex-shrink: 0;
+        .msg-item:hover {
+            background: #eff2f6;
         }
 
-        .msg-content { flex: 1; min-width: 0; }
-        .msg-sender { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+        .msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .msg-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .msg-sender {
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
 
         .msg-preview {
-            font-size: 0.75rem; color: var(--text-muted);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .msg-time {
-            font-size: 0.68rem; color: var(--text-muted);
-            white-space: nowrap; flex-shrink: 0;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .msg-unread::after {
             content: '';
-            position: absolute; top: 50%; right: 8px;
+            position: absolute;
+            top: 50%;
+            right: 8px;
             transform: translateY(-50%);
-            width: 7px; height: 7px;
+            width: 7px;
+            height: 7px;
             background: var(--accent-teal);
             border-radius: 50%;
         }
@@ -804,11 +1000,19 @@
             background: #f7f9fb;
         }
 
-        .conv-list::-webkit-scrollbar { width: 4px; }
-        .conv-list::-webkit-scrollbar-thumb { background: #d0d5dc; border-radius: 2px; }
+        .conv-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .conv-list::-webkit-scrollbar-thumb {
+            background: #d0d5dc;
+            border-radius: 2px;
+        }
 
         .conv-item {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 12px 14px;
             cursor: pointer;
             border-bottom: 1px solid var(--border-light);
@@ -816,7 +1020,9 @@
             position: relative;
         }
 
-        .conv-item:hover { background: #eef1f4; }
+        .conv-item:hover {
+            background: #eef1f4;
+        }
 
         .conv-item.active {
             background: #e4edf0;
@@ -824,19 +1030,40 @@
         }
 
         .conv-avatar {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.68rem;
-            color: white; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.68rem;
+            color: white;
+            flex-shrink: 0;
         }
 
-        .conv-info { flex: 1; min-width: 0; }
-        .conv-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; }
-        .conv-last { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .conv-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .conv-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .conv-last {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .conv-unread-dot {
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             background: var(--accent-teal);
             border-radius: 50%;
             flex-shrink: 0;
@@ -854,21 +1081,37 @@
         .chat-header {
             padding: 12px 18px;
             border-bottom: 1px solid var(--border-light);
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .chat-header-avatar {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
             color: white;
         }
 
-        .chat-header-info { flex: 1; }
-        .chat-header-name { font-size: 0.88rem; font-weight: 600; }
-        .chat-header-status { font-size: 0.7rem; color: var(--text-muted); }
+        .chat-header-info {
+            flex: 1;
+        }
+
+        .chat-header-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .chat-header-status {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
 
         .chat-messages {
             flex: 1;
@@ -879,8 +1122,14 @@
             gap: 10px;
         }
 
-        .chat-messages::-webkit-scrollbar { width: 4px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: #d0d5dc; border-radius: 2px; }
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #d0d5dc;
+            border-radius: 2px;
+        }
 
         .msg-bubble-row {
             display: flex;
@@ -888,14 +1137,21 @@
             gap: 8px;
         }
 
-        .msg-bubble-row.sent { flex-direction: row-reverse; }
+        .msg-bubble-row.sent {
+            flex-direction: row-reverse;
+        }
 
         .bubble-avatar {
-            width: 26px; height: 26px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.6rem;
-            color: white; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.6rem;
+            color: white;
+            flex-shrink: 0;
         }
 
         .bubble {
@@ -937,7 +1193,9 @@
         .chat-compose {
             padding: 12px 14px;
             border-top: 1px solid var(--border-light);
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             flex-shrink: 0;
         }
 
@@ -955,24 +1213,38 @@
             resize: none;
         }
 
-        .compose-input:focus { border-color: var(--accent-teal); background: white; }
+        .compose-input:focus {
+            border-color: var(--accent-teal);
+            background: white;
+        }
 
         .compose-send {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--accent-teal);
-            border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
             transition: background 0.2s, transform 0.15s;
         }
 
-        .compose-send:hover { background: #5b878c; transform: scale(1.05); }
+        .compose-send:hover {
+            background: #5b878c;
+            transform: scale(1.05);
+        }
 
         .compose-send svg {
-            width: 16px; height: 16px;
-            stroke: white; fill: none; stroke-width: 2;
-            stroke-linecap: round; stroke-linejoin: round;
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* ═══════ HEALTH RECORDS ═══════ */
@@ -1001,13 +1273,21 @@
         }
 
         .hr-block-title svg {
-            width: 16px; height: 16px;
-            stroke: var(--accent-teal); fill: none;
-            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent-teal);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             flex-shrink: 0;
         }
 
-        .hr-list { display: flex; flex-direction: column; gap: 8px; }
+        .hr-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
         .hr-item {
             background: var(--white);
@@ -1016,7 +1296,9 @@
             transition: box-shadow 0.15s;
         }
 
-        .hr-item:hover { box-shadow: var(--shadow-sm); }
+        .hr-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
 
         .hr-item-main {
             display: flex;
@@ -1045,147 +1327,323 @@
             flex-shrink: 0;
         }
 
-        .hr-badge-green  { background: #e6f4ec; color: #3a7d52; }
-        .hr-badge-blue   { background: #e6eef8; color: #3a5f8a; }
-        .hr-badge-red    { background: #faeaea; color: #b94040; }
-        .hr-badge-warm   { background: #fdf1e6; color: #9a6030; }
-        .hr-badge-muted  { background: #eef1f4; color: var(--text-muted); }
+        .hr-badge-green {
+            background: #e6f4ec;
+            color: #3a7d52;
+        }
+
+        .hr-badge-blue {
+            background: #e6eef8;
+            color: #3a5f8a;
+        }
+
+        .hr-badge-red {
+            background: #faeaea;
+            color: #b94040;
+        }
+
+        .hr-badge-warm {
+            background: #fdf1e6;
+            color: #9a6030;
+        }
+
+        .hr-badge-muted {
+            background: #eef1f4;
+            color: var(--text-muted);
+        }
 
         /* ═══════ ANIMATIONS ═══════ */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stat-card, .card {
             animation: fadeUp 0.45s ease both;
         }
 
-        .stat-card:nth-child(1) { animation-delay: 0.04s; }
-        .stat-card:nth-child(2) { animation-delay: 0.08s; }
-        .stat-card:nth-child(3) { animation-delay: 0.12s; }
-        .stat-card:nth-child(4) { animation-delay: 0.16s; }
+        .stat-card:nth-child(1) {
+            animation-delay: 0.04s;
+        }
 
-        .layout-grid .card:nth-child(1) { animation-delay: 0.20s; }
-        .layout-grid .card:nth-child(2) { animation-delay: 0.24s; }
-        .layout-grid .card:nth-child(3) { animation-delay: 0.28s; }
-        .layout-grid .card:nth-child(4) { animation-delay: 0.32s; }
-        .layout-grid .card:nth-child(5) { animation-delay: 0.36s; }
+        .stat-card:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.12s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.16s;
+        }
+
+        .layout-grid .card:nth-child(1) {
+            animation-delay: 0.20s;
+        }
+
+        .layout-grid .card:nth-child(2) {
+            animation-delay: 0.24s;
+        }
+
+        .layout-grid .card:nth-child(3) {
+            animation-delay: 0.28s;
+        }
+
+        .layout-grid .card:nth-child(4) {
+            animation-delay: 0.32s;
+        }
+
+        .layout-grid .card:nth-child(5) {
+            animation-delay: 0.36s;
+        }
 
         @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* ═══════ APPOINTMENT REQUEST ═══════ */
         .req-appt-btn {
-            background: var(--accent-teal); color: #fff;
-            border: none; border-radius: 8px;
-            padding: 5px 13px; font-size: 0.75rem; font-weight: 600;
-            font-family: inherit; cursor: pointer;
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 5px 13px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
             transition: background 0.15s;
         }
 
-        .req-appt-btn:hover { background: #5b878c; }
+        .req-appt-btn:hover {
+            background: #5b878c;
+        }
 
         .req-history-toggle {
-            background: none; border: none; cursor: pointer;
-            font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
-            font-family: inherit; padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-family: inherit;
+            padding: 0;
             transition: color 0.15s;
         }
 
-        .req-history-toggle:hover { color: var(--text-main); }
+        .req-history-toggle:hover {
+            color: var(--text-main);
+        }
 
         .req-history-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; border-radius: 8px;
-            background: #f7f9fb; margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: #f7f9fb;
+            margin-bottom: 6px;
             font-size: 0.78rem;
         }
 
-        .req-history-item:last-child { margin-bottom: 0; }
+        .req-history-item:last-child {
+            margin-bottom: 0;
+        }
 
-        .req-history-type { font-weight: 600; }
-        .req-history-meta { color: var(--text-muted); margin-top: 2px; }
+        .req-history-type {
+            font-weight: 600;
+        }
 
-        .req-status-pending  { background: #fdf1e6; color: #9a6030; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
-        .req-status-booked   { background: #e6f4ec; color: #2e7d4f; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
-        .req-status-declined { background: #faeaea; color: #b94040; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
+        .req-history-meta {
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .req-status-pending {
+            background: #fdf1e6;
+            color: #9a6030;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+        }
+
+        .req-status-booked {
+            background: #e6f4ec;
+            color: #2e7d4f;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+        }
+
+        .req-status-declined {
+            background: #faeaea;
+            color: #b94040;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+        }
 
         /* Modal */
-        #reqApptOverlay.open { display: flex !important; }
+        #reqApptOverlay.open {
+            display: flex !important;
+        }
 
         .req-modal {
-            background: #fff; border-radius: var(--radius);
-            padding: 28px; width: 460px; max-width: 95vw;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px;
+            width: 460px;
+            max-width: 95vw;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
             animation: fadeUp 0.25s ease;
         }
 
         .req-modal-header {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .req-modal-title { font-weight: 600; font-size: 1rem; }
-
-        .req-modal-close {
-            background: none; border: none; cursor: pointer;
-            font-size: 1.3rem; color: var(--text-muted);
-            padding: 2px 6px; border-radius: 4px;
+        .req-modal-title {
+            font-weight: 600;
+            font-size: 1rem;
         }
 
-        .req-modal-close:hover { background: #f0f2f5; }
+        .req-modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
-        .req-form-group { margin-bottom: 14px; }
+        .req-modal-close:hover {
+            background: #f0f2f5;
+        }
+
+        .req-form-group {
+            margin-bottom: 14px;
+        }
 
         .req-label {
-            display: block; font-size: 0.73rem; font-weight: 600;
-            color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.4px; margin-bottom: 5px;
+            display: block;
+            font-size: 0.73rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 5px;
         }
 
         .req-control {
-            width: 100%; border: 1.5px solid var(--border-light);
-            border-radius: 9px; padding: 9px 12px;
-            font-size: 0.85rem; font-family: inherit;
-            color: var(--text-main); background: #f7f9fb;
-            outline: none; transition: border-color 0.2s, background 0.2s;
+            width: 100%;
+            border: 1.5px solid var(--border-light);
+            border-radius: 9px;
+            padding: 9px 12px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            color: var(--text-main);
+            background: #f7f9fb;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
         }
 
-        .req-control:focus { border-color: var(--accent-teal); background: #fff; }
-        textarea.req-control { resize: vertical; }
+        .req-control:focus {
+            border-color: var(--accent-teal);
+            background: #fff;
+        }
+
+        textarea.req-control {
+            resize: vertical;
+        }
 
         .req-feedback {
-            font-size: 0.78rem; padding: 8px 12px;
-            border-radius: 8px; margin-bottom: 8px; display: none;
+            font-size: 0.78rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: none;
         }
 
-        .req-feedback.success { background: #e6f4ec; color: #2e7d4f; display: block; }
-        .req-feedback.error   { background: #faeaea; color: #b94040; display: block; }
+        .req-feedback.success {
+            background: #e6f4ec;
+            color: #2e7d4f;
+            display: block;
+        }
+
+        .req-feedback.error {
+            background: #faeaea;
+            color: #b94040;
+            display: block;
+        }
 
         .req-btn-primary {
-            flex: 1; background: var(--accent-teal); color: #fff;
-            border: none; border-radius: 9px; padding: 10px;
-            font-size: 0.88rem; font-weight: 600; font-family: inherit;
-            cursor: pointer; transition: background 0.2s;
+            flex: 1;
+            background: var(--accent-teal);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .req-btn-primary:hover { background: #5b878c; }
-        .req-btn-primary:disabled { opacity: 0.45; cursor: default; }
+        .req-btn-primary:hover {
+            background: #5b878c;
+        }
+
+        .req-btn-primary:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
 
         .req-btn-secondary {
-            background: #eef1f4; color: var(--text-muted);
-            border: none; border-radius: 9px; padding: 10px 18px;
-            font-size: 0.85rem; font-weight: 500; font-family: inherit;
-            cursor: pointer; transition: background 0.15s;
+            background: #eef1f4;
+            color: var(--text-muted);
+            border: none;
+            border-radius: 9px;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
         }
 
-        .req-btn-secondary:hover { background: #e2e6eb; }
+        .req-btn-secondary:hover {
+            background: #e2e6eb;
+        }
 
         /* ═══════ MEETING ALERTS ═══════ */
-        .meeting-alerts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .meeting-alerts {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
 
         .meeting-alert {
             display: flex;
@@ -1200,24 +1658,45 @@
         }
 
         .meeting-alert-icon {
-            width: 38px; height: 38px;
+            width: 38px;
+            height: 38px;
             background: #e8f4f6;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
         }
 
         .meeting-alert-icon svg {
-            width: 18px; height: 18px;
-            stroke: var(--accent-teal); fill: none;
-            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-teal);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        .meeting-alert-body { flex: 1; }
-        .meeting-alert-title { font-size: 0.88rem; font-weight: 600; }
-        .meeting-alert-meta  { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+        .meeting-alert-body {
+            flex: 1;
+        }
 
-        .meeting-alert-actions { display: flex; gap: 8px; }
+        .meeting-alert-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .meeting-alert-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .meeting-alert-actions {
+            display: flex;
+            gap: 8px;
+        }
 
         .btn-join-meeting {
             background: var(--accent-teal);
@@ -1233,7 +1712,9 @@
             transition: background 0.15s;
         }
 
-        .btn-join-meeting:hover { background: #5b878c; }
+        .btn-join-meeting:hover {
+            background: #5b878c;
+        }
 
         .btn-dismiss-meeting {
             background: #eef1f4;
@@ -1248,66 +1729,78 @@
             transition: background 0.15s;
         }
 
-        .btn-dismiss-meeting:hover { background: #e2e6eb; }
+        .btn-dismiss-meeting:hover {
+            background: #e2e6eb;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ═══════ SIDEBAR ═══════ -->
-    <aside class="sidebar">
-        <div class="logo-section">
-            <div class="logo-icon">
-                <svg viewBox="0 0 28 28" fill="none">
-                    <circle cx="14" cy="10" r="6" stroke="#6d9ba0" stroke-width="1.5"/>
-                    <path d="M10 22c0-4 2-6 4-6s4 2 4 6" stroke="#5a8f6e" stroke-width="1.5" fill="none"/>
-                    <path d="M11 8c1-2 3-2 4 0" stroke="#6d9ba0" stroke-width="1"/>
-                    <circle cx="14" cy="9" r="1" fill="#6d9ba0"/>
-                    <path d="M8 14c-2 1-3 4-2 7M20 14c2 1 3 4 2 7" stroke="#a8c6b8" stroke-width="1" opacity="0.6"/>
-                </svg>
-            </div>
-            <div class="logo-text">
-                HealthPlus
-                <div class="logo-sub">Mental Health</div>
-            </div>
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+    <div class="logo-section">
+        <div class="logo-icon">
+            <svg viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="10" r="6" stroke="#6d9ba0" stroke-width="1.5"/>
+                <path d="M10 22c0-4 2-6 4-6s4 2 4 6" stroke="#5a8f6e" stroke-width="1.5" fill="none"/>
+                <path d="M11 8c1-2 3-2 4 0" stroke="#6d9ba0" stroke-width="1"/>
+                <circle cx="14" cy="9" r="1" fill="#6d9ba0"/>
+                <path d="M8 14c-2 1-3 4-2 7M20 14c2 1 3 4 2 7" stroke="#a8c6b8" stroke-width="1" opacity="0.6"/>
+            </svg>
         </div>
-
-
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active" data-target="section-dashboard">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-                Dashboard
-            </a>
-            <a href="#" class="nav-item" data-target="section-mood">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
-                Mood Tracker
-            </a>
-            <a href="#" class="nav-item" data-target="section-journal">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
-                Journal
-            </a>
-            <a href="#" class="nav-item" data-target="section-messages">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-                Messages
-            </a>
-            <a href="#" class="nav-item" data-target="section-appointments">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
-                Appointments
-            </a>
-            <a href="#" class="nav-item" data-target="section-health-records">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-                Health Records
-            </a>
-        </nav>
-
-        <div style="margin-top: auto; padding: 24px 14px 8px;">
-            <form method="post" action="/accounts/logout/">
-                {% csrf_token %}
-                <button type="submit" class="nav-item" style="width:100%;background:rgba(212,107,107,0.18);color:#fff;border:none;cursor:pointer;font-size:0.95rem;font-weight:500;">
-                    Logout
-                </button>
-            </form>
+        <div class="logo-text">
+            HealthPlus
+            <div class="logo-sub">Mental Health</div>
         </div>
-    </aside>
+    </div>
+
+
+    <nav class="nav-menu">
+        <a href="#" class="nav-item active" data-target="section-dashboard">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect
+                    x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect
+                    x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+            Dashboard
+        </a>
+        <a href="#" class="nav-item" data-target="section-mood">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path
+                    d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01"
+                                                                                             y2="9"/></svg></span>
+            Mood Tracker
+        </a>
+        <a href="#" class="nav-item" data-target="section-journal">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line
+                    x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+            Journal
+        </a>
+        <a href="#" class="nav-item" data-target="section-messages">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+            Messages
+        </a>
+        <a href="#" class="nav-item" data-target="section-appointments">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line
+                    x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21"
+                                                                                            y2="10"/></svg></span>
+            Appointments
+        </a>
+        <a href="#" class="nav-item" data-target="section-health-records">
+            <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+            Health Records
+        </a>
+    </nav>
+
+    <div style="margin-top: auto; padding: 24px 14px 8px;">
+        <form method="post" action="/accounts/logout/">
+            {% csrf_token %}
+            <button type="submit" class="nav-item"
+                    style="width:100%;background:rgba(212,107,107,0.18);color:#fff;border:none;cursor:pointer;font-size:0.95rem;font-weight:500;">
+                Logout
+            </button>
+        </form>
+    </div>
+</aside>
 <div id="notif-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
@@ -1325,506 +1818,559 @@
         </div>
     </div>
 </div>
-    <!-- ═══════ MAIN CONTENT ═══════ -->
-    <main class="main-wrapper">
-        <header>
-            <h1 class="header-title">Patient Dashboard</h1>
-            <div class="user-controls">
-                <div id="notif-btn" class="notification-bell">
-                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                    {% if unread_count > 0 %}<span class="notif-dot"></span>{% endif %}
-                </div>
-                 <form method="POST" style="margin: 0;" >
-                      {% csrf_token %}
-                    <input type="hidden" name="action" value="account">
-                    <button type="submit" class="profile-chip">
-                        <div class="initial-avatar">{{ profile.first_name|make_list|first }}</div>
-                        <span class="user-name"><strong>{{ profile.first_name }} {{ profile.last_name }}</strong> ∨</span>
-                    </button>
-                </form>
-
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<main class="main-wrapper">
+    <header>
+        <h1 class="header-title">Patient Dashboard</h1>
+        <div class="user-controls">
+            <div id="notif-btn" class="notification-bell">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                {% if unread_count > 0 %}<span class="notif-dot"></span>{% endif %}
             </div>
-        </header>
+            <form method="POST" style="margin: 0;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="account">
+                <button type="submit" class="profile-chip">
+                    <div class="initial-avatar">{{ profile.first_name|make_list|first }}</div>
+                    <span class="user-name"><strong>{{ profile.first_name }} {{ profile.last_name }}</strong> </span>
+                </button>
+            </form>
 
-        <section class="dashboard-content">
-            <!-- MEETING ALERTS — injected by JS -->
-            <div id="meetingAlerts" class="meeting-alerts"></div>
+        </div>
+    </header>
 
-            <div class="greeting-date">
-                Good morning, {{ profile.first_name }} <span>— Tuesday, March 3, 2026</span>
+    <section class="dashboard-content">
+        <!-- MEETING ALERTS — injected by JS -->
+        <div id="meetingAlerts" class="meeting-alerts"></div>
+
+        <div class="greeting-date">
+            Good morning, {{ profile.first_name }} <span>{% now "F j, Y"%}</span>
+        </div>
+
+        <!-- STAT CARDS -->
+        <div id="section-dashboard" class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Today's Mood</div>
+                <div class="stat-value" id="todayMoodStat">—</div>
+                <div class="stat-sub">out of 10</div>
             </div>
-
-            <!-- STAT CARDS -->
-            <div id="section-dashboard" class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-label">Today's Mood</div>
-                    <div class="stat-value" id="todayMoodStat">—</div>
-                    <div class="stat-sub">out of 10</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">7-Day Average</div>
-                    <div class="stat-value" id="avgMoodStat">7.2</div>
-                    <div class="stat-sub">↑ 0.5 from last week</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Journal Streak</div>
-                    <div class="stat-value">12</div>
-                    <div class="stat-sub">days in a row</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Next Appointment</div>
-                    <div class="stat-value" style="font-size:1.1rem; margin-top:4px;">Mar 5</div>
-                    <div class="stat-sub">Dr. Thorne — 2:00 PM</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-label">7-Day Average</div>
+                <div class="stat-value" id="avgMoodStat">7.2</div>
+                <div class="stat-sub">↑ 0.5 from last week</div>
             </div>
-
-            <!-- GRID -->
-            <div class="layout-grid">
-
-                <!-- MOOD ENTRY -->
-                <div id="section-mood" class="card">
-                    <div class="card-header">
-                        How are you feeling today?
-                    </div>
-                    <div class="mood-entry-area" id="moodEntryArea">
-                        <div class="mood-prompt">Rate your mood from 1 to 10</div>
-                        <div class="mood-scale" id="moodScale"></div>
-                        <div class="mood-selected-display" id="moodDisplay">
-                            <div class="mood-selected-num" id="moodNum"></div>
-                            <div class="mood-selected-label" id="moodLabel"></div>
-                        </div>
-                        <button class="mood-submit-btn" id="moodSubmitBtn" onclick="submitMood()">Log Mood</button>
-                    </div>
-                </div>
-
-                <!-- MOOD GRAPH -->
-                <div class="card">
-                    <div class="card-header">
-                        Mood History
-                        <div class="period-tabs">
-                            <button class="period-tab active" onclick="setPeriod('7d', this)">7D</button>
-                            <button class="period-tab" onclick="setPeriod('14d', this)">14D</button>
-                            <button class="period-tab" onclick="setPeriod('30d', this)">30D</button>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-area" id="chartArea">
-                            <svg class="chart-svg" id="moodChart"></svg>
-                            <div class="chart-tooltip" id="chartTooltip"></div>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background:var(--accent-teal);"></div>
-                                Daily mood
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background:var(--accent-warm);"></div>
-                                Average
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- JOURNAL (FULL WIDTH) -->
-                <div id="section-journal" class="card full-width" style="min-height: 320px;">
-                    <div class="card-header">
-                        Journal
-                        <span class="dots-menu">•••</span>
-                    </div>
-                    <div class="journal-content">
-                        <div class="journal-tabs">
-                            <button class="journal-tab active" id="tabWrite" onclick="switchJournalTab('write')">Write</button>
-                            <button class="journal-tab" id="tabEntries" onclick="switchJournalTab('entries')">Past Entries</button>
-                        </div>
-
-                        <div class="journal-write" id="journalWrite">
-                            <textarea class="journal-textarea" id="journalText" placeholder="Write about your day, thoughts, feelings, or anything on your mind..." oninput="updateCharCount()"></textarea>
-                            <div class="journal-prompts">
-                                <button class="journal-prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Gratitude</button>
-                                <button class="journal-prompt-chip" onclick="insertPrompt('What challenged me today and how did I handle it?')">Challenges</button>
-                                <button class="journal-prompt-chip" onclick="insertPrompt('What is one thing I want to improve tomorrow?')">Goals</button>
-                                <button class="journal-prompt-chip" onclick="insertPrompt('How is my body feeling right now?')">Body Check</button>
-                            </div>
-                            <div class="journal-footer">
-                                <span class="journal-char-count" id="charCount">0 characters</span>
-                                <button class="journal-save-btn" id="journalSaveBtn" onclick="saveJournal()" disabled>Save Entry</button>
-                            </div>
-                        </div>
-
-                        <div class="journal-entries hidden" id="journalEntries"></div>
-                    </div>
-                </div>
-
-                <!-- UPCOMING APPOINTMENTS -->
-                <div id="section-appointments" class="card">
-                    <div class="card-header">
-                        Upcoming Appointments
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <span class="pill" id="apptCount">Loading…</span>
-                            <button class="req-appt-btn" onclick="openRequestModal()">+ Request</button>
-                        </div>
-                    </div>
-                    <div class="appt-list" id="apptList">
-                        <div style="text-align:center; padding:20px; font-size:0.82rem; color:var(--text-muted);">Loading…</div>
-                    </div>
-
-                    <!-- My Requests toggle -->
-                    <div style="margin-top:14px; border-top:1px solid var(--border-light); padding-top:12px;">
-                        <button class="req-history-toggle" onclick="toggleRequestHistory()" id="reqHistoryToggle">
-                            My Requests <span id="reqHistoryArrow">▾</span>
-                        </button>
-                        <div id="reqHistoryPanel" style="display:none; margin-top:10px;">
-                            <div id="reqHistoryList"><div style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;">Loading…</div></div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- HEALTH RECORDS -->
-                <div id="section-health-records" class="card full-width">
-                    <div class="card-header">
-                        Health Records
-                        <span class="pill">Overview</span>
-                    </div>
-                    <div class="hr-grid">
-
-                        <!-- Medications -->
-                        <div class="hr-block">
-                            <div class="hr-block-title">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="13" rx="2"/><path d="M7 3v13"/><path d="M21 6h-4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/><path d="M19 6V4"/></svg>
-                                Current Medications
-                            </div>
-                            <div class="hr-list">
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Sertraline</span>
-                                        <span class="hr-badge hr-badge-green">Active</span>
-                                    </div>
-                                    <div class="hr-item-sub">50 mg · Once daily · Dr. Patel</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Lorazepam</span>
-                                        <span class="hr-badge hr-badge-green">Active</span>
-                                    </div>
-                                    <div class="hr-item-sub">0.5 mg · As needed · Dr. Thorne</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Melatonin</span>
-                                        <span class="hr-badge hr-badge-muted">OTC</span>
-                                    </div>
-                                    <div class="hr-item-sub">5 mg · Nightly · Self-managed</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Diagnoses -->
-                        <div class="hr-block">
-                            <div class="hr-block-title">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
-                                Diagnoses
-                            </div>
-                            <div class="hr-list">
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Generalised Anxiety Disorder</span>
-                                        <span class="hr-badge hr-badge-blue">Primary</span>
-                                    </div>
-                                    <div class="hr-item-sub">ICD-10: F41.1 · Diagnosed Jan 2024</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Major Depressive Disorder</span>
-                                        <span class="hr-badge hr-badge-blue">Secondary</span>
-                                    </div>
-                                    <div class="hr-item-sub">ICD-10: F32.1 · Diagnosed Mar 2024</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Insomnia Disorder</span>
-                                        <span class="hr-badge hr-badge-muted">Monitoring</span>
-                                    </div>
-                                    <div class="hr-item-sub">ICD-10: G47.00 · Diagnosed Jun 2024</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Allergies -->
-                        <div class="hr-block">
-                            <div class="hr-block-title">
-                                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                                Allergies & Alerts
-                            </div>
-                            <div class="hr-list">
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Penicillin</span>
-                                        <span class="hr-badge hr-badge-red">Severe</span>
-                                    </div>
-                                    <div class="hr-item-sub">Reaction: Anaphylaxis · Confirmed 2019</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Ibuprofen</span>
-                                        <span class="hr-badge hr-badge-warm">Moderate</span>
-                                    </div>
-                                    <div class="hr-item-sub">Reaction: GI distress · Confirmed 2021</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recent Lab Results -->
-                        <div class="hr-block">
-                            <div class="hr-block-title">
-                                <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H3m6 0h10m0 0V3m0 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"/></svg>
-                                Recent Lab Results
-                            </div>
-                            <div class="hr-list">
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Full Blood Count</span>
-                                        <span class="hr-badge hr-badge-green">Normal</span>
-                                    </div>
-                                    <div class="hr-item-sub">Mar 1, 2026 · HealthPlus Lab</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Thyroid Panel (TSH)</span>
-                                        <span class="hr-badge hr-badge-warm">Review</span>
-                                    </div>
-                                    <div class="hr-item-sub">Feb 18, 2026 · 4.8 mIU/L (high-normal)</div>
-                                </div>
-                                <div class="hr-item">
-                                    <div class="hr-item-main">
-                                        <span class="hr-item-name">Vitamin D</span>
-                                        <span class="hr-badge hr-badge-red">Low</span>
-                                    </div>
-                                    <div class="hr-item-sub">Feb 18, 2026 · 18 ng/mL</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- MESSAGES -->
-                <div id="section-messages" class="card full-width" style="padding: 0; overflow: hidden;">
-                    <div class="card-header" style="padding: 16px 22px; border-bottom: 1px solid var(--border-light); margin-bottom: 0;">
-                        Messages
-                        <span class="pill" id="msgUnreadPill">2 new</span>
-                    </div>
-                    <div class="messaging-panel">
-
-                        <!-- Conversation list -->
-                        <div class="conv-list" id="convList">
-                            <div class="conv-item active" onclick="openConv(0)" data-conv="0">
-                                <div class="conv-avatar" style="background:#6d9ba0;">AT</div>
-                                <div class="conv-info">
-                                    <div class="conv-name">Dr. Thorne</div>
-                                    <div class="conv-last">Great progress this week…</div>
-                                </div>
-                                <div class="conv-unread-dot"></div>
-                            </div>
-                            <div class="conv-item" onclick="openConv(1)" data-conv="1">
-                                <div class="conv-avatar" style="background:#5a8f6e;">HP</div>
-                                <div class="conv-info">
-                                    <div class="conv-name">HealthPlus Care</div>
-                                    <div class="conv-last">Your lab results are ready…</div>
-                                </div>
-                                <div class="conv-unread-dot"></div>
-                            </div>
-                            <div class="conv-item" onclick="openConv(2)" data-conv="2">
-                                <div class="conv-avatar" style="background:#c4956a;">RP</div>
-                                <div class="conv-info">
-                                    <div class="conv-name">Dr. Patel</div>
-                                    <div class="conv-last">Adjusted dosage notes…</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Chat window -->
-                        <div class="chat-window">
-                            <div class="chat-header" id="chatHeader">
-                                <div class="chat-header-avatar" id="chatHeaderAvatar" style="background:#6d9ba0;">AT</div>
-                                <div class="chat-header-info">
-                                    <div class="chat-header-name" id="chatHeaderName">Dr. Thorne</div>
-                                    <div class="chat-header-status">Therapist · Therapy Session</div>
-                                </div>
-                            </div>
-
-                            <div class="chat-messages" id="chatMessages"></div>
-
-                            <div class="chat-compose">
-                                <input type="text" class="compose-input" id="composeInput" placeholder="Type a message…" onkeydown="handleComposeKey(event)">
-                                <button class="compose-send" onclick="sendMessage()" title="Send">
-                                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-label">Journal Streak</div>
+                <div class="stat-value" id="journalStreakStat">—</div>
+                <div class="stat-sub">days in a row</div>
             </div>
-        </section>
-    </main>
-
-    <!-- ═══════ REQUEST APPOINTMENT MODAL ═══════ -->
-    <div id="reqApptOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; align-items:center; justify-content:center;">
-        <div class="req-modal">
-            <div class="req-modal-header">
-                <span class="req-modal-title">Request an Appointment</span>
-                <button class="req-modal-close" onclick="closeRequestModal()">&times;</button>
-            </div>
-
-            <div class="req-form-group">
-                <label class="req-label">Appointment Type</label>
-                <select class="req-control" id="rType">
-                    <option value="therapy">Therapy Session</option>
-                    <option value="medication">Medication Check-in</option>
-                    <option value="consultation" selected>General Consultation</option>
-                    <option value="followup">Follow-up</option>
-                    <option value="assessment">Assessment</option>
-                </select>
-            </div>
-
-            <div class="req-form-group">
-                <label class="req-label">Preferred Doctor <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-                <select class="req-control" id="rDoctor">
-                    <option value="">No preference</option>
-                    {% for doc in doctors %}
-                    <option value="{{ doc.id }}">Dr. {{ doc.first_name }} {{ doc.last_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                <div class="req-form-group">
-                    <label class="req-label">Preferred Date <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-                    <input type="date" class="req-control" id="rDate">
-                </div>
-                <div class="req-form-group">
-                    <label class="req-label">Preferred Time <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-                    <input type="time" class="req-control" id="rTime">
-                </div>
-            </div>
-
-            <div class="req-form-group">
-                <label class="req-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-                <textarea class="req-control" id="rNotes" rows="3" placeholder="Describe your concern or any specific needs…"></textarea>
-            </div>
-
-            <div class="req-feedback" id="rFeedback"></div>
-
-            <div style="display:flex; gap:10px; margin-top:6px;">
-                <button class="req-btn-secondary" onclick="closeRequestModal()">Cancel</button>
-                <button class="req-btn-primary" id="rSubmitBtn" onclick="submitRequest()">Send Request</button>
+            <div class="stat-card">
+                <div class="stat-label">Next Appointment</div>
+                <div class="stat-value" id="nextApptDate" style="font-size:1.1rem; margin-top:4px;">—</div>
+                <div class="stat-sub" id="nextApptSub">—</div>
             </div>
         </div>
+
+        <!-- GRID -->
+        <div class="layout-grid">
+
+            <!-- MOOD ENTRY -->
+            <div id="section-mood" class="card">
+                <div class="card-header">
+                    How are you feeling today?
+                </div>
+                <div class="mood-entry-area" id="moodEntryArea">
+                    <div class="mood-prompt">Rate your mood from 1 to 10</div>
+                    <div class="mood-scale" id="moodScale"></div>
+                    <div class="mood-selected-display" id="moodDisplay">
+                        <div class="mood-selected-num" id="moodNum"></div>
+                        <div class="mood-selected-label" id="moodLabel"></div>
+                    </div>
+                    <button class="mood-submit-btn" id="moodSubmitBtn" onclick="submitMood()">Log Mood</button>
+                </div>
+            </div>
+
+            <!-- MOOD GRAPH -->
+            <div class="card">
+                <div class="card-header">
+                    Mood History
+                    <div class="period-tabs">
+                        <button class="period-tab active" onclick="setPeriod('7d', this)">7D</button>
+                        <button class="period-tab" onclick="setPeriod('14d', this)">14D</button>
+                        <button class="period-tab" onclick="setPeriod('30d', this)">30D</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-area" id="chartArea">
+                        <svg class="chart-svg" id="moodChart"></svg>
+                        <div class="chart-tooltip" id="chartTooltip"></div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:var(--accent-teal);"></div>
+                            Daily mood
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:var(--accent-warm);"></div>
+                            Average
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOURNAL (FULL WIDTH) -->
+            <div id="section-journal" class="card full-width" style="min-height: 320px;">
+                <div class="card-header">
+                    Journal
+                    <span class="dots-menu">•••</span>
+                </div>
+                <div class="journal-content">
+                    <div class="journal-tabs">
+                        <button class="journal-tab active" id="tabWrite" onclick="switchJournalTab('write')">Write
+                        </button>
+                        <button class="journal-tab" id="tabEntries" onclick="switchJournalTab('entries')">Past Entries
+                        </button>
+                    </div>
+
+                    <div class="journal-write" id="journalWrite">
+                        <textarea class="journal-textarea" id="journalText"
+                                  placeholder="Write about your day, thoughts, feelings, or anything on your mind..."
+                                  oninput="updateCharCount()"></textarea>
+                        <div class="journal-prompts">
+                            <button class="journal-prompt-chip" onclick="insertPrompt('What am I grateful for today?')">
+                                Gratitude
+                            </button>
+                            <button class="journal-prompt-chip"
+                                    onclick="insertPrompt('What challenged me today and how did I handle it?')">
+                                Challenges
+                            </button>
+                            <button class="journal-prompt-chip"
+                                    onclick="insertPrompt('What is one thing I want to improve tomorrow?')">Goals
+                            </button>
+                            <button class="journal-prompt-chip"
+                                    onclick="insertPrompt('How is my body feeling right now?')">Body Check
+                            </button>
+                        </div>
+                        <div class="journal-footer">
+                            <span class="journal-char-count" id="charCount">0 characters</span>
+                            <button class="journal-save-btn" id="journalSaveBtn" onclick="saveJournal()" disabled>Save
+                                Entry
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="journal-entries hidden" id="journalEntries"></div>
+                </div>
+            </div>
+
+            <!-- UPCOMING APPOINTMENTS -->
+            <div id="section-appointments" class="card">
+                <div class="card-header">
+                    Upcoming Appointments
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="pill" id="apptCount">Loading…</span>
+                        <button class="req-appt-btn" onclick="openRequestModal()">+ Request</button>
+                    </div>
+                </div>
+                <div class="appt-list" id="apptList">
+                    <div style="text-align:center; padding:20px; font-size:0.82rem; color:var(--text-muted);">Loading…
+                    </div>
+                </div>
+
+                <!-- My Requests toggle -->
+                <div style="margin-top:14px; border-top:1px solid var(--border-light); padding-top:12px;">
+                    <button class="req-history-toggle" onclick="toggleRequestHistory()" id="reqHistoryToggle">
+                        My Requests <span id="reqHistoryArrow">▾</span>
+                    </button>
+                    <div id="reqHistoryPanel" style="display:none; margin-top:10px;">
+                        <div id="reqHistoryList">
+                            <div style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;">
+                                Loading…
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- HEALTH RECORDS -->
+            <div id="section-health-records" class="card full-width">
+                <div class="card-header">
+                    Health Records
+                    <span class="pill">Overview</span>
+                </div>
+                <div class="hr-grid">
+
+                    <!-- Medications -->
+                    <div class="hr-block">
+                        <div class="hr-block-title">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="13" rx="2"/>
+                                <path d="M7 3v13"/>
+                                <path d="M21 6h-4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/>
+                                <path d="M19 6V4"/>
+                            </svg>
+                            Current Medications
+                        </div>
+                        <div class="hr-list">
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Sertraline</span>
+                                    <span class="hr-badge hr-badge-green">Active</span>
+                                </div>
+                                <div class="hr-item-sub">50 mg · Once daily · Dr. Patel</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Lorazepam</span>
+                                    <span class="hr-badge hr-badge-green">Active</span>
+                                </div>
+                                <div class="hr-item-sub">0.5 mg · As needed · Dr. Thorne</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Melatonin</span>
+                                    <span class="hr-badge hr-badge-muted">OTC</span>
+                                </div>
+                                <div class="hr-item-sub">5 mg · Nightly · Self-managed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnoses -->
+                    <div class="hr-block">
+                        <div class="hr-block-title">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <line x1="10" y1="9" x2="8" y2="9"/>
+                            </svg>
+                            Diagnoses
+                        </div>
+                        <div class="hr-list">
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Generalised Anxiety Disorder</span>
+                                    <span class="hr-badge hr-badge-blue">Primary</span>
+                                </div>
+                                <div class="hr-item-sub">ICD-10: F41.1 · Diagnosed Jan 2024</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Major Depressive Disorder</span>
+                                    <span class="hr-badge hr-badge-blue">Secondary</span>
+                                </div>
+                                <div class="hr-item-sub">ICD-10: F32.1 · Diagnosed Mar 2024</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Insomnia Disorder</span>
+                                    <span class="hr-badge hr-badge-muted">Monitoring</span>
+                                </div>
+                                <div class="hr-item-sub">ICD-10: G47.00 · Diagnosed Jun 2024</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Allergies -->
+                    <div class="hr-block">
+                        <div class="hr-block-title">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Allergies & Alerts
+                        </div>
+                        <div class="hr-list">
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Penicillin</span>
+                                    <span class="hr-badge hr-badge-red">Severe</span>
+                                </div>
+                                <div class="hr-item-sub">Reaction: Anaphylaxis · Confirmed 2019</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Ibuprofen</span>
+                                    <span class="hr-badge hr-badge-warm">Moderate</span>
+                                </div>
+                                <div class="hr-item-sub">Reaction: GI distress · Confirmed 2021</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Lab Results -->
+                    <div class="hr-block">
+                        <div class="hr-block-title">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H3m6 0h10m0 0V3m0 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"/>
+                            </svg>
+                            Recent Lab Results
+                        </div>
+                        <div class="hr-list">
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Full Blood Count</span>
+                                    <span class="hr-badge hr-badge-green">Normal</span>
+                                </div>
+                                <div class="hr-item-sub">Mar 1, 2026 · HealthPlus Lab</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Thyroid Panel (TSH)</span>
+                                    <span class="hr-badge hr-badge-warm">Review</span>
+                                </div>
+                                <div class="hr-item-sub">Feb 18, 2026 · 4.8 mIU/L (high-normal)</div>
+                            </div>
+                            <div class="hr-item">
+                                <div class="hr-item-main">
+                                    <span class="hr-item-name">Vitamin D</span>
+                                    <span class="hr-badge hr-badge-red">Low</span>
+                                </div>
+                                <div class="hr-item-sub">Feb 18, 2026 · 18 ng/mL</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MESSAGES -->
+            <div id="section-messages" class="card full-width" style="padding: 0; overflow: hidden;">
+                <div class="card-header"
+                     style="padding: 16px 22px; border-bottom: 1px solid var(--border-light); margin-bottom: 0;">
+                    Messages
+                    <span class="pill" id="msgUnreadPill">2 new</span>
+                </div>
+                <div class="messaging-panel">
+
+                    <!-- Conversation list -->
+                    <div class="conv-list" id="convList">
+                        <div class="conv-item active" onclick="openConv(0)" data-conv="0">
+                            <div class="conv-avatar" style="background:#6d9ba0;">AT</div>
+                            <div class="conv-info">
+                                <div class="conv-name">Dr. Thorne</div>
+                                <div class="conv-last">Great progress this week…</div>
+                            </div>
+                            <div class="conv-unread-dot"></div>
+                        </div>
+                        <div class="conv-item" onclick="openConv(1)" data-conv="1">
+                            <div class="conv-avatar" style="background:#5a8f6e;">HP</div>
+                            <div class="conv-info">
+                                <div class="conv-name">HealthPlus Care</div>
+                                <div class="conv-last">Your lab results are ready…</div>
+                            </div>
+                            <div class="conv-unread-dot"></div>
+                        </div>
+                        <div class="conv-item" onclick="openConv(2)" data-conv="2">
+                            <div class="conv-avatar" style="background:#c4956a;">RP</div>
+                            <div class="conv-info">
+                                <div class="conv-name">Dr. Patel</div>
+                                <div class="conv-last">Adjusted dosage notes…</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat window -->
+                    <div class="chat-window">
+                        <div class="chat-header" id="chatHeader">
+                            <div class="chat-header-avatar" id="chatHeaderAvatar" style="background:#6d9ba0;">AT</div>
+                            <div class="chat-header-info">
+                                <div class="chat-header-name" id="chatHeaderName">Dr. Thorne</div>
+                                <div class="chat-header-status">Therapist · Therapy Session</div>
+                            </div>
+                        </div>
+
+                        <div class="chat-messages" id="chatMessages"></div>
+
+                        <div class="chat-compose">
+                            <input type="text" class="compose-input" id="composeInput" placeholder="Type a message…"
+                                   onkeydown="handleComposeKey(event)">
+                            <button class="compose-send" onclick="sendMessage()" title="Send">
+                                <svg viewBox="0 0 24 24">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ═══════ REQUEST APPOINTMENT MODAL ═══════ -->
+<div id="reqApptOverlay"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:300; align-items:center; justify-content:center;">
+    <div class="req-modal">
+        <div class="req-modal-header">
+            <span class="req-modal-title">Request an Appointment</span>
+            <button class="req-modal-close" onclick="closeRequestModal()">&times;</button>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Appointment Type</label>
+            <select class="req-control" id="rType">
+                <option value="therapy">Therapy Session</option>
+                <option value="medication">Medication Check-in</option>
+                <option value="consultation" selected>General Consultation</option>
+                <option value="followup">Follow-up</option>
+                <option value="assessment">Assessment</option>
+            </select>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Preferred Doctor <span
+                    style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <select class="req-control" id="rDoctor">
+                <option value="">No preference</option>
+                {% for doc in doctors %}
+                    <option value="{{ doc.id }}">Dr. {{ doc.first_name }} {{ doc.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="req-form-group">
+                <label class="req-label">Preferred Date <span
+                        style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <input type="date" class="req-control" id="rDate">
+            </div>
+            <div class="req-form-group">
+                <label class="req-label">Preferred Time <span
+                        style="font-weight:400;text-transform:none;">(optional)</span></label>
+                <input type="time" class="req-control" id="rTime">
+            </div>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <textarea class="req-control" id="rNotes" rows="3"
+                      placeholder="Describe your concern or any specific needs…"></textarea>
+        </div>
+
+        <div class="req-feedback" id="rFeedback"></div>
+
+        <div style="display:flex; gap:10px; margin-top:6px;">
+            <button class="req-btn-secondary" onclick="closeRequestModal()">Cancel</button>
+            <button class="req-btn-primary" id="rSubmitBtn" onclick="submitRequest()">Send Request</button>
+        </div>
     </div>
+</div>
 
-    <script>
-        // ═══════ MOOD CONFIG ═══════
-        const moodLabels = [
-            '', 'Very Low', 'Low', 'Struggling', 'Difficult',
-            'Neutral', 'Okay', 'Good', 'Great', 'Wonderful', 'Excellent'
-        ];
+<script>
+    // ═══════ MOOD CONFIG ═══════
+    const moodLabels = [
+        '', 'Very Low', 'Low', 'Struggling', 'Difficult',
+        'Neutral', 'Okay', 'Good', 'Great', 'Wonderful', 'Excellent'
+    ];
 
-        const moodColors = [
-            '', '#c0392b', '#d35400', '#e67e22', '#f39c12',
-            '#b8b8b8', '#7dcea0', '#52be80', '#27ae60', '#1e8449', '#0e6631'
-        ];
+    const moodColors = [
+        '', '#c0392b', '#d35400', '#e67e22', '#f39c12',
+        '#b8b8b8', '#7dcea0', '#52be80', '#27ae60', '#1e8449', '#0e6631'
+    ];
 
-        const CSRF = '{{ csrf_token }}';
+    const CSRF = '{{ csrf_token }}';
 
-        // History loaded from the backend, keyed by period ('7d','14d','30d')
-        const moodHistoryCache = {};
-        let selectedMood = null;
-        let moodLogged = false;
-        let currentPeriod = '7d';
+    // History loaded from the backend, keyed by period ('7d','14d','30d')
+    const moodHistoryCache = {};
+    let selectedMood = null;
+    let moodLogged = false;
+    let currentPeriod = '7d';
 
-        // ═══════ INIT ═══════
-        function initMood() {
-            buildMoodScale();
-            loadMoodStats();
-            loadMoodHistory(currentPeriod);
-        }
+    // ═══════ INIT ═══════
+    function initMood() {
+        buildMoodScale();
+        loadMoodStats();
+        loadMoodHistory(currentPeriod);
+    }
 
-        // ═══════ STATS (today + 7-day avg) ═══════
-        function loadMoodStats() {
-            fetch('{% url "patients:mood_stats" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.today.score !== null) {
-                        document.getElementById('todayMoodStat').textContent = data.today.score;
-                        document.getElementById('todayMoodStat').style.color = moodColors[data.today.score];
-                        // Already logged today — show confirmation state
-                        if (data.today.logged) {
-                            moodLogged = true;
-                            showLoggedConfirmation(data.today.score);
-                        }
+    // ═══════ STATS (today + 7-day avg) ═══════
+    function loadMoodStats() {
+        fetch('{% url "patients:mood_stats" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(r => r.json())
+            .then(data => {
+                if (data.today.score !== null) {
+                    document.getElementById('todayMoodStat').textContent = data.today.score;
+                    document.getElementById('todayMoodStat').style.color = moodColors[data.today.score];
+                    // Already logged today — show confirmation state
+                    if (data.today.logged) {
+                        moodLogged = true;
+                        showLoggedConfirmation(data.today.score);
                     }
-                    if (data.week_avg !== null) {
-                        document.getElementById('avgMoodStat').textContent = data.week_avg;
-                    }
-                });
-        }
-
-        // ═══════ HISTORY ═══════
-        function loadMoodHistory(period) {
-            const days = period === '7d' ? 7 : period === '14d' ? 14 : 30;
-            if (moodHistoryCache[period]) { renderChart(); return; }
-
-            fetch(`{% url "patients:mood_history" %}?days=${days}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(r => r.json())
-                .then(data => {
-                    moodHistoryCache[period] = data.history.map(d => ({
-                        label: d.label,
-                        mood: d.score,
-                        mood_label: d.mood_label,
-                    }));
-                    renderChart();
-                });
-        }
-
-        // ═══════ BUILD MOOD SCALE ═══════
-        function buildMoodScale() {
-            const container = document.getElementById('moodScale');
-            for (let i = 1; i <= 10; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'mood-btn';
-                btn.textContent = i;
-                btn.style.background = moodColors[i];
-                btn.style.height = (24 + i * 3.5) + 'px';
-                btn.onclick = () => selectMood(i);
-                container.appendChild(btn);
-            }
-        }
-
-        function selectMood(val) {
-            if (moodLogged) return;
-            selectedMood = val;
-            document.querySelectorAll('.mood-btn').forEach((b, idx) => {
-                b.classList.toggle('selected', idx + 1 === val);
+                }
+                if (data.week_avg !== null) {
+                    document.getElementById('avgMoodStat').textContent = data.week_avg;
+                }
             });
-            document.getElementById('moodNum').textContent = val;
-            document.getElementById('moodNum').style.color = moodColors[val];
-            document.getElementById('moodLabel').textContent = moodLabels[val];
-            document.getElementById('moodSubmitBtn').classList.add('visible');
+    }
+
+    // ═══════ HISTORY ═══════
+    function loadMoodHistory(period) {
+        const days = period === '7d' ? 7 : period === '14d' ? 14 : 30;
+        if (moodHistoryCache[period]) {
+            renderChart();
+            return;
         }
 
-        function submitMood() {
-            if (!selectedMood) return;
+        fetch(`{% url "patients:mood_history" %}?days=${days}`, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(r => r.json())
+            .then(data => {
+                moodHistoryCache[period] = data.history.map(d => ({
+                    label: d.label,
+                    mood: d.score,
+                    mood_label: d.mood_label,
+                }));
+                renderChart();
+            });
+    }
 
-            fetch('{% url "patients:mood_log" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': CSRF,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({ score: selectedMood }),
-            })
+    // ═══════ BUILD MOOD SCALE ═══════
+    function buildMoodScale() {
+        const container = document.getElementById('moodScale');
+        for (let i = 1; i <= 10; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'mood-btn';
+            btn.textContent = i;
+            btn.style.background = moodColors[i];
+            btn.style.height = (24 + i * 3.5) + 'px';
+            btn.onclick = () => selectMood(i);
+            container.appendChild(btn);
+        }
+    }
+
+    function selectMood(val) {
+        if (moodLogged) return;
+        selectedMood = val;
+        document.querySelectorAll('.mood-btn').forEach((b, idx) => {
+            b.classList.toggle('selected', idx + 1 === val);
+        });
+        document.getElementById('moodNum').textContent = val;
+        document.getElementById('moodNum').style.color = moodColors[val];
+        document.getElementById('moodLabel').textContent = moodLabels[val];
+        document.getElementById('moodSubmitBtn').classList.add('visible');
+    }
+
+    function submitMood() {
+        if (!selectedMood) return;
+
+        fetch('{% url "patients:mood_log" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': CSRF,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({score: selectedMood}),
+        })
             .then(r => r.json())
             .then(data => {
                 if (!data.ok) return;
@@ -1843,11 +2389,11 @@
 
                 showLoggedConfirmation(selectedMood);
             });
-        }
+    }
 
-        function showLoggedConfirmation(score) {
-            const area = document.getElementById('moodEntryArea');
-            area.innerHTML = `
+    function showLoggedConfirmation(score) {
+        const area = document.getElementById('moodEntryArea');
+        area.innerHTML = `
                 <div class="mood-logged-msg">
                     <div class="check-circle">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1856,150 +2402,154 @@
                     <p>Logged for today. Keep it up!</p>
                 </div>
             `;
+    }
+
+    // ═══════ CHART ═══════
+    function setPeriod(period, el) {
+        currentPeriod = period;
+        document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        loadMoodHistory(period);
+    }
+
+    function renderChart() {
+        const svg = document.getElementById('moodChart');
+        const data = (moodHistoryCache[currentPeriod] || []).filter(d => d.mood !== null);
+
+        if (data.length === 0) {
+            svg.innerHTML = '';
+            return;
         }
 
-        // ═══════ CHART ═══════
-        function setPeriod(period, el) {
-            currentPeriod = period;
-            document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            loadMoodHistory(period);
-        }
+        const W = svg.clientWidth || 500;
+        const H = 180;
+        const padL = 32, padR = 16, padT = 12, padB = 28;
+        const chartW = W - padL - padR;
+        const chartH = H - padT - padB;
 
-        function renderChart() {
-            const svg = document.getElementById('moodChart');
-            const data = (moodHistoryCache[currentPeriod] || []).filter(d => d.mood !== null);
+        const avg = data.reduce((s, d) => s + d.mood, 0) / data.length;
 
-            if (data.length === 0) { svg.innerHTML = ''; return; }
-
-            const W = svg.clientWidth || 500;
-            const H = 180;
-            const padL = 32, padR = 16, padT = 12, padB = 28;
-            const chartW = W - padL - padR;
-            const chartH = H - padT - padB;
-
-            const avg = data.reduce((s, d) => s + d.mood, 0) / data.length;
-
-            let svgContent = `<defs>
+        let svgContent = `<defs>
                 <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stop-color="#6d9ba0" stop-opacity="0.25"/>
                     <stop offset="100%" stop-color="#6d9ba0" stop-opacity="0.02"/>
                 </linearGradient>
             </defs>`;
 
-            // Y labels + grid
-            for (let y = 0; y <= 10; y += 2) {
-                const py = padT + chartH - (y / 10) * chartH;
-                svgContent += `<line x1="${padL}" y1="${py}" x2="${W - padR}" y2="${py}" class="chart-grid-line"/>`;
-                svgContent += `<text x="${padL - 6}" y="${py + 3.5}" class="chart-y-label">${y}</text>`;
-            }
+        // Y labels + grid
+        for (let y = 0; y <= 10; y += 2) {
+            const py = padT + chartH - (y / 10) * chartH;
+            svgContent += `<line x1="${padL}" y1="${py}" x2="${W - padR}" y2="${py}" class="chart-grid-line"/>`;
+            svgContent += `<text x="${padL - 6}" y="${py + 3.5}" class="chart-y-label">${y}</text>`;
+        }
 
-            // Average line
-            const avgY = padT + chartH - (avg / 10) * chartH;
-            svgContent += `<line x1="${padL}" y1="${avgY}" x2="${W - padR}" y2="${avgY}" stroke="${moodColors[Math.round(avg)]}" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>`;
+        // Average line
+        const avgY = padT + chartH - (avg / 10) * chartH;
+        svgContent += `<line x1="${padL}" y1="${avgY}" x2="${W - padR}" y2="${avgY}" stroke="${moodColors[Math.round(avg)]}" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>`;
 
-            // Build points
-            const points = data.map((d, i) => {
-                const x = padL + (i / (data.length - 1 || 1)) * chartW;
-                const y = padT + chartH - (d.mood / 10) * chartH;
-                return { x, y, ...d };
-            });
+        // Build points
+        const points = data.map((d, i) => {
+            const x = padL + (i / (data.length - 1 || 1)) * chartW;
+            const y = padT + chartH - (d.mood / 10) * chartH;
+            return {x, y, ...d};
+        });
 
-            // Area fill
-            if (points.length > 1) {
-                let areaPath = `M${points[0].x},${points[0].y}`;
-                points.slice(1).forEach(p => areaPath += ` L${p.x},${p.y}`);
-                areaPath += ` L${points[points.length - 1].x},${padT + chartH} L${points[0].x},${padT + chartH} Z`;
-                svgContent += `<path d="${areaPath}" class="chart-area-fill"/>`;
-            }
+        // Area fill
+        if (points.length > 1) {
+            let areaPath = `M${points[0].x},${points[0].y}`;
+            points.slice(1).forEach(p => areaPath += ` L${p.x},${p.y}`);
+            areaPath += ` L${points[points.length - 1].x},${padT + chartH} L${points[0].x},${padT + chartH} Z`;
+            svgContent += `<path d="${areaPath}" class="chart-area-fill"/>`;
+        }
 
-            // Line
-            if (points.length > 1) {
-                let linePath = `M${points[0].x},${points[0].y}`;
-                points.slice(1).forEach(p => linePath += ` L${p.x},${p.y}`);
-                svgContent += `<path d="${linePath}" class="chart-line"/>`;
-            }
+        // Line
+        if (points.length > 1) {
+            let linePath = `M${points[0].x},${points[0].y}`;
+            points.slice(1).forEach(p => linePath += ` L${p.x},${p.y}`);
+            svgContent += `<path d="${linePath}" class="chart-line"/>`;
+        }
 
-            // Dots + labels
-            points.forEach((p, i) => {
-                const safeLabel = p.label.replace(/'/g, "\\'");
-                const safeMoodLabel = (p.mood_label || moodLabels[p.mood] || '').replace(/'/g, "\\'");
-                svgContent += `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart-dot" data-idx="${i}"
+        // Dots + labels
+        points.forEach((p, i) => {
+            const safeLabel = p.label.replace(/'/g, "\\'");
+            const safeMoodLabel = (p.mood_label || moodLabels[p.mood] || '').replace(/'/g, "\\'");
+            svgContent += `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart-dot" data-idx="${i}"
                     onmouseenter="showTooltip(event, '${safeLabel}', ${p.mood}, '${safeMoodLabel}')"
                     onmouseleave="hideTooltip()"/>`;
-                const showLabel = data.length <= 14 || i % Math.ceil(data.length / 10) === 0 || i === data.length - 1;
-                if (showLabel) {
-                    svgContent += `<text x="${p.x}" y="${H - 4}" class="chart-label">${p.label.split(' ')[1]}</text>`;
-                }
-            });
+            const showLabel = data.length <= 14 || i % Math.ceil(data.length / 10) === 0 || i === data.length - 1;
+            if (showLabel) {
+                svgContent += `<text x="${p.x}" y="${H - 4}" class="chart-label">${p.label.split(' ')[1]}</text>`;
+            }
+        });
 
-            svg.innerHTML = svgContent;
-        }
+        svg.innerHTML = svgContent;
+    }
 
-        function showTooltip(e, label, mood, moodLabel) {
-            const tt = document.getElementById('chartTooltip');
-            const rect = document.getElementById('chartArea').getBoundingClientRect();
-            tt.innerHTML = `<strong>${label}</strong> — Mood: ${mood}/10 (${moodLabel})`;
-            tt.style.left = (e.clientX - rect.left + 12) + 'px';
-            tt.style.top = (e.clientY - rect.top - 36) + 'px';
-            tt.classList.add('visible');
-        }
+    function showTooltip(e, label, mood, moodLabel) {
+        const tt = document.getElementById('chartTooltip');
+        const rect = document.getElementById('chartArea').getBoundingClientRect();
+        tt.innerHTML = `<strong>${label}</strong> — Mood: ${mood}/10 (${moodLabel})`;
+        tt.style.left = (e.clientX - rect.left + 12) + 'px';
+        tt.style.top = (e.clientY - rect.top - 36) + 'px';
+        tt.classList.add('visible');
+    }
 
-        function hideTooltip() {
-            document.getElementById('chartTooltip').classList.remove('visible');
-        }
-        // Notifications
-        const modal = document.getElementById("notif-modal");
-const btn = document.getElementById("notif-btn");
-const span = document.getElementsByClassName("close-btn")[0];
+    function hideTooltip() {
+        document.getElementById('chartTooltip').classList.remove('visible');
+    }
 
-// Open modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+    // Notifications
+    const modal = document.getElementById("notif-modal");
+    const btn = document.getElementById("notif-btn");
+    const span = document.getElementsByClassName("close-btn")[0];
 
-// Close modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
+    // Open modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
 
-// Close if user clicks outside of modal
-window.onclick = function(event) {
-    if (event.target == modal) {
+    // Close modal
+    span.onclick = function () {
         modal.style.display = "none";
     }
-}
 
-        // ═══════ MESSAGING ═══════
-        let activeConvId = null;
-        const myInitial = '{{ profile.first_name|make_list|first }}';
-        const convColors = {};
-
-        const CONV_COLORS = ['#6d9ba0','#5a8f6e','#c4956a','#5b8ec4','#9b7db8'];
-        let colorIdx = 0;
-
-        function convColor(convId) {
-            if (!convColors[convId]) convColors[convId] = CONV_COLORS[colorIdx++ % CONV_COLORS.length];
-            return convColors[convId];
+    // Close if user clicks outside of modal
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
+    }
 
-        // Load and render conversation list
-        function loadConversations() {
-            fetch('{% url "patients:list_conversations" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(r => r.json())
-                .then(data => {
-                    const list = document.getElementById('convList');
-                    list.innerHTML = '';
-                    let totalUnread = 0;
+    // ═══════ MESSAGING ═══════
+    let activeConvId = null;
+    const myInitial = '{{ profile.first_name|make_list|first }}';
+    const convColors = {};
 
-                    data.conversations.forEach((conv, i) => {
-                        totalUnread += conv.unread_count;
-                        const item = document.createElement('div');
-                        item.className = 'conv-item' + (i === 0 ? ' active' : '');
-                        item.dataset.convId = conv.id;
-                        item.onclick = () => openConv(conv.id);
+    const CONV_COLORS = ['#6d9ba0', '#5a8f6e', '#c4956a', '#5b8ec4', '#9b7db8'];
+    let colorIdx = 0;
 
-                        item.innerHTML = `
+    function convColor(convId) {
+        if (!convColors[convId]) convColors[convId] = CONV_COLORS[colorIdx++ % CONV_COLORS.length];
+        return convColors[convId];
+    }
+
+    // Load and render conversation list
+    function loadConversations() {
+        fetch('{% url "patients:list_conversations" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(r => r.json())
+            .then(data => {
+                const list = document.getElementById('convList');
+                list.innerHTML = '';
+                let totalUnread = 0;
+
+                data.conversations.forEach((conv, i) => {
+                    totalUnread += conv.unread_count;
+                    const item = document.createElement('div');
+                    item.className = 'conv-item' + (i === 0 ? ' active' : '');
+                    item.dataset.convId = conv.id;
+                    item.onclick = () => openConv(conv.id);
+
+                    item.innerHTML = `
                             <div class="conv-avatar" style="background:${convColor(conv.id)}">${conv.participant_initials}</div>
                             <div class="conv-info">
                                 <div class="conv-name">${conv.participant_name}</div>
@@ -2007,96 +2557,103 @@ window.onclick = function(event) {
                             </div>
                             ${conv.unread_count > 0 ? '<div class="conv-unread-dot"></div>' : ''}
                         `;
-                        list.appendChild(item);
-                    });
-
-                    const pill = document.getElementById('msgUnreadPill');
-                    if (totalUnread > 0) { pill.textContent = totalUnread + ' new'; pill.style.display = ''; }
-                    else { pill.style.display = 'none'; }
-
-                    // Open first conversation automatically
-                    if (data.conversations.length > 0) openConv(data.conversations[0].id);
+                    list.appendChild(item);
                 });
-        }
 
-        // Open a conversation and load its messages
-        function openConv(convId) {
-            activeConvId = convId;
-
-            document.querySelectorAll('.conv-item').forEach(el => {
-                el.classList.toggle('active', parseInt(el.dataset.convId) === convId);
-                if (parseInt(el.dataset.convId) === convId) {
-                    const dot = el.querySelector('.conv-unread-dot');
-                    if (dot) dot.remove();
+                const pill = document.getElementById('msgUnreadPill');
+                if (totalUnread > 0) {
+                    pill.textContent = totalUnread + ' new';
+                    pill.style.display = '';
+                } else {
+                    pill.style.display = 'none';
                 }
+
+                // Open first conversation automatically
+                if (data.conversations.length > 0) openConv(data.conversations[0].id);
             });
+    }
 
-            fetch(`/patients/messages/${convId}/`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(r => r.json())
-                .then(data => {
-                    // Update header
-                    const convItem = document.querySelector(`.conv-item[data-conv-id="${convId}"]`);
-                    if (convItem) {
-                        document.getElementById('chatHeaderAvatar').style.background = convColor(convId);
-                        document.getElementById('chatHeaderAvatar').textContent = convItem.querySelector('.conv-avatar').textContent;
-                        document.getElementById('chatHeaderName').textContent = convItem.querySelector('.conv-name').textContent;
-                    }
+    // Open a conversation and load its messages
+    function openConv(convId) {
+        activeConvId = convId;
 
-                    renderMessages(data.messages);
-                });
-        }
+        document.querySelectorAll('.conv-item').forEach(el => {
+            el.classList.toggle('active', parseInt(el.dataset.convId) === convId);
+            if (parseInt(el.dataset.convId) === convId) {
+                const dot = el.querySelector('.conv-unread-dot');
+                if (dot) dot.remove();
+            }
+        });
 
-        // Render messages in the chat window
-        function renderMessages(messages) {
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = '';
+        fetch(`/patients/messages/${convId}/`, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(r => r.json())
+            .then(data => {
+                // Update header
+                const convItem = document.querySelector(`.conv-item[data-conv-id="${convId}"]`);
+                if (convItem) {
+                    document.getElementById('chatHeaderAvatar').style.background = convColor(convId);
+                    document.getElementById('chatHeaderAvatar').textContent = convItem.querySelector('.conv-avatar').textContent;
+                    document.getElementById('chatHeaderName').textContent = convItem.querySelector('.conv-name').textContent;
+                }
 
-            messages.forEach(msg => {
-                const row = document.createElement('div');
-                row.className = 'msg-bubble-row ' + (msg.from_me ? 'sent' : 'received');
-
-                const avatarEl = document.createElement('div');
-                avatarEl.className = 'bubble-avatar';
-                avatarEl.style.background = msg.from_me ? '#b0bec5' : convColor(activeConvId);
-                avatarEl.textContent = msg.from_me ? myInitial : msg.sender_initials;
-
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                bubble.textContent = msg.text;
-
-                const timeEl = document.createElement('div');
-                timeEl.className = 'bubble-time';
-                timeEl.textContent = msg.time;
-
-                row.append(
-                    ...(msg.from_me ? [timeEl, bubble, avatarEl] : [avatarEl, bubble, timeEl])
-                );
-                container.appendChild(row);
+                renderMessages(data.messages);
             });
+    }
 
-            container.scrollTop = container.scrollHeight;
-        }
+    // Render messages in the chat window
+    function renderMessages(messages) {
+        const container = document.getElementById('chatMessages');
+        container.innerHTML = '';
 
-        // Send a message
-        function sendMessage() {
-            const input = document.getElementById('composeInput');
-            const text = input.value.trim();
-            if (!text || activeConvId === null) return;
+        messages.forEach(msg => {
+            const row = document.createElement('div');
+            row.className = 'msg-bubble-row ' + (msg.from_me ? 'sent' : 'received');
 
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const avatarEl = document.createElement('div');
+            avatarEl.className = 'bubble-avatar';
+            avatarEl.style.background = msg.from_me ? '#b0bec5' : convColor(activeConvId);
+            avatarEl.textContent = msg.from_me ? myInitial : msg.sender_initials;
 
-            fetch(`/patients/messages/${activeConvId}/send/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({ text }),
-            })
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.textContent = msg.text;
+
+            const timeEl = document.createElement('div');
+            timeEl.className = 'bubble-time';
+            timeEl.textContent = msg.time;
+
+            row.append(
+                ...(msg.from_me ? [timeEl, bubble, avatarEl] : [avatarEl, bubble, timeEl])
+            );
+            container.appendChild(row);
+        });
+
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // Send a message
+    function sendMessage() {
+        const input = document.getElementById('composeInput');
+        const text = input.value.trim();
+        if (!text || activeConvId === null) return;
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch(`/patients/messages/${activeConvId}/send/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({text}),
+        })
             .then(r => r.json())
             .then(msg => {
-                if (msg.error) { console.error(msg.error); return; }
+                if (msg.error) {
+                    console.error(msg.error);
+                    return;
+                }
 
                 // Append the new message locally
                 const container = document.getElementById('chatMessages');
@@ -2116,119 +2673,140 @@ window.onclick = function(event) {
 
                 input.value = '';
             });
+    }
+
+    function handleComposeKey(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
         }
+    }
 
-        function handleComposeKey(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+    loadConversations();
+
+    // ═══════ JOURNAL ═══════
+    function switchJournalTab(tab) {
+        document.getElementById('tabWrite').classList.toggle('active', tab === 'write');
+        document.getElementById('tabEntries').classList.toggle('active', tab === 'entries');
+        document.getElementById('journalWrite').classList.toggle('hidden', tab !== 'write');
+        document.getElementById('journalEntries').classList.toggle('hidden', tab !== 'entries');
+
+        if (tab === 'entries') loadEntries();
+    }
+
+    function renderEntries(entries) {
+        const container = document.getElementById('journalEntries');
+        if (!entries.length) {
+            container.innerHTML = '<p style="color:var(--text-muted);padding:16px;">No journal entries yet.</p>';
+            return;
         }
-
-        loadConversations();
-
-        // ═══════ JOURNAL ═══════
-        const journalEntries = [
-            {
-                date: 'March 2, 2026',
-                mood: 7,
-                text: 'Had a productive therapy session today. Dr. Thorne helped me work through some of the anxiety around my upcoming presentation at work. We practiced the breathing technique — 4-7-8 — and I actually felt calmer afterward. Going to try it before bed tonight.'
-            },
-            {
-                date: 'March 1, 2026',
-                mood: 8,
-                text: 'Woke up feeling lighter than usual. Went for a walk in the morning and noticed the trees starting to bud. Small things like that make such a difference. I\'m grateful for the medication adjustment — the side effects from last week seem to have settled.'
-            },
-            {
-                date: 'February 28, 2026',
-                mood: 7,
-                text: 'Challenging day at work but I managed to use the grounding technique when I felt overwhelmed. Five things I can see, four I can touch... it really does help break the spiral. Journaling before bed is becoming a habit I actually look forward to.'
-            },
-            {
-                date: 'February 27, 2026',
-                mood: 8,
-                text: 'Group session was really meaningful today. Hearing other people share similar experiences reminds me I\'m not alone in this. One person talked about their journey with panic attacks and it resonated deeply. Made plans to try the art therapy workshop next week.'
-            },
-            {
-                date: 'February 26, 2026',
-                mood: 7,
-                text: 'Tried cooking a new recipe tonight — something simple but it felt like an accomplishment. My energy levels have been more consistent this week. Going to mention that to Dr. Patel at the next check-in.'
-            }
-        ];
-
-        function switchJournalTab(tab) {
-            document.getElementById('tabWrite').classList.toggle('active', tab === 'write');
-            document.getElementById('tabEntries').classList.toggle('active', tab === 'entries');
-            document.getElementById('journalWrite').classList.toggle('hidden', tab !== 'write');
-            document.getElementById('journalEntries').classList.toggle('hidden', tab !== 'entries');
-
-            if (tab === 'entries') renderEntries();
-        }
-
-        function renderEntries() {
-            const container = document.getElementById('journalEntries');
-            container.innerHTML = journalEntries.map(e => `
+        container.innerHTML = entries.map(e => {
+            const moodBadge = e.mood != null
+                ? `<span class="entry-mood-badge" style="background:${moodColors[e.mood]}20; color:${moodColors[e.mood]};">Mood: ${e.mood}/10</span>`
+                : '';
+            return `
                 <div class="journal-entry-card">
                     <div class="entry-top">
                         <span class="entry-date">${e.date}</span>
-                        <span class="entry-mood-badge" style="background:${moodColors[e.mood]}20; color:${moodColors[e.mood]};">
-                            Mood: ${e.mood}/10
-                        </span>
+                        ${moodBadge}
                     </div>
                     <div class="entry-text">${e.text}</div>
-                </div>
-            `).join('');
-        }
+                </div>`;
+        }).join('');
+    }
 
-        function insertPrompt(prompt) {
-            const ta = document.getElementById('journalText');
-            ta.value = ta.value ? ta.value + '\n\n' + prompt + '\n' : prompt + '\n';
-            ta.focus();
-            updateCharCount();
-        }
+    function loadEntries() {
+        const container = document.getElementById('journalEntries');
+        container.innerHTML = '<p style="color:var(--text-muted);padding:16px;">Loading...</p>';
+        fetch('{% url "patients:journal_list" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(r => r.json())
+            .then(data => renderEntries(data.entries))
+            .catch(() => { container.innerHTML = '<p style="color:var(--text-muted);padding:16px;">Failed to load entries.</p>'; });
+    }
 
-        function updateCharCount() {
-            const len = document.getElementById('journalText').value.length;
-            document.getElementById('charCount').textContent = len + ' character' + (len !== 1 ? 's' : '');
-            document.getElementById('journalSaveBtn').disabled = len === 0;
-        }
+    function insertPrompt(prompt) {
+        const ta = document.getElementById('journalText');
+        ta.value = ta.value ? ta.value + '\n\n' + prompt + '\n' : prompt + '\n';
+        ta.focus();
+        updateCharCount();
+    }
 
-        function saveJournal() {
-            const text = document.getElementById('journalText').value.trim();
-            if (!text) return;
+    function updateCharCount() {
+        const len = document.getElementById('journalText').value.length;
+        document.getElementById('charCount').textContent = len + ' character' + (len !== 1 ? 's' : '');
+        document.getElementById('journalSaveBtn').disabled = len === 0;
+    }
 
-            const newEntry = {
-                date: 'March 3, 2026',
-                mood: selectedMood || null,
-                text: text
-            };
+    function saveJournal() {
+        const text = document.getElementById('journalText').value.trim();
+        if (!text) return;
 
-            journalEntries.unshift(newEntry);
-            document.getElementById('journalText').value = '';
-            updateCharCount();
+        const btn = document.getElementById('journalSaveBtn');
+        btn.disabled = true;
 
-            // Show confirmation
-            const btn = document.getElementById('journalSaveBtn');
-            btn.textContent = '✓ Saved!';
-            btn.style.background = 'var(--accent-green)';
-            setTimeout(() => {
-                btn.textContent = 'Save Entry';
-                btn.style.background = '';
-            }, 2000);
-        }
+        fetch('{% url "patients:journal_create" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': CSRF,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({text: text, mood: selectedMood || null}),
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
+                    document.getElementById('journalText').value = '';
+                    updateCharCount();
+                    btn.textContent = '✓ Saved!';
+                    btn.style.background = 'var(--accent-green)';
+                    setTimeout(() => {
+                        btn.textContent = 'Save Entry';
+                        btn.style.background = '';
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    btn.disabled = false;
+                }
+            })
+            .catch(() => { btn.disabled = false; });
+    }
 
-        // ═══════ INIT ═══════
-        initMood();
-        renderEntries();
+    // ═══════ INIT ═══════
+    initMood();
 
-        // Responsive chart
-        window.addEventListener('resize', renderChart);
+    // Journal streak stat
+    fetch('{% url "patients:journal_stats" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then(r => r.json())
+        .then(d => { document.getElementById('journalStreakStat').textContent = d.streak; })
+        .catch(() => {});
 
-        // ═══════ MEETING ALERTS ═══════
-        const _dismissedMeetings = new Set();
+    // Next appointment stat
+    fetch('{% url "patients:patient_appointments" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then(r => r.json())
+        .then(d => {
+            const appt = d.appointments && d.appointments[0];
+            if (appt) {
+                const dt = new Date(appt.scheduled_at);
+                const datePart = dt.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+                const timePart = dt.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
+                document.getElementById('nextApptDate').textContent = datePart;
+                document.getElementById('nextApptSub').textContent = appt.doctor_name + ' — ' + timePart;
+            } else {
+                document.getElementById('nextApptDate').textContent = 'None';
+                document.getElementById('nextApptSub').textContent = 'No upcoming appointments';
+            }
+        })
+        .catch(() => {});
 
-        function loadMeetingAlerts() {
-            fetch('{% url "patients:patient_meetings" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    // Responsive chart
+    window.addEventListener('resize', renderChart);
+
+    // ═══════ MEETING ALERTS ═══════
+    const _dismissedMeetings = new Set();
+
+    function loadMeetingAlerts() {
+        fetch('{% url "patients:patient_meetings" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(r => r.json())
             .then(data => {
                 const container = document.getElementById('meetingAlerts');
@@ -2255,28 +2833,29 @@ window.onclick = function(event) {
                     container.appendChild(div);
                 });
             });
-        }
+    }
 
-        function dismissMeetingAlert(id) {
-            _dismissedMeetings.add(id);
-            const el = document.getElementById(`meeting-alert-${id}`);
-            if (el) el.remove();
-        }
+    function dismissMeetingAlert(id) {
+        _dismissedMeetings.add(id);
+        const el = document.getElementById(`meeting-alert-${id}`);
+        if (el) el.remove();
+    }
 
-        loadMeetingAlerts();
-        // Poll every 30 seconds for new meetings
-        setInterval(loadMeetingAlerts, 30000);
+    loadMeetingAlerts();
+    // Poll every 30 seconds for new meetings
+    setInterval(loadMeetingAlerts, 30000);
 
-        // ═══════ APPOINTMENTS ═══════
-        const APPT_COLORS = ['#6d9ba0','#5a8f6e','#c4956a','#5b8ec4','#9b7db8'];
-        function apptColor(str) {
-            let h = 0;
-            for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
-            return APPT_COLORS[Math.abs(h) % APPT_COLORS.length];
-        }
+    // ═══════ APPOINTMENTS ═══════
+    const APPT_COLORS = ['#6d9ba0', '#5a8f6e', '#c4956a', '#5b8ec4', '#9b7db8'];
 
-        function loadAppointments() {
-            fetch('{% url "patients:patient_appointments" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    function apptColor(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+        return APPT_COLORS[Math.abs(h) % APPT_COLORS.length];
+    }
+
+    function loadAppointments() {
+        fetch('{% url "patients:patient_appointments" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(r => r.json())
             .then(data => {
                 const list = document.getElementById('apptList');
@@ -2291,7 +2870,7 @@ window.onclick = function(event) {
                 }
 
                 list.innerHTML = appts.map(a => {
-                    const initials = a.doctor_name.replace('Dr. ','').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+                    const initials = a.doctor_name.replace('Dr. ', '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
                     const color = apptColor(a.doctor_name);
                     return `
                         <div class="appt-item">
@@ -2305,47 +2884,47 @@ window.onclick = function(event) {
                     `;
                 }).join('');
             });
-        }
+    }
 
-        loadAppointments();
+    loadAppointments();
 
-        // ═══════ APPOINTMENT REQUESTS ═══════
-        function openRequestModal() {
-            document.getElementById('reqApptOverlay').classList.add('open');
-            document.getElementById('rFeedback').className = 'req-feedback';
-        }
+    // ═══════ APPOINTMENT REQUESTS ═══════
+    function openRequestModal() {
+        document.getElementById('reqApptOverlay').classList.add('open');
+        document.getElementById('rFeedback').className = 'req-feedback';
+    }
 
-        function closeRequestModal() {
-            document.getElementById('reqApptOverlay').classList.remove('open');
-        }
+    function closeRequestModal() {
+        document.getElementById('reqApptOverlay').classList.remove('open');
+    }
 
-        document.getElementById('reqApptOverlay').addEventListener('click', function(e) {
-            if (e.target === this) closeRequestModal();
-        });
+    document.getElementById('reqApptOverlay').addEventListener('click', function (e) {
+        if (e.target === this) closeRequestModal();
+    });
 
-        function submitRequest() {
-            const btn = document.getElementById('rSubmitBtn');
-            const fb  = document.getElementById('rFeedback');
-            btn.disabled = true;
-            fb.className = 'req-feedback';
+    function submitRequest() {
+        const btn = document.getElementById('rSubmitBtn');
+        const fb = document.getElementById('rFeedback');
+        btn.disabled = true;
+        fb.className = 'req-feedback';
 
-            const payload = {
-                appointment_type:    document.getElementById('rType').value,
-                preferred_doctor_id: document.getElementById('rDoctor').value || null,
-                preferred_date:      document.getElementById('rDate').value || null,
-                preferred_time:      document.getElementById('rTime').value || null,
-                notes:               document.getElementById('rNotes').value.trim(),
-            };
+        const payload = {
+            appointment_type: document.getElementById('rType').value,
+            preferred_doctor_id: document.getElementById('rDoctor').value || null,
+            preferred_date: document.getElementById('rDate').value || null,
+            preferred_time: document.getElementById('rTime').value || null,
+            notes: document.getElementById('rNotes').value.trim(),
+        };
 
-            fetch('{% url "patients:appointment_request" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': CSRF,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify(payload),
-            })
+        fetch('{% url "patients:appointment_request" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': CSRF,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify(payload),
+        })
             .then(r => r.json())
             .then(data => {
                 btn.disabled = false;
@@ -2372,19 +2951,19 @@ window.onclick = function(event) {
                 fb.textContent = 'Network error — please try again.';
                 fb.className = 'req-feedback error';
             });
-        }
+    }
 
-        let reqHistoryOpen = false;
+    let reqHistoryOpen = false;
 
-        function toggleRequestHistory() {
-            reqHistoryOpen = !reqHistoryOpen;
-            document.getElementById('reqHistoryPanel').style.display = reqHistoryOpen ? 'block' : 'none';
-            document.getElementById('reqHistoryArrow').textContent = reqHistoryOpen ? '▴' : '▾';
-            if (reqHistoryOpen) loadRequestHistory();
-        }
+    function toggleRequestHistory() {
+        reqHistoryOpen = !reqHistoryOpen;
+        document.getElementById('reqHistoryPanel').style.display = reqHistoryOpen ? 'block' : 'none';
+        document.getElementById('reqHistoryArrow').textContent = reqHistoryOpen ? '▴' : '▾';
+        if (reqHistoryOpen) loadRequestHistory();
+    }
 
-        function loadRequestHistory() {
-            fetch('{% url "patients:appointment_requests_list" %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    function loadRequestHistory() {
+        fetch('{% url "patients:appointment_requests_list" %}', {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(r => r.json())
             .then(data => {
                 const el = document.getElementById('reqHistoryList');
@@ -2404,212 +2983,227 @@ window.onclick = function(event) {
                     </div>
                 `).join('');
             });
-        }
+    }
 
-        // Sidebar nav scroll
-        document.querySelectorAll('.nav-item[data-target]').forEach(function(item) {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('data-target');
-                const target = document.getElementById(targetId);
-                const wrapper = document.querySelector('.main-wrapper');
-                if (target && wrapper) {
-                    wrapper.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
-                }
-                document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-                this.classList.add('active');
+    // Sidebar nav scroll
+    document.querySelectorAll('.nav-item[data-target]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('data-target');
+            const target = document.getElementById(targetId);
+            const wrapper = document.querySelector('.main-wrapper');
+            if (target && wrapper) {
+                wrapper.scrollTo({top: target.offsetTop - 20, behavior: 'smooth'});
+            }
+            document.querySelectorAll('.nav-item').forEach(function (n) {
+                n.classList.remove('active');
             });
+            this.classList.add('active');
         });
-    </script>
+    });
+</script>
 
-    <!-- ═══════ APPOINTMENT BOOKING MODAL ═══════ -->
-    <div id="appt-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
-        <div style="background:#fff; border-radius:16px; padding:32px; width:100%; max-width:480px; box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative;">
-            <button id="close-appt-modal" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#7a8290;">&times;</button>
-            <h2 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:6px; color:#2d3239;">Book an Appointment</h2>
-            <p style="color:#7a8290; font-size:0.85rem; margin-bottom:22px;">Select a doctor and date to see available time slots.</p>
+<!-- ═══════ APPOINTMENT BOOKING MODAL ═══════ -->
+<div id="appt-modal-overlay"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:32px; width:100%; max-width:480px; box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative;">
+        <button id="close-appt-modal"
+                style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#7a8290;">
+            &times;
+        </button>
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:6px; color:#2d3239;">Book an
+            Appointment</h2>
+        <p style="color:#7a8290; font-size:0.85rem; margin-bottom:22px;">Select a doctor and date to see available time
+            slots.</p>
 
-            <div style="display:flex; flex-direction:column; gap:16px;">
-                <!-- Doctor -->
-                <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                        <label style="font-size:0.8rem; font-weight:600; color:#2d3239;">Doctor</label>
-                        <a id="view-profile-link" href="#" target="_blank"
-                           style="display:none; font-size:0.78rem; font-weight:500; color:#5b8ec4; text-decoration:none;">
-                            View Profile
-                        </a>
-                    </div>
-                    <select id="appt-doctor" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
-                        <option value="">-- Select a doctor --</option>
-                        {% for doc in doctors %}
+        <div style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Doctor -->
+            <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239;">Doctor</label>
+                    <a id="view-profile-link" href="#" target="_blank"
+                       style="display:none; font-size:0.78rem; font-weight:500; color:#5b8ec4; text-decoration:none;">
+                        View Profile
+                    </a>
+                </div>
+                <select id="appt-doctor"
+                        style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+                    <option value="">-- Select a doctor --</option>
+                    {% for doc in doctors %}
                         <option value="{{ doc.id }}">Dr. {{ doc.first_name }} {{ doc.last_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Date -->
-                <div>
-                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Date</label>
-                    <input type="date" id="appt-date" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
-                </div>
-
-                <!-- Time Slots -->
-                <div id="slots-section" style="display:none;">
-                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:8px;">Available Time Slots</label>
-                    <div id="slots-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
-                    <p id="no-slots-msg" style="display:none; color:#d46b6b; font-size:0.85rem; margin-top:4px;">No available slots for this date.</p>
-                </div>
-
-                <!-- Appointment Type -->
-                <div id="appt-type-section" style="display:none;">
-                    <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Appointment Type</label>
-                    <select id="appt-type" style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
-                        <option value="in_person">In Person</option>
-                        <option value="virtual">Virtual</option>
-                        <option value="phone">Phone Call</option>
-                    </select>
-                </div>
-
-                <!-- Error / Success messages -->
-                <p id="appt-error" style="display:none; color:#d46b6b; font-size:0.85rem;"></p>
-                <p id="appt-success" style="display:none; color:#5a8f6e; font-size:0.85rem; font-weight:600;"></p>
-
-                <!-- Book Button -->
-                <button id="book-btn" style="display:none; background:#5a8f6e; color:#fff; border:none; border-radius:10px; padding:12px; font-size:0.95rem; font-weight:600; cursor:pointer;">
-                    Book Appointment
-                </button>
+                    {% endfor %}
+                </select>
             </div>
+
+            <!-- Date -->
+            <div>
+                <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Date</label>
+                <input type="date" id="appt-date"
+                       style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+            </div>
+
+            <!-- Time Slots -->
+            <div id="slots-section" style="display:none;">
+                <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:8px;">Available
+                    Time Slots</label>
+                <div id="slots-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+                <p id="no-slots-msg" style="display:none; color:#d46b6b; font-size:0.85rem; margin-top:4px;">No
+                    available slots for this date.</p>
+            </div>
+
+            <!-- Appointment Type -->
+            <div id="appt-type-section" style="display:none;">
+                <label style="font-size:0.8rem; font-weight:600; color:#2d3239; display:block; margin-bottom:6px;">Appointment
+                    Type</label>
+                <select id="appt-type"
+                        style="width:100%; padding:10px 12px; border:1px solid #e8ecf0; border-radius:8px; font-size:0.9rem; color:#2d3239; background:#f9fafb;">
+                    <option value="in_person">In Person</option>
+                    <option value="virtual">Virtual</option>
+                    <option value="phone">Phone Call</option>
+                </select>
+            </div>
+
+            <!-- Error / Success messages -->
+            <p id="appt-error" style="display:none; color:#d46b6b; font-size:0.85rem;"></p>
+            <p id="appt-success" style="display:none; color:#5a8f6e; font-size:0.85rem; font-weight:600;"></p>
+
+            <!-- Book Button -->
+            <button id="book-btn"
+                    style="display:none; background:#5a8f6e; color:#fff; border:none; border-radius:10px; padding:12px; font-size:0.95rem; font-weight:600; cursor:pointer;">
+                Book Appointment
+            </button>
         </div>
     </div>
+</div>
 
-    <script>
-        // ═══════ APPOINTMENT MODAL ═══════
-        const overlay = document.getElementById('appt-modal-overlay');
-        const closeBtn = document.getElementById('close-appt-modal');
-        const doctorSelect = document.getElementById('appt-doctor');
-        const dateInput = document.getElementById('appt-date');
-        const slotsSection = document.getElementById('slots-section');
-        const slotsContainer = document.getElementById('slots-container');
-        const noSlotsMsg = document.getElementById('no-slots-msg');
-        const apptTypeSection = document.getElementById('appt-type-section');
-        const bookBtn = document.getElementById('book-btn');
-        const apptError = document.getElementById('appt-error');
-        const apptSuccess = document.getElementById('appt-success');
+<script>
+    // ═══════ APPOINTMENT MODAL ═══════
+    const overlay = document.getElementById('appt-modal-overlay');
+    const closeBtn = document.getElementById('close-appt-modal');
+    const doctorSelect = document.getElementById('appt-doctor');
+    const dateInput = document.getElementById('appt-date');
+    const slotsSection = document.getElementById('slots-section');
+    const slotsContainer = document.getElementById('slots-container');
+    const noSlotsMsg = document.getElementById('no-slots-msg');
+    const apptTypeSection = document.getElementById('appt-type-section');
+    const bookBtn = document.getElementById('book-btn');
+    const apptError = document.getElementById('appt-error');
+    const apptSuccess = document.getElementById('appt-success');
 
-        let selectedSlot = null;
+    let selectedSlot = null;
 
-        // Set min date to today
-        dateInput.min = new Date().toISOString().split('T')[0];
+    // Set min date to today
+    dateInput.min = new Date().toISOString().split('T')[0];
 
-        function openApptModal() {
-            overlay.style.display = 'flex';
-        }
+    function openApptModal() {
+        overlay.style.display = 'flex';
+    }
 
-        closeBtn.addEventListener('click', () => {
+    closeBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        resetModal();
+    });
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
             overlay.style.display = 'none';
             resetModal();
-        });
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.style.display = 'none';
-                resetModal();
-            }
-        });
-
-        function resetModal() {
-            doctorSelect.value = '';
-            dateInput.value = '';
-            slotsSection.style.display = 'none';
-            slotsContainer.innerHTML = '';
-            noSlotsMsg.style.display = 'none';
-            apptTypeSection.style.display = 'none';
-            bookBtn.style.display = 'none';
-            apptError.style.display = 'none';
-            apptSuccess.style.display = 'none';
-            selectedSlot = null;
         }
+    });
 
-        function fetchSlots() {
-            const doctorId = doctorSelect.value;
-            const date = dateInput.value;
-            if (!doctorId || !date) return;
+    function resetModal() {
+        doctorSelect.value = '';
+        dateInput.value = '';
+        slotsSection.style.display = 'none';
+        slotsContainer.innerHTML = '';
+        noSlotsMsg.style.display = 'none';
+        apptTypeSection.style.display = 'none';
+        bookBtn.style.display = 'none';
+        apptError.style.display = 'none';
+        apptSuccess.style.display = 'none';
+        selectedSlot = null;
+    }
 
-            slotsContainer.innerHTML = '<span style="color:#7a8290; font-size:0.85rem;">Loading...</span>';
-            slotsSection.style.display = 'block';
-            noSlotsMsg.style.display = 'none';
-            apptTypeSection.style.display = 'none';
-            bookBtn.style.display = 'none';
-            selectedSlot = null;
+    function fetchSlots() {
+        const doctorId = doctorSelect.value;
+        const date = dateInput.value;
+        if (!doctorId || !date) return;
 
-            fetch(`/scheduling/available-slots/?doctor_id=${doctorId}&date=${date}`)
-                .then(r => r.json())
-                .then(data => {
-                    slotsContainer.innerHTML = '';
-                    if (!data.slots || data.slots.length === 0) {
-                        noSlotsMsg.style.display = 'block';
-                        return;
-                    }
-                    data.slots.forEach(slot => {
-                        const btn = document.createElement('button');
-                        btn.textContent = slot.display;
-                        btn.dataset.start = slot.start;
-                        btn.style.cssText = 'padding:7px 13px; border:1.5px solid #e8ecf0; border-radius:8px; background:#f9fafb; font-size:0.82rem; cursor:pointer; color:#2d3239; transition:all 0.15s;';
-                        btn.addEventListener('click', () => {
-                            document.querySelectorAll('#slots-container button').forEach(b => {
-                                b.style.background = '#f9fafb';
-                                b.style.borderColor = '#e8ecf0';
-                                b.style.color = '#2d3239';
-                            });
-                            btn.style.background = '#5a8f6e';
-                            btn.style.borderColor = '#5a8f6e';
-                            btn.style.color = '#fff';
-                            selectedSlot = slot.start;
-                            apptTypeSection.style.display = 'block';
-                            bookBtn.style.display = 'block';
-                            apptError.style.display = 'none';
+        slotsContainer.innerHTML = '<span style="color:#7a8290; font-size:0.85rem;">Loading...</span>';
+        slotsSection.style.display = 'block';
+        noSlotsMsg.style.display = 'none';
+        apptTypeSection.style.display = 'none';
+        bookBtn.style.display = 'none';
+        selectedSlot = null;
+
+        fetch(`/scheduling/available-slots/?doctor_id=${doctorId}&date=${date}`)
+            .then(r => r.json())
+            .then(data => {
+                slotsContainer.innerHTML = '';
+                if (!data.slots || data.slots.length === 0) {
+                    noSlotsMsg.style.display = 'block';
+                    return;
+                }
+                data.slots.forEach(slot => {
+                    const btn = document.createElement('button');
+                    btn.textContent = slot.display;
+                    btn.dataset.start = slot.start;
+                    btn.style.cssText = 'padding:7px 13px; border:1.5px solid #e8ecf0; border-radius:8px; background:#f9fafb; font-size:0.82rem; cursor:pointer; color:#2d3239; transition:all 0.15s;';
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('#slots-container button').forEach(b => {
+                            b.style.background = '#f9fafb';
+                            b.style.borderColor = '#e8ecf0';
+                            b.style.color = '#2d3239';
                         });
-                        slotsContainer.appendChild(btn);
+                        btn.style.background = '#5a8f6e';
+                        btn.style.borderColor = '#5a8f6e';
+                        btn.style.color = '#fff';
+                        selectedSlot = slot.start;
+                        apptTypeSection.style.display = 'block';
+                        bookBtn.style.display = 'block';
+                        apptError.style.display = 'none';
                     });
-                })
-                .catch(() => {
-                    slotsContainer.innerHTML = '<span style="color:#d46b6b; font-size:0.85rem;">Failed to load slots. Try again.</span>';
+                    slotsContainer.appendChild(btn);
                 });
-        }
-
-        const viewProfileLink = document.getElementById('view-profile-link');
-
-        doctorSelect.addEventListener('change', () => {
-            if (doctorSelect.value) {
-                viewProfileLink.href = `/doctors/profile/${doctorSelect.value}/`;
-                viewProfileLink.style.display = 'inline';
-            } else {
-                viewProfileLink.style.display = 'none';
-            }
-            fetchSlots();
-        });
-        dateInput.addEventListener('change', fetchSlots);
-
-        bookBtn.addEventListener('click', () => {
-            if (!selectedSlot) return;
-            apptError.style.display = 'none';
-            bookBtn.textContent = 'Booking...';
-            bookBtn.disabled = true;
-
-            fetch('/scheduling/book-appointment/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                },
-                body: JSON.stringify({
-                    doctor_id: doctorSelect.value,
-                    date: dateInput.value,
-                    start_time: selectedSlot,
-                    appointment_type: document.getElementById('appt-type').value,
-                    title: 'Appointment',
-                }),
             })
+            .catch(() => {
+                slotsContainer.innerHTML = '<span style="color:#d46b6b; font-size:0.85rem;">Failed to load slots. Try again.</span>';
+            });
+    }
+
+    const viewProfileLink = document.getElementById('view-profile-link');
+
+    doctorSelect.addEventListener('change', () => {
+        if (doctorSelect.value) {
+            viewProfileLink.href = `/doctors/profile/${doctorSelect.value}/`;
+            viewProfileLink.style.display = 'inline';
+        } else {
+            viewProfileLink.style.display = 'none';
+        }
+        fetchSlots();
+    });
+    dateInput.addEventListener('change', fetchSlots);
+
+    bookBtn.addEventListener('click', () => {
+        if (!selectedSlot) return;
+        apptError.style.display = 'none';
+        bookBtn.textContent = 'Booking...';
+        bookBtn.disabled = true;
+
+        fetch('/scheduling/book-appointment/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                doctor_id: doctorSelect.value,
+                date: dateInput.value,
+                start_time: selectedSlot,
+                appointment_type: document.getElementById('appt-type').value,
+                title: 'Appointment',
+            }),
+        })
             .then(r => r.json())
             .then(data => {
                 bookBtn.textContent = 'Book Appointment';
@@ -2635,8 +3229,8 @@ window.onclick = function(event) {
                 apptError.textContent = 'Network error. Please try again.';
                 apptError.style.display = 'block';
             });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
 
