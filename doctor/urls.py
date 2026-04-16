@@ -16,6 +16,7 @@ urlpatterns = [
     path('patients/', prescriptions.list_patients, name='patients_list'),
     path('patients/<int:patient_id>/prescribe/', prescriptions.prescribe, name='prescribe'),
     path('patients/<int:patient_id>/prescriptions/', prescriptions.patient_prescriptions, name='patient_prescriptions'),
+    path('patients/<int:patient_id>/health-records/', prescriptions.patient_health_records, name='patient_health_records'),
 
     # Messaging API
     path('messages/', messaging.list_conversations, name='messages_list'),

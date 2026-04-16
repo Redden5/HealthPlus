@@ -44,11 +44,19 @@ class Appointment(models.Model):
         (STATUS_NO_SHOW,   'No Show'),
     ]
 
+    FORMAT_IN_PERSON = 'in_person'
+    FORMAT_VIDEO     = 'video'
+    FORMAT_CHOICES   = [
+        (FORMAT_IN_PERSON, 'In Person'),
+        (FORMAT_VIDEO,     'Video'),
+    ]
+
     doctor           = models.ForeignKey('doctor.DoctorProfile', on_delete=models.CASCADE, related_name='appointments')
     patient          = models.ForeignKey('patients.PatientProfile', on_delete=models.CASCADE, related_name='appointments')
     created_by       = models.ForeignKey(ReceptionistProfile, on_delete=models.SET_NULL, null=True, related_name='created_appointments')
 
     appointment_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_CONSULTATION)
+    meeting_format   = models.CharField(max_length=10, choices=FORMAT_CHOICES, default=FORMAT_IN_PERSON)
     title            = models.CharField(max_length=200)
     scheduled_at     = models.DateTimeField()
     duration_minutes = models.PositiveSmallIntegerField(default=60)
@@ -89,6 +97,7 @@ class AppointmentRequest(models.Model):
     patient          = models.ForeignKey('patients.PatientProfile', on_delete=models.CASCADE, related_name='appointment_requests')
     preferred_doctor = models.ForeignKey('doctor.DoctorProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='appointment_requests')
     appointment_type = models.CharField(max_length=20, choices=Appointment.TYPE_CHOICES, default=Appointment.TYPE_CONSULTATION)
+    meeting_format   = models.CharField(max_length=10, choices=Appointment.FORMAT_CHOICES, default=Appointment.FORMAT_IN_PERSON)
     preferred_date   = models.DateField(null=True, blank=True)
     preferred_time   = models.TimeField(null=True, blank=True)
     notes            = models.TextField(blank=True)

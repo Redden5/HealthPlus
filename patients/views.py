@@ -126,7 +126,18 @@ def dashboard(request):
         action = request.POST.get('action')
         if action == 'account':
             return redirect('/patients/account/')
-    return render(request, 'patients/dashboard.html', {'profile': profile})
+
+    prescriptions = profile.prescriptions.select_related('doctor').all()
+
+    allergies = [a.strip() for a in profile.allergies.split(',') if a.strip()] if profile.allergies else []
+    conditions = [c.strip() for c in profile.medical_conditions.split(',') if c.strip()] if profile.medical_conditions else []
+
+    return render(request, 'patients/dashboard.html', {
+        'profile': profile,
+        'prescriptions': prescriptions,
+        'allergies': allergies,
+        'conditions': conditions,
+    })
 
 
 @login_required
