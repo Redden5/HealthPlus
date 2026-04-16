@@ -77,7 +77,7 @@ def profile_setup(request):
         return render(request, 'patients/profile_setup.html', context)
 
 
-@login_required
+@login_required()
 def preferences_setup(request):
     if request.method == 'POST':
         profile = PatientProfile.objects.get(user=request.user)
@@ -96,7 +96,7 @@ def preferences_setup(request):
         return render(request, 'patients/preferences_setup.html')
 
 
-@login_required
+@login_required()
 def consent_setup(request):
     profile = PatientProfile.objects.get(user=request.user)
     if request.method == "POST":
