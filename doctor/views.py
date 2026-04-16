@@ -1,15 +1,21 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 
-from patients.models import PatientProfile
-from .models import DoctorProfile #
+from .models import DoctorProfile
+from scheduling.models import Appointment
+from receptionist.models import Appointment as ReceptionistAppointment
+
 
 @login_required
 def doctor_dashboard(request):
+<<<<<<< HEAD
     if not request.user.groups.filter(name='Doctor').exists():
         return redirect('/patients/dashboard/')
 
     # This ensures a profile exists even if you haven't made one yet
+=======
+>>>>>>> 0c7a8b1100ab1d41ebb18949599f65ac0e5b9a50
     profile, created = DoctorProfile.objects.get_or_create(
         user=request.user,
         defaults={
@@ -21,26 +27,37 @@ def doctor_dashboard(request):
         }
     )
 
+    today = timezone.localdate()
+
+    # Direct patient bookings (scheduling app)
+    sched_appts = list(
+        Appointment.objects.filter(
+            doctor=profile,
+            start_time__date=today,
+        ).exclude(status='cancelled').select_related('patient').order_by('start_time')
+    )
+
+    # Receptionist-booked appointments
+    recept_appts = list(
+        ReceptionistAppointment.objects.filter(
+            doctor=profile,
+            scheduled_at__date=today,
+        ).exclude(status='cancelled').select_related('patient').order_by('scheduled_at')
+    )
+
+    today_appointments = sorted(sched_appts + recept_appts, key=lambda a: a.start_time)
+
     context = {
         'profile': profile,
+        'today': today,
+        'today_appointments': today_appointments,
     }
 
     return render(request, 'doctors/dDashboard.html', context)
 
 
-from patients.services import trigger_full_notification
-
-
-def add_lab_result(request, patient_id):
-    if request.method == "POST":
-        # ... logic to save the lab results to your Lab model ...
-        profile = PatientProfile.objects.get(id=patient_id)
-
-        # This sends the Courier Email/SMS AND saves to InAppNotification
-        trigger_full_notification(
-            profile=profile,
-            title="New Lab Result Available",
-            content="Your blood work results from March 24th have been processed.",
-            doctor_name=request.user.get_full_name()
-        )
-        return redirect('doctor_dashboard')
+@login_required
+def doctor_profile(request, doctor_id):
+    doctor = get_object_or_404(DoctorProfile, id=doctor_id)
+    is_doctor = request.user.groups.filter(name='Doctor').exists()
+    return render(request, 'doctors/doctor_profile.html', {'doctor': doctor, 'is_doctor': is_doctor})

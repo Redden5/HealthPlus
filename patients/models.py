@@ -1,4 +1,3 @@
-
 # Create your models here.
 from django.db import models
 from django.conf import settings
@@ -14,12 +13,12 @@ class PatientProfile(models.Model):
     last_name = models.CharField(max_length=50)
     height = models.CharField(max_length=10, blank=True)
     weight = models.CharField(max_length=10, blank=True)
-    blood_type = models.CharField(max_length=5, choices= BLOOD_TYPE_CHOICES,blank=True)
+    blood_type = models.CharField(max_length=5, choices=BLOOD_TYPE_CHOICES, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     allergies = models.TextField(blank=True)
     medical_conditions = models.TextField(blank=True)
 
-    #Fields for Preference View
+    # Fields for Preference View
     # Communication Preferences
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=254)
@@ -37,23 +36,23 @@ class PatientProfile(models.Model):
     large_text_mode = models.BooleanField(default=False)
     preferred_language = models.CharField(max_length=50, default='English')
 
-    #Consent terms
+    # Consent terms
     terms_agreed = models.BooleanField(default=False)
     private_policy = models.BooleanField(default=False)
     electronic_policy = models.BooleanField(default=False)
 
-    #Mood Tracking (see MoodEntry)
-
+    # Mood Tracking (see MoodEntry)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
+
 class MoodEntry(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='mood_entries')
-    score = models.PositiveSmallIntegerField()          # 1–10
+    score = models.PositiveSmallIntegerField()  # 1–10
     note = models.TextField(blank=True)
     logged_at = models.DateTimeField(auto_now_add=True)
-    date = models.DateField()                           # one entry per day enforced in the view
+    date = models.DateField()  # one entry per day enforced in the view
 
     class Meta:
         ordering = ['date']
@@ -95,7 +94,7 @@ class Message(models.Model):
         return f"[{self.conversation}] {self.sender.username}: {self.text[:40]}"
 
 
-#Notifications
+# Notifications
 class InAppNotification(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)  # e.g., "New Lab Result"
@@ -103,6 +102,21 @@ class InAppNotification(models.Model):
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField()
 
-    def __str__(self):
-        return f"Notification for {self.patient.user.username}: {self.title}"
 
+# Journal
+class JournalEntry(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='journal_entries')
+    text = models.TextField()
+    mood_score = models.PositiveSmallIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.patient} — {self.created_at:%Y-%m-%d}: {self.text[:40]}"
+
+
+def __str__(self):
+    return f"Notification for {self.patient.user.username}: {self.title}"

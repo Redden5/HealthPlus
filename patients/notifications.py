@@ -25,7 +25,7 @@ def notify_patient(profile, title, content, doctor_name):
                     "frequency": profile.notification_frequency,
                 },
                 "routing": {
-                    "method": "single",
+                    "method": "all",
                     "channels": ["email", "sms"],
                 },
             }

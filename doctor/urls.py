@@ -5,6 +5,7 @@ app_name = 'doctor'
 
 urlpatterns = [
     path('dashboard/', views.doctor_dashboard, name='dashboard'),
+    path('profile/<int:doctor_id>/', views.doctor_profile, name='profile_view'),
 
     # Meetings API
     path('meetings/', meetings.list_meetings, name='meetings_list'),
