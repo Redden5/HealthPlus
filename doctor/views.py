@@ -9,23 +9,14 @@ from receptionist.models import Appointment as ReceptionistAppointment
 
 @login_required
 def doctor_dashboard(request):
-<<<<<<< HEAD
     if not request.user.groups.filter(name='Doctor').exists():
         return redirect('/patients/dashboard/')
 
-    # This ensures a profile exists even if you haven't made one yet
-=======
->>>>>>> 0c7a8b1100ab1d41ebb18949599f65ac0e5b9a50
     profile, created = DoctorProfile.objects.get_or_create(
         user=request.user,
         defaults={
-<<<<<<< HEAD
-            'first_name': request.user.first_name or 'New',
-            'last_name': request.user.last_name or 'Doctor',
-=======
             'first_name': request.user.first_name or request.user.username,
             'last_name': request.user.last_name,
->>>>>>> 082d52b (quality of life and small bug)
             'email': request.user.email,
             'phone_number': 0,
             'doctor_id': 0
