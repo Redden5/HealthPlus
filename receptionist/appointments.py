@@ -47,7 +47,7 @@ def _receptionist(user):
 @require_GET
 def list_doctors(request):
     """GET /receptionist/api/doctors/"""
-    doctors = DoctorProfile.objects.all().order_by('last_name', 'first_name')
+    doctors = DoctorProfile.objects.filter(user__groups__name='Doctor').order_by('last_name', 'first_name')
     return JsonResponse({'doctors': [
         {'id': d.id, 'name': f"Dr. {d.first_name} {d.last_name}", 'email': d.email}
         for d in doctors
@@ -70,12 +70,18 @@ def list_patients(request):
 @receptionist_required
 @require_GET
 def list_appointments(request):
-    """GET /receptionist/api/appointments/?status=scheduled&date=2026-03-28"""
+    """GET /receptionist/api/appointments/?status=scheduled&date=2026-03-28
+    Pass status=archived to view the archive; all other views exclude archived.
+    """
     qs = Appointment.objects.select_related('doctor', 'patient').all()
 
     status_filter = request.GET.get('status')
-    if status_filter:
-        qs = qs.filter(status=status_filter)
+    if status_filter == 'archived':
+        qs = qs.filter(is_archived=True)
+    else:
+        qs = qs.filter(is_archived=False)
+        if status_filter:
+            qs = qs.filter(status=status_filter)
 
     date_filter = request.GET.get('date')
     if date_filter:
@@ -142,7 +148,7 @@ def create_appointment(request):
     )
 
     # Notify patient
-    fmt_time = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
+    fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
     trigger_full_notification(
         profile=patient,
         title=f"New Appointment: {title}",
@@ -210,7 +216,7 @@ def update_appointment(request, appt_id):
 
         # Notify patient if time or status changed
         if 'scheduled_at' in changed_fields or 'status' in changed_fields:
-            fmt_time = appt.scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
+            fmt_time = appt.scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
             trigger_full_notification(
                 profile=appt.patient,
                 title=f"Appointment Updated: {appt.title}",
@@ -241,7 +247,7 @@ def cancel_appointment(request, appt_id):
         title=f"Appointment Cancelled: {appt.title}",
         content=(
             f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
-            f"on {appt.scheduled_at.strftime('%b %#d at %#I:%M %p')} has been cancelled."
+            f"on {appt.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled."
         ),
         doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
     )
@@ -249,7 +255,58 @@ def cancel_appointment(request, appt_id):
     return JsonResponse({'ok': True})
 
 
+@receptionist_required
+@require_POST
+def archive_appointment(request, appt_id):
+    """POST /receptionist/api/appointments/<id>/archive/
+    Archives a cancelled appointment so it no longer appears in the main view.
+    """
+    try:
+        appt = Appointment.objects.get(id=appt_id)
+    except Appointment.DoesNotExist:
+        return JsonResponse({'error': 'Appointment not found'}, status=404)
+
+    if appt.status != Appointment.STATUS_CANCELLED:
+        return JsonResponse({'error': 'Only cancelled appointments can be archived'}, status=400)
+
+    appt.is_archived = True
+    appt.save(update_fields=['is_archived', 'updated_at'])
+
+    return JsonResponse({'ok': True})
+
+
 # ── Patient-facing ───────────────────────────────────────────────────────────
+
+@login_required
+@require_POST
+def patient_cancel_appointment(request, appt_id):
+    """POST /patients/appointments/<id>/cancel/  — patient cancels their own appointment."""
+    from patients.models import PatientProfile as PP
+    profile = PP.objects.get(user=request.user)
+
+    try:
+        appt = Appointment.objects.select_related('doctor', 'patient').get(id=appt_id, patient=profile)
+    except Appointment.DoesNotExist:
+        return JsonResponse({'error': 'Appointment not found'}, status=404)
+
+    if appt.status in (Appointment.STATUS_CANCELLED, Appointment.STATUS_COMPLETED):
+        return JsonResponse({'error': 'Appointment cannot be cancelled'}, status=400)
+
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    reason = (body.get('reason') or '').strip()
+    if not reason:
+        return JsonResponse({'error': 'A cancellation reason is required'}, status=400)
+
+    appt.status = Appointment.STATUS_CANCELLED
+    appt.cancellation_reason = reason
+    appt.save(update_fields=['status', 'cancellation_reason', 'updated_at'])
+
+    return JsonResponse({'ok': True})
+
 
 @login_required
 @require_GET
@@ -258,6 +315,7 @@ def patient_appointments(request):
     from patients.models import PatientProfile as PP
     profile = PP.objects.get(user=request.user)
     now = timezone.now()
+    today = timezone.localdate()
 
     upcoming = Appointment.objects.filter(
         patient=profile,
@@ -266,20 +324,23 @@ def patient_appointments(request):
      .select_related('doctor') \
      .order_by('scheduled_at')[:10]
 
-    return JsonResponse({'appointments': [
-        {
-            'id':           a.id,
-            'title':        a.title,
-            'doctor_name':  f"Dr. {a.doctor.first_name} {a.doctor.last_name}",
-            'type_display': a.get_appointment_type_display(),
-            'scheduled_at': a.scheduled_at.isoformat(),
-            'scheduled_fmt': a.scheduled_at.strftime('%b %#d · %#I:%M %p'),
-            'location':     a.location,
-            'status':       a.status,
+    def _appt_json(a):
+        is_today = a.scheduled_at.date() == today
+        return {
+            'id':             a.id,
+            'title':          a.title,
+            'doctor_name':    f"Dr. {a.doctor.first_name} {a.doctor.last_name}",
+            'type_display':   a.get_appointment_type_display(),
+            'scheduled_at':   a.scheduled_at.isoformat(),
+            'scheduled_fmt':  a.scheduled_at.strftime('%b %-d · %-I:%M %p'),
+            'location':       a.location,
+            'status':         a.status,
             'status_display': a.get_status_display(),
+            'room_name':      a.room_name,
+            'join_url':       f"/patients/call/{a.room_name}/" if is_today else None,
         }
-        for a in upcoming
-    ]})
+
+    return JsonResponse({'appointments': [_appt_json(a) for a in upcoming]})
 
 
 # ── Patient appointment requests ─────────────────────────────────────────────
@@ -409,7 +470,7 @@ def book_from_request(request, req_id):
     req.booked_appointment = appt
     req.save(update_fields=['status', 'booked_appointment', 'updated_at'])
 
-    fmt_time = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
+    fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
     trigger_full_notification(
         profile=req.patient,
         title=f"Appointment Confirmed: {title}",
@@ -466,16 +527,16 @@ def _serialize_request(r):
         'status':           r.status,
         'status_display':   r.get_status_display(),
         'created_at':       r.created_at.isoformat(),
-        'created_fmt':      r.created_at.strftime('%b %#d, %Y'),
+        'created_fmt':      r.created_at.strftime('%b %-d, %Y'),
     }
 
 
 def _fmt_preferred(r):
     parts = []
     if r.preferred_date:
-        parts.append(r.preferred_date.strftime('%b %#d, %Y'))
+        parts.append(r.preferred_date.strftime('%b %-d, %Y'))
     if r.preferred_time:
-        parts.append(r.preferred_time.strftime('%#I:%M %p'))
+        parts.append(r.preferred_time.strftime('%-I:%M %p'))
     return ' · '.join(parts) if parts else 'Flexible'
 
 
@@ -488,7 +549,7 @@ def _serialize(a):
         'appointment_type': a.appointment_type,
         'type_display':     a.get_appointment_type_display(),
         'scheduled_at':     a.scheduled_at.isoformat(),
-        'scheduled_fmt':    a.scheduled_at.strftime('%b %#d, %Y · %#I:%M %p'),
+        'scheduled_fmt':    a.scheduled_at.strftime('%b %-d, %Y · %-I:%M %p'),
         'duration_minutes': a.duration_minutes,
         'location':         a.location,
         'notes':            a.notes,
@@ -499,4 +560,6 @@ def _serialize(a):
         'patient_id':       a.patient_id,
         'patient_name':     f"{a.patient.first_name} {a.patient.last_name}",
         'patient_email':    a.patient.email,
+        'room_name':        a.room_name,
+        'is_archived':      a.is_archived,
     }

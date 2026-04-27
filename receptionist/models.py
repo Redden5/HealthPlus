@@ -1,3 +1,4 @@
+import uuid
 from datetime import timedelta
 
 from django.conf import settings
@@ -53,9 +54,12 @@ class Appointment(models.Model):
     scheduled_at     = models.DateTimeField()
     duration_minutes = models.PositiveSmallIntegerField(default=60)
     location         = models.CharField(max_length=100, blank=True)
+    room_name        = models.CharField(max_length=100, unique=True, default=uuid.uuid4)
     notes            = models.TextField(blank=True)
-    status           = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_SCHEDULED)
-    created_at       = models.DateTimeField(auto_now_add=True)
+    status                = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_SCHEDULED)
+    cancellation_reason   = models.TextField(blank=True)
+    is_archived           = models.BooleanField(default=False)
+    created_at            = models.DateTimeField(auto_now_add=True)
     updated_at       = models.DateTimeField(auto_now=True)
 
     @property

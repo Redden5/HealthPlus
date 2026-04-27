@@ -3,7 +3,9 @@ from datetime import datetime, timedelta, time
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
@@ -126,7 +128,34 @@ def dashboard(request):
         action = request.POST.get('action')
         if action == 'account':
             return redirect('/patients/account/')
-    return render(request, 'patients/dashboard.html', {'profile': profile})
+
+    from receptionist.models import Appointment
+    from doctor.models import Prescription
+    latest_appt = (
+        Appointment.objects
+        .filter(patient=profile)
+        .exclude(status=Appointment.STATUS_CANCELLED)
+        .select_related('doctor')
+        .order_by('-scheduled_at')
+        .first()
+    )
+    doctor_name = (
+        f"Dr. {latest_appt.doctor.first_name} {latest_appt.doctor.last_name}"
+        if latest_appt else None
+    )
+
+    prescriptions = (
+        Prescription.objects
+        .filter(patient=profile)
+        .select_related('doctor')
+        .order_by('-prescribed_at')
+    )
+
+    return render(request, 'patients/dashboard.html', {
+        'profile': profile,
+        'doctor_name': doctor_name,
+        'prescriptions': prescriptions,
+    })
 
 
 @login_required
@@ -143,7 +172,10 @@ def account_profile(request):
         elif action == 'change_password':
             return redirect('/patients/change_password/')
         elif action == 'delete_account':
-            return redirect('/patients/delete_account/')
+            user = request.user
+            logout(request)
+            user.delete()
+            return redirect('/accounts/login/')
 
     return render(request, 'patients/account_profile.html', {'profile': profile})
 
@@ -195,8 +227,10 @@ def change_password(request):
     if not request.user.check_password(current):
         return JsonResponse({'error': 'Current password is incorrect.'}, status=400)
 
-    if len(new_pw) < 8:
-        return JsonResponse({'error': 'New password must be at least 8 characters.'}, status=400)
+    try:
+        validate_password(new_pw, request.user)
+    except ValidationError as e:
+        return JsonResponse({'error': e.messages[0]}, status=400)
 
     request.user.set_password(new_pw)
     request.user.save()

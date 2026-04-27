@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/appointments/create/',                 appointments.create_appointment,    name='api_appointments_create'),
     path('api/appointments/<int:appt_id>/update/',   appointments.update_appointment,    name='api_appointments_update'),
     path('api/appointments/<int:appt_id>/cancel/',   appointments.cancel_appointment,    name='api_appointments_cancel'),
+    path('api/appointments/<int:appt_id>/archive/',  appointments.archive_appointment,   name='api_appointments_archive'),
 
     # Receptionist — request queue
     path('api/requests/',                            appointments.list_requests,         name='api_requests_list'),

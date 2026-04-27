@@ -3,6 +3,7 @@ from datetime import date, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.utils.formats import date_format
 from django.views.decorators.http import require_GET, require_POST
 
@@ -63,6 +64,15 @@ def create_journal_entry(request):
         'ok': True,
         'entry': _entry_payload(entry),
     }, status=201)
+
+
+@login_required
+@require_POST
+def delete_journal_entry(request, entry_id):
+    profile = _get_profile(request.user)
+    entry = get_object_or_404(JournalEntry, id=entry_id, patient=profile)
+    entry.delete()
+    return JsonResponse({'ok': True})
 
 
 @login_required

@@ -319,6 +319,15 @@
 
         .btn-cancel-appt:hover { background: #f5d5d5; }
 
+        .btn-archive-appt {
+            background: #f0f0f0; color: #555; border: none;
+            border-radius: 6px; padding: 5px 10px;
+            font-size: 0.7rem; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.15s;
+        }
+
+        .btn-archive-appt:hover { background: #e0e0e0; }
+
         .empty-row td {
             text-align: center; color: var(--text-muted);
             font-size: 0.82rem; padding: 28px;
@@ -554,6 +563,7 @@
                     <button class="filter-btn" onclick="setFilter('scheduled', this)">Scheduled</button>
                     <button class="filter-btn" onclick="setFilter('confirmed', this)">Confirmed</button>
                     <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+                    <button class="filter-btn" onclick="setFilter('archived', this)">Archived</button>
                     <input type="date" class="filter-input" id="dateFilter" onchange="applyDateFilter()">
                 </div>
             </div>
@@ -832,11 +842,14 @@
         tbody.innerHTML = appts.map(a => {
             const patInitials = a.patient_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
             const docInitials = a.doctor_name.replace('Dr. ','').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
-            const cancelBtn = (a.status !== 'cancelled' && a.status !== 'completed')
+            const cancelBtn = (!a.is_archived && a.status !== 'cancelled' && a.status !== 'completed')
                 ? `<button class="btn-cancel-appt" onclick="cancelAppt(${a.id})">Cancel</button>`
                 : '';
-            const editBtn = (a.status !== 'cancelled' && a.status !== 'completed')
+            const editBtn = (!a.is_archived && a.status !== 'cancelled' && a.status !== 'completed')
                 ? `<button class="btn-edit" onclick="openEdit(${a.id})">Edit</button>`
+                : '';
+            const archiveBtn = (!a.is_archived && a.status === 'cancelled')
+                ? `<button class="btn-archive-appt" onclick="archiveAppt(${a.id})">Archive</button>`
                 : '';
 
             return `
@@ -861,7 +874,7 @@
                     <td>${a.duration_minutes} min</td>
                     <td>${a.location || '—'}</td>
                     <td><span class="status-badge status-${a.status}">${a.status_display}</span></td>
-                    <td><div class="row-actions">${editBtn}${cancelBtn}</div></td>
+                    <td><div class="row-actions">${editBtn}${cancelBtn}${archiveBtn}</div></td>
                 </tr>
             `;
         }).join('');
@@ -1032,6 +1045,19 @@
     }
 
     init();
+
+    // ── ARCHIVE ───────────────────────────────────────────────────────────────
+    function archiveAppt(id) {
+        const a = allAppointments.find(x => x.id === id);
+        if (!confirm(`Archive cancelled appointment for ${a ? a.patient_name : 'this patient'}? It will move to the Archived tab.`)) return;
+
+        fetch(`/receptionist/api/appointments/${id}/archive/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+        })
+        .then(r => r.json())
+        .then(data => { if (data.ok) loadAppointments(); });
+    }
 
     // ── REQUEST QUEUE ────────────────────────────────────────────────────────
     let currentReqFilter = 'pending';

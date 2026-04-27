@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.conf import settings
 from doctor.models import DoctorProfile
@@ -47,6 +49,7 @@ class Appointment(models.Model):
     end_time = models.DateTimeField()
     notes = models.TextField(blank=True)
     location = models.CharField(max_length=255, blank=True)
+    room_name = models.CharField(max_length=100, unique=True, default=uuid.uuid4)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

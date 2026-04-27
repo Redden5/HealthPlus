@@ -138,4 +138,9 @@ STATIC_URL = 'static/'
 COURIER_AUTH_KEY = os.getenv("COURIER_AUTH_KEY")
 COURIER_TEMPLATE_ID = os.getenv("COURIER_TEMPLATE_ID")
 
+# Jitsi Meet Configuration
+JITSI_DOMAIN = os.getenv("JITSI_DOMAIN", "meet.jit.si")
+JITSI_APP_ID = os.getenv("JITSI_APP_ID", "")
+JITSI_APP_SECRET = os.getenv("JITSI_APP_SECRET", "")
+
 X_FRAME_OPTIONS = 'SAMEORIGIN'

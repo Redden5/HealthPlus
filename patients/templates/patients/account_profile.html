@@ -739,39 +739,6 @@
                     </div>
                 </div>
 
-                {# Two-Factor Authentication #}
-                <div class="setting-card">
-                    <div class="setting-icon blue">
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <div class="setting-details">
-                        <div class="setting-title">Two-Factor Authentication</div>
-                        <div class="setting-desc">Add an extra layer of security to your account.</div>
-                    </div>
-                    <div class="setting-action">
-                        <label class="toggle-switch">
-                            <input type="checkbox" {% if user_profile.two_factor_enabled %}checked{% endif %}>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                {# Email Notifications #}
-                <div class="setting-card">
-                    <div class="setting-icon green">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
-                    </div>
-                    <div class="setting-details">
-                        <div class="setting-title">Email Notifications</div>
-                        <div class="setting-desc">Receive updates about appointments and test results.</div>
-                    </div>
-                    <div class="setting-action">
-                        <label class="toggle-switch">
-                            <input type="checkbox" {% if user_profile.email_notifications %}checked{% endif %}>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
             </div>
 
             {# ── DANGER ZONE ── #}

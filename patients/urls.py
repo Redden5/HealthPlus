@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views, messaging, mood, meetings, journal
-from receptionist.appointments import patient_appointments, submit_appointment_request, list_patient_requests
+from . import views, messaging, mood, meetings, journal, jitsi
+from receptionist.appointments import patient_appointments, patient_cancel_appointment, submit_appointment_request, list_patient_requests
 app_name = 'patients'
 
 urlpatterns = [
@@ -26,12 +26,18 @@ urlpatterns = [
     path('journal/', journal.list_journal_entries, name='journal_list'),
     path('journal/create/', journal.create_journal_entry, name='journal_create'),
     path('journal/stats/', journal.journal_stats, name='journal_stats'),
+    path('journal/<int:entry_id>/delete/', journal.delete_journal_entry, name='journal_delete'),
 
     # Meetings API (patient-side)
     path('meetings/', meetings.get_upcoming_meetings, name='patient_meetings'),
 
     # Appointments API (patient-side)
     path('appointments/', patient_appointments, name='patient_appointments'),
+    path('appointments/<int:appt_id>/cancel/', patient_cancel_appointment, name='appointment_cancel'),
     path('appointments/request/', submit_appointment_request, name='appointment_request'),
     path('appointments/requests/', list_patient_requests, name='appointment_requests_list'),
+
+    # Jitsi video calls
+    path('jitsi-token/<str:room_name>/', jitsi.generate_jitsi_token, name='jitsi_token'),
+    path('call/<str:room_name>/', jitsi.call_room, name='call_room'),
 ]

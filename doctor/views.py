@@ -9,11 +9,15 @@ from receptionist.models import Appointment as ReceptionistAppointment
 
 @login_required
 def doctor_dashboard(request):
+    if not request.user.groups.filter(name='Doctor').exists():
+        from django.shortcuts import redirect
+        return redirect('/accounts/login/')
+
     profile, created = DoctorProfile.objects.get_or_create(
         user=request.user,
         defaults={
-            'first_name': 'New',
-            'last_name': 'Doctor',
+            'first_name': request.user.first_name or request.user.username,
+            'last_name': request.user.last_name or '',
             'email': request.user.email,
             'phone_number': 0,
             'doctor_id': 0
