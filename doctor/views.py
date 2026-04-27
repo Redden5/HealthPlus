@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
-from .models import DoctorProfile
+from .models import DoctorProfile, TeamsCall
 from scheduling.models import Appointment
 from receptionist.models import Appointment as ReceptionistAppointment
 
@@ -10,8 +10,7 @@ from receptionist.models import Appointment as ReceptionistAppointment
 @login_required
 def doctor_dashboard(request):
     if not request.user.groups.filter(name='Doctor').exists():
-        from django.shortcuts import redirect
-        return redirect('/accounts/login/')
+        return redirect('/patients/dashboard/')
 
     profile, created = DoctorProfile.objects.get_or_create(
         user=request.user,
@@ -25,6 +24,7 @@ def doctor_dashboard(request):
     )
 
     today = timezone.localdate()
+    now   = timezone.now()
 
     # Direct patient bookings (scheduling app)
     sched_appts = list(
@@ -44,10 +44,19 @@ def doctor_dashboard(request):
 
     today_appointments = sorted(sched_appts + recept_appts, key=lambda a: a.start_time)
 
+    # Upcoming video meetings today
+    meetings_today = TeamsCall.objects.filter(
+        doctor=profile,
+        scheduled_at__date=today,
+        scheduled_at__gte=now,
+    ).exclude(status=TeamsCall.STATUS_CANCELLED).count()
+
     context = {
-        'profile': profile,
-        'today': today,
+        'profile':          profile,
+        'today':            today,
         'today_appointments': today_appointments,
+        'patients_today':   len(today_appointments),
+        'meetings_today':   meetings_today,
     }
 
     return render(request, 'doctors/dDashboard.html', context)

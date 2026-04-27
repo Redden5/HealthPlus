@@ -6,6 +6,20 @@
         </div>
 
         <div class="req-form-group">
+            <label class="req-label">Format</label>
+            <div style="display:flex;gap:10px;">
+                <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;">
+                    <input type="radio" name="rFormat" id="rFormatInPerson" value="in_person" checked>
+                    In Person
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;">
+                    <input type="radio" name="rFormat" id="rFormatVideo" value="video">
+                    Video
+                </label>
+            </div>
+        </div>
+
+        <div class="req-form-group">
             <label class="req-label">Appointment Type</label>
             <select class="req-control" id="rType">
                 <option value="therapy">Therapy Session</option>

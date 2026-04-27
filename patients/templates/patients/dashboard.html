@@ -825,6 +825,7 @@
             line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -2092,30 +2093,23 @@
                                 <line x1="16" y1="17" x2="8" y2="17"/>
                                 <line x1="10" y1="9" x2="8" y2="9"/>
                             </svg>
-                            Diagnoses
+                            Medical Conditions
                         </div>
                         <div class="hr-list">
+                            {% for condition in conditions %}
                             <div class="hr-item">
                                 <div class="hr-item-main">
-                                    <span class="hr-item-name">Generalised Anxiety Disorder</span>
-                                    <span class="hr-badge hr-badge-blue">Primary</span>
+                                    <span class="hr-item-name">{{ condition }}</span>
+                                    <span class="hr-badge hr-badge-blue">Active</span>
                                 </div>
-                                <div class="hr-item-sub">ICD-10: F41.1 · Diagnosed Jan 2024</div>
                             </div>
+                            {% empty %}
                             <div class="hr-item">
                                 <div class="hr-item-main">
-                                    <span class="hr-item-name">Major Depressive Disorder</span>
-                                    <span class="hr-badge hr-badge-blue">Secondary</span>
+                                    <span class="hr-item-name" style="color:var(--text-muted);">No conditions on record.</span>
                                 </div>
-                                <div class="hr-item-sub">ICD-10: F32.1 · Diagnosed Mar 2024</div>
                             </div>
-                            <div class="hr-item">
-                                <div class="hr-item-main">
-                                    <span class="hr-item-name">Insomnia Disorder</span>
-                                    <span class="hr-badge hr-badge-muted">Monitoring</span>
-                                </div>
-                                <div class="hr-item-sub">ICD-10: G47.00 · Diagnosed Jun 2024</div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -2130,20 +2124,20 @@
                             Allergies & Alerts
                         </div>
                         <div class="hr-list">
+                            {% for allergy in allergies %}
                             <div class="hr-item">
                                 <div class="hr-item-main">
-                                    <span class="hr-item-name">Penicillin</span>
-                                    <span class="hr-badge hr-badge-red">Severe</span>
+                                    <span class="hr-item-name">{{ allergy }}</span>
+                                    <span class="hr-badge hr-badge-red">Allergy</span>
                                 </div>
-                                <div class="hr-item-sub">Reaction: Anaphylaxis · Confirmed 2019</div>
                             </div>
+                            {% empty %}
                             <div class="hr-item">
                                 <div class="hr-item-main">
-                                    <span class="hr-item-name">Ibuprofen</span>
-                                    <span class="hr-badge hr-badge-warm">Moderate</span>
+                                    <span class="hr-item-name" style="color:var(--text-muted);">No allergies on record.</span>
                                 </div>
-                                <div class="hr-item-sub">Reaction: GI distress · Confirmed 2021</div>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -2158,24 +2152,8 @@
                         <div class="hr-list">
                             <div class="hr-item">
                                 <div class="hr-item-main">
-                                    <span class="hr-item-name">Full Blood Count</span>
-                                    <span class="hr-badge hr-badge-green">Normal</span>
+                                    <span class="hr-item-name" style="color:var(--text-muted);">No lab results on record.</span>
                                 </div>
-                                <div class="hr-item-sub">Mar 1, 2026 · HealthPlus Lab</div>
-                            </div>
-                            <div class="hr-item">
-                                <div class="hr-item-main">
-                                    <span class="hr-item-name">Thyroid Panel (TSH)</span>
-                                    <span class="hr-badge hr-badge-warm">Review</span>
-                                </div>
-                                <div class="hr-item-sub">Feb 18, 2026 · 4.8 mIU/L (high-normal)</div>
-                            </div>
-                            <div class="hr-item">
-                                <div class="hr-item-main">
-                                    <span class="hr-item-name">Vitamin D</span>
-                                    <span class="hr-badge hr-badge-red">Low</span>
-                                </div>
-                                <div class="hr-item-sub">Feb 18, 2026 · 18 ng/mL</div>
                             </div>
                         </div>
                     </div>
@@ -2256,6 +2234,20 @@
         <div class="req-modal-header">
             <span class="req-modal-title">Request an Appointment</span>
             <button class="req-modal-close" onclick="closeRequestModal()">&times;</button>
+        </div>
+
+        <div class="req-form-group">
+            <label class="req-label">Format</label>
+            <div style="display:flex;gap:10px;">
+                <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;">
+                    <input type="radio" name="rFormat" id="rFormatInPerson" value="in_person" checked>
+                    In Person
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;">
+                    <input type="radio" name="rFormat" id="rFormatVideo" value="video">
+                    Video
+                </label>
+            </div>
         </div>
 
         <div class="req-form-group">
@@ -2979,6 +2971,7 @@
 
         const payload = {
             appointment_type: document.getElementById('rType').value,
+            meeting_format: document.querySelector('input[name="rFormat"]:checked').value,
             preferred_doctor_id: document.getElementById('rDoctor').value || null,
             preferred_date: document.getElementById('rDate').value || null,
             preferred_time: document.getElementById('rTime').value || null,
@@ -3001,6 +2994,7 @@
                     fb.textContent = 'Request sent! The reception team will confirm your appointment.';
                     fb.className = 'req-feedback success';
                     document.getElementById('rType').value = 'consultation';
+                    document.getElementById('rFormatInPerson').checked = true;
                     document.getElementById('rDoctor').value = '';
                     document.getElementById('rDate').value = '';
                     document.getElementById('rTime').value = '';

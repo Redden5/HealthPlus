@@ -111,6 +111,46 @@ def patient_prescriptions(request, patient_id):
     return JsonResponse({'prescriptions': data})
 
 
+@login_required
+@require_GET
+def patient_health_records(request, patient_id):
+    """
+    GET /doctors/patients/<patient_id>/health-records/
+    Returns full health record for a patient.
+    """
+    try:
+        patient = PatientProfile.objects.get(id=patient_id)
+    except PatientProfile.DoesNotExist:
+        return JsonResponse({'error': 'Patient not found.'}, status=404)
+
+    rxs = patient.prescriptions.select_related('doctor').all()
+    prescriptions = [
+        {
+            'medication': rx.medication,
+            'dosage': rx.dosage,
+            'frequency': rx.frequency,
+            'duration': rx.duration or '—',
+            'instructions': rx.instructions,
+            'doctor': str(rx.doctor),
+            'date': rx.prescribed_at.strftime('%b %d, %Y'),
+        }
+        for rx in rxs
+    ]
+
+    return JsonResponse({
+        'id': patient.id,
+        'name': f"{patient.first_name} {patient.last_name}".strip() or patient.user.username,
+        'email': patient.email or patient.user.email,
+        'dob': patient.date_of_birth.strftime('%b %d, %Y') if patient.date_of_birth else '—',
+        'blood_type': patient.blood_type or '—',
+        'height': patient.height or '—',
+        'weight': patient.weight or '—',
+        'allergies': patient.allergies or '—',
+        'medical_conditions': patient.medical_conditions or '—',
+        'prescriptions': prescriptions,
+    })
+
+
 def _initials(name: str) -> str:
     parts = name.strip().split()
     if len(parts) >= 2:

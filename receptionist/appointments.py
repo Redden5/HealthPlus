@@ -103,11 +103,12 @@ def create_appointment(request):
     doctor_id    = body.get('doctor_id')
     patient_id   = body.get('patient_id')
     title        = (body.get('title') or '').strip()
-    appt_type    = body.get('appointment_type', Appointment.TYPE_CONSULTATION)
-    scheduled_str = (body.get('scheduled_at') or '').strip()
-    duration     = body.get('duration_minutes', 60)
-    location     = (body.get('location') or '').strip()
-    notes        = (body.get('notes') or '').strip()
+    appt_type      = body.get('appointment_type', Appointment.TYPE_CONSULTATION)
+    meeting_format = body.get('meeting_format', Appointment.FORMAT_IN_PERSON)
+    scheduled_str  = (body.get('scheduled_at') or '').strip()
+    duration       = body.get('duration_minutes', 60)
+    location       = (body.get('location') or '').strip()
+    notes          = (body.get('notes') or '').strip()
 
     if not doctor_id:   errors['doctor_id']    = 'Required'
     if not patient_id:  errors['patient_id']   = 'Required'
@@ -140,6 +141,7 @@ def create_appointment(request):
         patient=patient,
         created_by=receptionist,
         appointment_type=appt_type,
+        meeting_format=meeting_format,
         title=title,
         scheduled_at=scheduled_at,
         duration_minutes=int(duration),
@@ -147,18 +149,36 @@ def create_appointment(request):
         notes=notes,
     )
 
+    # If video, create a TeamsCall so it appears on the doctor's Meetings panel
+    if meeting_format == Appointment.FORMAT_VIDEO:
+        from doctor.models import TeamsCall
+        from doctor.teams import create_teams_meeting
+        join_url, teams_id = create_teams_meeting(title, scheduled_at)
+        TeamsCall.objects.create(
+            doctor=doctor,
+            patient=patient,
+            title=title,
+            scheduled_at=scheduled_at,
+            join_url=join_url,
+            teams_meeting_id=teams_id,
+        )
+
     # Notify patient
     fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
-    trigger_full_notification(
-        profile=patient,
-        title=f"New Appointment: {title}",
-        content=(
-            f"You have a new appointment scheduled with Dr. {doctor.first_name} {doctor.last_name} "
-            f"on {fmt_time}."
-            + (f" Location: {location}." if location else "")
-        ),
-        doctor_name=f"Dr. {doctor.first_name} {doctor.last_name}",
-    )
+    fmt_label = 'video call' if meeting_format == Appointment.FORMAT_VIDEO else 'appointment'
+    try:
+        trigger_full_notification(
+            profile=patient,
+            title=f"New Appointment: {title}",
+            content=(
+                f"You have a new {fmt_label} scheduled with Dr. {doctor.first_name} {doctor.last_name} "
+                f"on {fmt_time}."
+                + (f" Location: {location}." if location else "")
+            ),
+            doctor_name=f"Dr. {doctor.first_name} {doctor.last_name}",
+        )
+    except Exception:
+        pass
 
     return JsonResponse({'ok': True, 'appointment': _serialize(appt)}, status=201)
 
@@ -217,15 +237,18 @@ def update_appointment(request, appt_id):
         # Notify patient if time or status changed
         if 'scheduled_at' in changed_fields or 'status' in changed_fields:
             fmt_time = appt.scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
-            trigger_full_notification(
-                profile=appt.patient,
-                title=f"Appointment Updated: {appt.title}",
-                content=(
-                    f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
-                    f"has been updated. New time: {fmt_time}. Status: {appt.get_status_display()}."
-                ),
-                doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
-            )
+            try:
+                trigger_full_notification(
+                    profile=appt.patient,
+                    title=f"Appointment Updated: {appt.title}",
+                    content=(
+                        f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
+                        f"has been updated. New time: {fmt_time}. Status: {appt.get_status_display()}."
+                    ),
+                    doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
+                )
+            except Exception:
+                pass
 
     return JsonResponse({'ok': True, 'appointment': _serialize(appt)})
 
@@ -242,15 +265,18 @@ def cancel_appointment(request, appt_id):
     appt.status = Appointment.STATUS_CANCELLED
     appt.save(update_fields=['status', 'updated_at'])
 
-    trigger_full_notification(
-        profile=appt.patient,
-        title=f"Appointment Cancelled: {appt.title}",
-        content=(
-            f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
-            f"on {appt.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled."
-        ),
-        doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
-    )
+    try:
+        trigger_full_notification(
+            profile=appt.patient,
+            title=f"Appointment Cancelled: {appt.title}",
+            content=(
+                f"Your appointment with Dr. {appt.doctor.first_name} {appt.doctor.last_name} "
+                f"on {appt.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled."
+            ),
+            doctor_name=f"Dr. {appt.doctor.first_name} {appt.doctor.last_name}",
+        )
+    except Exception:
+        pass
 
     return JsonResponse({'ok': True})
 
@@ -359,11 +385,12 @@ def submit_appointment_request(request):
 
     profile = PP.objects.get(user=request.user)
 
-    appt_type    = body.get('appointment_type', Appointment.TYPE_CONSULTATION)
+    appt_type      = body.get('appointment_type', Appointment.TYPE_CONSULTATION)
+    meeting_format = body.get('meeting_format', Appointment.FORMAT_IN_PERSON)
     preferred_date = body.get('preferred_date') or None
     preferred_time = body.get('preferred_time') or None
-    doctor_id    = body.get('preferred_doctor_id') or None
-    notes        = (body.get('notes') or '').strip()
+    doctor_id      = body.get('preferred_doctor_id') or None
+    notes          = (body.get('notes') or '').strip()
 
     preferred_doctor = None
     if doctor_id:
@@ -377,6 +404,7 @@ def submit_appointment_request(request):
         patient=profile,
         preferred_doctor=preferred_doctor,
         appointment_type=appt_type,
+        meeting_format=meeting_format,
         preferred_date=parse_date(preferred_date) if preferred_date else None,
         preferred_time=parse_time(preferred_time) if preferred_time else None,
         notes=notes,
@@ -430,13 +458,14 @@ def book_from_request(request, req_id):
     except (json.JSONDecodeError, ValueError):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-    doctor_id     = body.get('doctor_id')
-    title         = (body.get('title') or '').strip()
-    scheduled_str = (body.get('scheduled_at') or '').strip()
-    duration      = body.get('duration_minutes', 60)
-    location      = (body.get('location') or '').strip()
-    notes         = (body.get('notes') or req.notes or '').strip()
-    appt_type     = body.get('appointment_type', req.appointment_type)
+    doctor_id      = body.get('doctor_id')
+    title          = (body.get('title') or '').strip()
+    scheduled_str  = (body.get('scheduled_at') or '').strip()
+    duration       = body.get('duration_minutes', 60)
+    location       = (body.get('location') or '').strip()
+    notes          = (body.get('notes') or req.notes or '').strip()
+    appt_type      = body.get('appointment_type', req.appointment_type)
+    meeting_format = req.meeting_format  # carry over from the patient's request
 
     if not doctor_id or not title or not scheduled_str:
         return JsonResponse({'error': 'doctor_id, title, and scheduled_at are required'}, status=400)
@@ -459,6 +488,7 @@ def book_from_request(request, req_id):
         patient=req.patient,
         created_by=receptionist,
         appointment_type=appt_type,
+        meeting_format=meeting_format,
         title=title,
         scheduled_at=scheduled_at,
         duration_minutes=int(duration),
@@ -470,17 +500,35 @@ def book_from_request(request, req_id):
     req.booked_appointment = appt
     req.save(update_fields=['status', 'booked_appointment', 'updated_at'])
 
+    # If video, create a TeamsCall so it appears on the doctor's Meetings panel
+    if meeting_format == Appointment.FORMAT_VIDEO:
+        from doctor.models import TeamsCall
+        from doctor.teams import create_teams_meeting
+        join_url, teams_id = create_teams_meeting(title, scheduled_at)
+        TeamsCall.objects.create(
+            doctor=doctor,
+            patient=req.patient,
+            title=title,
+            scheduled_at=scheduled_at,
+            join_url=join_url,
+            teams_meeting_id=teams_id,
+        )
+
     fmt_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
-    trigger_full_notification(
-        profile=req.patient,
-        title=f"Appointment Confirmed: {title}",
-        content=(
-            f"Your appointment request has been confirmed. "
-            f"You have an appointment with Dr. {doctor.first_name} {doctor.last_name} on {fmt_time}."
-            + (f" Location: {location}." if location else "")
-        ),
-        doctor_name=f"Dr. {doctor.first_name} {doctor.last_name}",
-    )
+    fmt_label = 'video call' if meeting_format == Appointment.FORMAT_VIDEO else 'appointment'
+    try:
+        trigger_full_notification(
+            profile=req.patient,
+            title=f"Appointment Confirmed: {title}",
+            content=(
+                f"Your {fmt_label} request has been confirmed. "
+                f"You have a {fmt_label} with Dr. {doctor.first_name} {doctor.last_name} on {fmt_time}."
+                + (f" Location: {location}." if location else "")
+            ),
+            doctor_name=f"Dr. {doctor.first_name} {doctor.last_name}",
+        )
+    except Exception:
+        pass
 
     return JsonResponse({'ok': True, 'appointment': _serialize(appt)}, status=201)
 
@@ -497,15 +545,18 @@ def decline_request(request, req_id):
     req.status = AppointmentRequest.STATUS_DECLINED
     req.save(update_fields=['status', 'updated_at'])
 
-    trigger_full_notification(
-        profile=req.patient,
-        title="Appointment Request Declined",
-        content=(
-            f"Your {req.get_appointment_type_display()} request "
-            f"could not be accommodated at this time. Please contact the clinic to reschedule."
-        ),
-        doctor_name="HealthPlus Reception",
-    )
+    try:
+        trigger_full_notification(
+            profile=req.patient,
+            title="Appointment Request Declined",
+            content=(
+                f"Your {req.get_appointment_type_display()} request "
+                f"could not be accommodated at this time. Please contact the clinic to reschedule."
+            ),
+            doctor_name="HealthPlus Reception",
+        )
+    except Exception:
+        pass
 
     return JsonResponse({'ok': True})
 
@@ -518,6 +569,8 @@ def _serialize_request(r):
         'patient_id':       r.patient_id,
         'appointment_type': r.appointment_type,
         'type_display':     r.get_appointment_type_display(),
+        'meeting_format':   r.meeting_format,
+        'format_display':   r.get_meeting_format_display(),
         'preferred_doctor_id':   r.preferred_doctor_id,
         'preferred_doctor_name': f"Dr. {r.preferred_doctor.first_name} {r.preferred_doctor.last_name}" if r.preferred_doctor else None,
         'preferred_date':   r.preferred_date.isoformat() if r.preferred_date else None,
@@ -548,6 +601,8 @@ def _serialize(a):
         'title':            a.title,
         'appointment_type': a.appointment_type,
         'type_display':     a.get_appointment_type_display(),
+        'meeting_format':   a.meeting_format,
+        'format_display':   a.get_meeting_format_display(),
         'scheduled_at':     a.scheduled_at.isoformat(),
         'scheduled_fmt':    a.scheduled_at.strftime('%b %-d, %Y · %-I:%M %p'),
         'duration_minutes': a.duration_minutes,

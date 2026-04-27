@@ -221,12 +221,16 @@
 
 
         .initial-avatar {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             background: var(--white);
             border: 2px solid var(--text-main);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         /* DASHBOARD GRID */
@@ -238,7 +242,7 @@
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -1042,14 +1046,13 @@
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
                 Messages
             </a>
-
-            <a href="#section-calendar" class="nav-item">
-                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
-                Calendar
-            </a>
             <a href="#section-patients" class="nav-item">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
                 Patient List
+            </a>
+            <a href="#section-calendar" class="nav-item">
+                <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                Calendar
             </a>
             <a href="#section-records" class="nav-item">
                 <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
@@ -1071,17 +1074,21 @@
         <header>
             <h1 class="header-title">Physician Dashboard</h1>
             <div class="user-controls">
-                <div class="notification-bell">
-                    <span class="notif-dot"></span>
-                </div>
-                <div class="profile-chip" id="profileChip">
+                <div id="notif-btn" class="notification-bell">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                {% if unread_count > 0 %}<span class="notif-dot"></span>{% endif %}
+            </div>
+                <button class="profile-chip" id="profileChip">
                     <div class="initial-avatar">{{ profile.first_name|make_list|first }}{{ profile.last_name|make_list|first }}</div>
-                    <span class="user-name"><strong>Dr. {{ profile.last_name }}</strong> ∨</span>
+                    <span class="user-name"><strong>Dr. {{ profile.last_name }}</strong></span>
                     <div class="profile-dropdown" id="profileDropdown">
                         <a href="{% url 'doctor:profile_view' profile.id %}" class="dropdown-item">View Profile</a>
                         <a href="/accounts/logout/" class="dropdown-item danger">Log Out</a>
                     </div>
-                </div>
+                </button>
             </div>
         </header>
 
@@ -1091,14 +1098,14 @@
             <div class="stats-bar">
                 <div class="stat-card">
                     <div class="stat-label">Patients Today</div>
-                    <div class="stat-value">{{ today_appointments|length }}</div>
+                    <div class="stat-value">{{ patients_today }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Upcoming Meetings</div>
-                    <div class="stat-value">3</div>
+                    <div class="stat-label">Online Meetings Today</div>
+                    <div class="stat-value">{{ meetings_today }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Unread Messages</div>
+                    <div class="stat-label">New Messages</div>
                     <div class="stat-value" id="statUnreadMessages">—</div>
                 </div>
             </div>
@@ -1272,8 +1279,23 @@
                     </div>
                 </div>
 
-                <div class="card full-width" id="section-records">
-                    <div class="card-header">Recent Health Records</div>
+                <div class="card full-width" id="section-records" style="padding:0;overflow:hidden;">
+                    <div class="card-header" style="padding:16px 22px;border-bottom:1px solid var(--border-light);margin-bottom:0;">
+                        Health Records
+                        <span class="pill" id="hrPatientCountPill">—</span>
+                    </div>
+                    <div style="display:flex;height:420px;overflow:hidden;">
+                        <!-- Patient list column -->
+                        <div id="hrPatientList" style="width:220px;flex-shrink:0;border-right:1px solid var(--border-light);overflow-y:auto;background:#f7f9fb;">
+                            <div style="padding:20px;text-align:center;font-size:0.8rem;color:var(--text-muted);">Loading…</div>
+                        </div>
+                        <!-- Record detail column -->
+                        <div id="hrDetail" style="flex:1;overflow-y:auto;padding:20px 24px;">
+                            <div style="margin:auto;text-align:center;font-size:0.82rem;color:var(--text-muted);padding-top:60px;">
+                                Select a patient to view their health record.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1773,6 +1795,103 @@
         }
 
         loadPatients();
+
+        // ── HEALTH RECORDS ────────────────────────────────────────────
+        let activeHrPatientId = null;
+
+        function loadHrPatients() {
+            fetch('/doctors/patients/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(data => {
+                    const list = document.getElementById('hrPatientList');
+                    const pill = document.getElementById('hrPatientCountPill');
+                    pill.textContent = data.patients.length + ' patients';
+
+                    if (data.patients.length === 0) {
+                        list.innerHTML = '<div style="padding:20px;text-align:center;font-size:0.78rem;color:var(--text-muted);">No patients found.</div>';
+                        return;
+                    }
+
+                    list.innerHTML = data.patients.map(p => `
+                        <div class="conv-item" data-hr-id="${p.id}" onclick="loadHrDetail(${p.id}, this)">
+                            <div class="conv-avatar" style="background:${ptColor(p.id)}">${p.initials}</div>
+                            <div class="conv-info">
+                                <div class="conv-name">${p.name}</div>
+                                <div class="conv-preview">${p.conditions !== '—' ? p.conditions : 'No conditions listed'}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        function loadHrDetail(patientId, el) {
+            activeHrPatientId = patientId;
+            document.querySelectorAll('[data-hr-id]').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+
+            const detail = document.getElementById('hrDetail');
+            detail.innerHTML = '<div style="color:var(--text-muted);font-size:0.82rem;padding:20px 0;">Loading…</div>';
+
+            fetch(`/doctors/patients/${patientId}/health-records/`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(d => {
+                    const rxRows = d.prescriptions.length > 0
+                        ? d.prescriptions.map(rx => `
+                            <div style="background:#f7f9fb;border-radius:10px;padding:11px 14px;margin-bottom:8px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                                    <span style="font-weight:600;font-size:0.85rem;">${rx.medication}</span>
+                                    <span style="font-size:0.72rem;color:var(--text-muted);">${rx.date}</span>
+                                </div>
+                                <div style="font-size:0.78rem;color:var(--text-muted);">${rx.dosage} · ${rx.frequency}${rx.duration !== '—' ? ' · ' + rx.duration : ''}</div>
+                                ${rx.instructions ? `<div style="font-size:0.75rem;margin-top:4px;color:#5a6472;">${rx.instructions}</div>` : ''}
+                                <div style="font-size:0.7rem;color:var(--text-muted);margin-top:3px;">By ${rx.doctor}</div>
+                            </div>`).join('')
+                        : '<div style="font-size:0.82rem;color:var(--text-muted);">No prescriptions on record.</div>';
+
+                    detail.innerHTML = `
+                        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+                            <div style="width:48px;height:48px;border-radius:50%;background:${ptColor(d.id)};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;">
+                                ${d.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+                            </div>
+                            <div>
+                                <div style="font-size:1.05rem;font-weight:600;">${d.name}</div>
+                                <div style="font-size:0.78rem;color:var(--text-muted);">${d.email}</div>
+                            </div>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+                            <div style="background:#f7f9fb;border-radius:10px;padding:12px 14px;">
+                                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Date of Birth</div>
+                                <div style="font-size:0.88rem;font-weight:500;">${d.dob}</div>
+                            </div>
+                            <div style="background:#f7f9fb;border-radius:10px;padding:12px 14px;">
+                                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Blood Type</div>
+                                <div style="font-size:0.88rem;font-weight:500;">${d.blood_type}</div>
+                            </div>
+                            <div style="background:#f7f9fb;border-radius:10px;padding:12px 14px;">
+                                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Height / Weight</div>
+                                <div style="font-size:0.88rem;font-weight:500;">${d.height} / ${d.weight}</div>
+                            </div>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+                            <div style="background:#f7f9fb;border-radius:10px;padding:12px 14px;">
+                                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Medical Conditions</div>
+                                <div style="font-size:0.82rem;">${d.medical_conditions}</div>
+                            </div>
+                            <div style="background:#f7f9fb;border-radius:10px;padding:12px 14px;">
+                                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Allergies</div>
+                                <div style="font-size:0.82rem;">${d.allergies}</div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:0.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;">Prescriptions</div>
+                        ${rxRows}
+                    `;
+                });
+        }
+
+        loadHrPatients();
 
         const chip = document.getElementById('profileChip');
         const dropdown = document.getElementById('profileDropdown');

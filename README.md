@@ -21,11 +21,12 @@ CS-310 Software Engineering II
      Copy the contents of .env.example into your own .env file, I can supply keys
 
 8. Prepare Database and Groups:
-     Use the command: pythone manage.py migrate
+     Use the command: python manage.py migrate
      Use the command: python manage.py createsuperuser | follow the prompts and remember your user and password
      Use the command: python manage.py runserver, at the end of IP it provides, add /admin/
      Log into this admin panel using the credentials you created with the superuser command. Navigate to the 'Groups' page
      Create 3 seperate groups named 'Patient', 'Doctor', and 'Receptionist'
-    
-12. Create a new user and add them to the 'Doctor' group you created.
-13. Create a new user and add them to the 'Receptionist' group you created.
+   
+9. At the login page use the 'Get Started' button to go through the account setup for the Patient. 
+10. Create a new user, give them the permissions labeled Doctor and add them to the 'Doctor' group you created.
+11. Create a new user, give them the permissions labeled Receptionist and add them to the 'Receptionist' group you created.

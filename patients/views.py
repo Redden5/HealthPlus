@@ -151,10 +151,15 @@ def dashboard(request):
         .order_by('-prescribed_at')
     )
 
+    allergies = [a.strip() for a in profile.allergies.split(',') if a.strip()] if profile.allergies else []
+    conditions = [c.strip() for c in profile.medical_conditions.split(',') if c.strip()] if profile.medical_conditions else []
+
     return render(request, 'patients/dashboard.html', {
         'profile': profile,
         'doctor_name': doctor_name,
         'prescriptions': prescriptions,
+        'allergies': allergies,
+        'conditions': conditions,
     })
 
 
