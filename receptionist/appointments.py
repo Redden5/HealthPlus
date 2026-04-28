@@ -339,34 +339,75 @@ def patient_cancel_appointment(request, appt_id):
 def patient_appointments(request):
     """GET /patients/appointments/  — called from the patient dashboard."""
     from patients.models import PatientProfile as PP
-    profile = PP.objects.get(user=request.user)
-    now = timezone.now()
-    today = timezone.localdate()
+    from doctor.models import TeamsCall
 
-    upcoming = Appointment.objects.filter(
-        patient=profile,
-        scheduled_at__gte=now,
-    ).exclude(status__in=[Appointment.STATUS_CANCELLED, Appointment.STATUS_NO_SHOW]) \
-     .select_related('doctor') \
-     .order_by('scheduled_at')[:10]
+    profile = PP.objects.get(user=request.user)
+
+    # ── Receptionist-booked appointments ──────────────────────────────────────
+    appts = list(
+        Appointment.objects.filter(
+            patient=profile,
+        ).exclude(status__in=[Appointment.STATUS_CANCELLED, Appointment.STATUS_NO_SHOW])
+         .select_related('doctor')
+         .order_by('scheduled_at')[:20]
+    )
+
+    # Pre-fetch all TeamsCall records for this patient in one query
+    calls_by_key = {}
+    for call in TeamsCall.objects.filter(patient=profile).select_related('doctor'):
+        key = (call.doctor_id, call.scheduled_at)
+        if key not in calls_by_key:
+            calls_by_key[key] = call
 
     def _appt_json(a):
-        is_today = a.scheduled_at.date() == today
+        join_url = None
+        if a.meeting_format == Appointment.FORMAT_VIDEO:
+            call = calls_by_key.get((a.doctor_id, a.scheduled_at))
+            join_url = (call.join_url if call else None) or f"/patients/call/{a.room_name}/"
         return {
             'id':             a.id,
             'title':          a.title,
             'doctor_name':    f"Dr. {a.doctor.first_name} {a.doctor.last_name}",
             'type_display':   a.get_appointment_type_display(),
+            'format_display': a.get_meeting_format_display(),
+            'meeting_format': a.meeting_format,
             'scheduled_at':   a.scheduled_at.isoformat(),
             'scheduled_fmt':  a.scheduled_at.strftime('%b %-d · %-I:%M %p'),
             'location':       a.location,
             'status':         a.status,
             'status_display': a.get_status_display(),
             'room_name':      a.room_name,
-            'join_url':       f"/patients/call/{a.room_name}/" if is_today else None,
+            'join_url':       join_url,
         }
 
-    return JsonResponse({'appointments': [_appt_json(a) for a in upcoming]})
+    results = [_appt_json(a) for a in appts]
+
+    # ── Doctor-scheduled calls with no Appointment record ─────────────────────
+    covered = {(a.doctor_id, a.scheduled_at) for a in appts}
+    extra_calls = TeamsCall.objects.filter(
+        patient=profile,
+    ).exclude(status=TeamsCall.STATUS_CANCELLED).select_related('doctor').order_by('scheduled_at')
+
+    for call in extra_calls:
+        if (call.doctor_id, call.scheduled_at) not in covered:
+            results.append({
+                'id':             f"call-{call.id}",
+                'title':          call.title,
+                'doctor_name':    f"Dr. {call.doctor.first_name} {call.doctor.last_name}",
+                'type_display':   'Teams Call',
+                'format_display': 'Video',
+                'meeting_format': 'video',
+                'scheduled_at':   call.scheduled_at.isoformat(),
+                'scheduled_fmt':  call.scheduled_at.strftime('%b %-d · %-I:%M %p'),
+                'location':       '',
+                'status':         call.status,
+                'status_display': call.get_status_display(),
+                'room_name':      '',
+                'join_url':       call.join_url or None,
+            })
+
+    results.sort(key=lambda x: x['scheduled_at'])
+    return JsonResponse({'appointments': results[:10]})
 
 
 # ── Patient appointment requests ─────────────────────────────────────────────
@@ -494,6 +535,7 @@ def book_from_request(request, req_id):
         duration_minutes=int(duration),
         location=location,
         notes=notes,
+        status=Appointment.STATUS_CONFIRMED,
     )
 
     req.status = AppointmentRequest.STATUS_BOOKED

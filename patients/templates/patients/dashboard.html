@@ -956,6 +956,19 @@
         }
         .cancel-appt-btn:hover { background: var(--accent-red); color: #fff; }
 
+        .appt-status-badge {
+            display: inline-block;
+            margin-top: 3px;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .appt-status-confirmed { background: #e6f4ec; color: #2e7d52; }
+        .appt-status-scheduled { background: #e8f0fb; color: #3b6bc4; }
+        .appt-status-completed { background: #f0f0f0; color: #666; }
+
         /* ═══════ MESSAGES ═══════ */
         .msg-list {
             flex: 1;
@@ -2929,18 +2942,23 @@
                     const initials = a.doctor_name.replace('Dr. ', '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
                     const color = apptColor(a.doctor_name);
                     const joinBtn = a.join_url
-                        ? `<a href="${a.join_url}" class="join-call-btn">Join Call</a>`
+                        ? `<a href="${a.join_url}" target="_blank" class="join-call-btn">Join Call</a>`
+                        : '';
+                    const statusBadge = `<span class="appt-status-badge appt-status-${a.status}">${a.status_display}</span>`;
+                    const cancelBtn = typeof a.id === 'number'
+                        ? `<button class="cancel-appt-btn" onclick="openCancelModal(${a.id})">Cancel</button>`
                         : '';
                     return `
                         <div class="appt-item">
                             <div class="appt-avatar" style="background:${color};">${initials}</div>
                             <div class="appt-details">
                                 <div class="appt-name">${a.doctor_name}</div>
-                                <div class="appt-type">${a.type_display}</div>
+                                <div class="appt-type">${a.type_display} · ${a.format_display}</div>
+                                ${statusBadge}
                             </div>
                             <div class="appt-time">${a.scheduled_fmt}</div>
                             ${joinBtn}
-                            <button class="cancel-appt-btn" onclick="openCancelModal(${a.id})">Cancel</button>
+                            ${cancelBtn}
                         </div>
                     `;
                 }).join('');

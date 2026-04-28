@@ -67,7 +67,7 @@ def create_meeting(request):
     )
 
     # Notify patient
-    formatted_time = scheduled_at.strftime('%b %#d, %Y at %#I:%M %p')
+    formatted_time = scheduled_at.strftime('%b %-d, %Y at %-I:%M %p')
     notif_title   = f"Meeting Scheduled: {title}"
     notif_message = (
         f"Dr. {doctor.first_name} {doctor.last_name} has scheduled a Teams call "
@@ -119,11 +119,27 @@ def cancel_meeting(request, meeting_id):
         title=f"Meeting Cancelled: {call.title}",
         content=(
             f"Your Teams call with Dr. {doctor.first_name} {doctor.last_name} "
-            f"scheduled for {call.scheduled_at.strftime('%b %#d at %#I:%M %p')} has been cancelled."
+            f"scheduled for {call.scheduled_at.strftime('%b %-d at %-I:%M %p')} has been cancelled."
         ),
         doctor_name=f"Dr. {doctor.first_name} {doctor.last_name}",
     )
 
+    return JsonResponse({'ok': True})
+
+
+@login_required
+@require_POST
+def delete_meeting(request, meeting_id):
+    """POST /doctors/meetings/<id>/delete/
+    Permanently removes the TeamsCall record.
+    """
+    doctor = _doctor(request.user)
+    try:
+        call = TeamsCall.objects.get(id=meeting_id, doctor=doctor)
+    except TeamsCall.DoesNotExist:
+        return JsonResponse({'error': 'Meeting not found'}, status=404)
+
+    call.delete()
     return JsonResponse({'ok': True})
 
 
@@ -132,7 +148,7 @@ def _serialize_call(call):
         'id':           call.id,
         'title':        call.title,
         'scheduled_at': call.scheduled_at.isoformat(),
-        'scheduled_fmt': call.scheduled_at.strftime('%b %#d, %Y · %#I:%M %p'),
+        'scheduled_fmt': call.scheduled_at.strftime('%b %-d, %Y · %-I:%M %p'),
         'join_url':     call.join_url,
         'status':       call.status,
         'patient_name': f"{call.patient.first_name} {call.patient.last_name}",

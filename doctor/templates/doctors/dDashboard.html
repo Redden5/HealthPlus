@@ -423,6 +423,21 @@
 
         .btn-cancel:hover { background: #f5d5d5; }
 
+        .btn-delete {
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 5px 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-delete:hover { background: #a93226; }
+
         .no-meetings {
             font-size: 0.82rem;
             color: var(--text-muted);
@@ -1413,6 +1428,7 @@
                             <div class="meeting-actions">
                                 ${joinBtn}
                                 <button class="btn-cancel" onclick="cancelMeeting(${m.id})">Cancel</button>
+                                <button class="btn-delete" onclick="deleteMeeting(${m.id})">Delete</button>
                             </div>
                         </div>
                     `;
@@ -1424,6 +1440,17 @@
         function cancelMeeting(id) {
             if (!confirm('Cancel this meeting and notify the patient?')) return;
             fetch(`/doctors/meetings/${id}/cancel/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(r => r.json())
+            .then(data => { if (data.ok) loadMeetings(); });
+        }
+
+        // ── DELETE MEETING ────────────────────────────────────────────
+        function deleteMeeting(id) {
+            if (!confirm('Permanently delete this meeting? This cannot be undone.')) return;
+            fetch(`/doctors/meetings/${id}/delete/`, {
                 method: 'POST',
                 headers: { 'X-CSRFToken': CSRF, 'X-Requested-With': 'XMLHttpRequest' },
             })

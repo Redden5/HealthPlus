@@ -11,6 +11,7 @@ urlpatterns = [
     path('meetings/', meetings.list_meetings, name='meetings_list'),
     path('meetings/create/', meetings.create_meeting, name='meetings_create'),
     path('meetings/<int:meeting_id>/cancel/', meetings.cancel_meeting, name='meetings_cancel'),
+    path('meetings/<int:meeting_id>/delete/', meetings.delete_meeting, name='meetings_delete'),
 
     # Patients & Prescriptions API
     path('patients/', prescriptions.list_patients, name='patients_list'),

@@ -31,7 +31,7 @@ def get_upcoming_meetings(request):
             'id':            c.id,
             'title':         c.title,
             'scheduled_at':  c.scheduled_at.isoformat(),
-            'scheduled_fmt': c.scheduled_at.strftime('%b %#d, %Y · %#I:%M %p'),
+            'scheduled_fmt': c.scheduled_at.strftime('%b %-d, %Y · %-I:%M %p'),
             'join_url':      c.join_url,
             'status':        c.status,
             'doctor_name':   f"Dr. {c.doctor.first_name} {c.doctor.last_name}",
